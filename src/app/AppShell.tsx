@@ -24,10 +24,10 @@ export default function AppShell() {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4 text-center">
-        <p className="text-rose-900">No se pudo verificar tu sesión.</p>
+        <p className="text-ink">No se pudo verificar tu sesión.</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-5 py-2.5 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+          className="px-5 py-2.5 bg-accent text-on-accent rounded-full font-medium hover:bg-accent-hover transition-colors"
         >
           Reintentar
         </button>
@@ -36,7 +36,7 @@ export default function AppShell() {
   }
 
   if (!me) {
-    return <div className="min-h-screen flex items-center justify-center text-pink-500">Cargando…</div>;
+    return <div className="min-h-screen flex items-center justify-center text-accent">Cargando…</div>;
   }
 
   const allowed = sections.filter((s) => s.roles.includes(me.role));
@@ -44,8 +44,8 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen md:flex">
-      <nav className="fixed bottom-0 inset-x-0 z-50 bg-rose-50/90 backdrop-blur-md border-t border-pink-200 md:static md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-rose-50">
-        <a href="/" className="hidden md:block px-6 py-5 text-xl font-bold text-pink-500">
+      <nav className="fixed bottom-0 inset-x-0 z-50 bg-bar/90 backdrop-blur-md border-t border-line md:static md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
+        <a href="/" className="hidden md:block px-6 py-5 text-xl font-bold text-accent">
           &lt;div&gt;
         </a>
         <ul className="flex justify-around md:flex-col md:gap-1 md:px-3">
@@ -56,7 +56,7 @@ export default function AppShell() {
                 end
                 className={({ isActive }) =>
                   `flex flex-col items-center gap-1 px-3 py-2 text-xs md:flex-row md:gap-3 md:text-base md:rounded-lg transition-colors ${
-                    isActive ? 'text-pink-500 md:bg-pink-100' : 'text-rose-900 hover:text-pink-500'
+                    isActive ? 'text-accent md:bg-soft' : 'text-ink hover:text-accent'
                   }`
                 }
               >
@@ -88,7 +88,7 @@ export default function AppShell() {
 function Dashboard({ me }: { me: Me }) {
   return (
     <ComingSoon title="Dashboard">
-      <p className="text-rose-700 text-sm">
+      <p className="text-ink-muted text-sm">
         Sesión: {me.email} ({me.role === 'owner' ? 'dueña' : 'pololo'})
       </p>
     </ComingSoon>

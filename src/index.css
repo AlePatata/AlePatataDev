@@ -1,12 +1,83 @@
 @import "tailwindcss";
 
+/* Modo oscuro por clase: el script de index.html pone `dark` en <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Colores semánticos: los componentes usan estos nombres (bg-page, text-ink, text-accent, ...) y cada
+   tema define su valor abajo. Ver plan/08-modo-oscuro.md. */
+@theme inline {
+  --color-page: var(--theme-page);
+  --color-bar: var(--theme-bar);
+  --color-band: var(--theme-band);
+  --color-card: var(--theme-card);
+  --color-card-hover: var(--theme-card-hover);
+  --color-soft: var(--theme-soft);
+  --color-line: var(--theme-line);
+  --color-line-soft: var(--theme-line-soft);
+  --color-ink: var(--theme-ink);
+  --color-ink-soft: var(--theme-ink-soft);
+  --color-ink-muted: var(--theme-ink-muted);
+  --color-ink-faint: var(--theme-ink-faint);
+  --color-accent: var(--theme-accent);
+  --color-accent-hover: var(--theme-accent-hover);
+  --color-accent-strong: var(--theme-accent-strong);
+  --color-mark: var(--theme-mark);
+  --color-on-accent: var(--theme-on-accent);
+  --color-glow-from: var(--theme-glow-from);
+  --color-glow-to: var(--theme-glow-to);
+  --color-shade: var(--theme-shade);
+}
+
+/* Claro: rosado (el de siempre) */
 :root {
-  --color-primary: #F472B6;
-  --color-secondary: #FBCFE8;
-  --color-accent: #EC4899;
-  --color-background: #FFF1F2;
-  --color-text: #831843;
-  --color-text-light: #BE185D;
+  color-scheme: light;
+  --theme-page: var(--color-rose-50);
+  --theme-bar: var(--color-rose-50);
+  --theme-band: var(--color-pink-100);
+  --theme-card: var(--color-white);
+  --theme-card-hover: var(--color-pink-50);
+  --theme-soft: var(--color-pink-100);
+  --theme-line: var(--color-pink-200);
+  --theme-line-soft: var(--color-pink-100);
+  --theme-ink: var(--color-rose-900);
+  --theme-ink-soft: var(--color-rose-800);
+  --theme-ink-muted: var(--color-rose-700);
+  --theme-ink-faint: var(--color-rose-400);
+  --theme-accent: var(--color-pink-500);
+  --theme-accent-hover: var(--color-pink-600);
+  --theme-accent-strong: var(--color-pink-600);
+  --theme-mark: var(--color-pink-400);
+  --theme-on-accent: var(--color-white);
+  --theme-glow-from: var(--color-pink-200);
+  --theme-glow-to: var(--color-rose-100);
+  --theme-shade: var(--color-rose-900);
+}
+
+/* Oscuro: Catppuccin Mocha, con mauve como color principal */
+.dark {
+  color-scheme: dark;
+  --ctp-mauve: #cba6f7;
+  --ctp-surface0: #313244;
+  --theme-page: #1e1e2e; /* Base */
+  --theme-bar: #181825; /* Mantle */
+  --theme-band: #181825; /* Mantle */
+  --theme-card: var(--ctp-surface0);
+  --theme-card-hover: #45475a; /* Surface1 */
+  --theme-soft: #45475a; /* Surface1 */
+  --theme-line: color-mix(in oklab, var(--ctp-mauve) 25%, transparent);
+  --theme-line-soft: color-mix(in oklab, var(--ctp-mauve) 15%, transparent);
+  --theme-ink: #cdd6f4; /* Text */
+  --theme-ink-soft: #bac2de; /* Subtext1 */
+  --theme-ink-muted: #a6adc8; /* Subtext0 */
+  --theme-ink-faint: #7f849c; /* Overlay1 */
+  --theme-accent: var(--ctp-mauve);
+  --theme-accent-hover: #b4befe; /* Lavender */
+  --theme-accent-strong: var(--ctp-mauve);
+  --theme-mark: var(--ctp-mauve);
+  --theme-on-accent: #11111b; /* Crust */
+  --theme-glow-from: color-mix(in oklab, var(--ctp-mauve) 35%, var(--ctp-surface0));
+  --theme-glow-to: color-mix(in oklab, #f5c2e7 12%, var(--ctp-surface0)); /* Pink */
+  --theme-shade: #11111b; /* Crust */
 }
 
 /* En @layer base para que las utilidades de Tailwind (px-4, mx-auto, ...) puedan sobrescribirlos.
@@ -18,8 +89,8 @@
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: var(--color-background);
-    color: var(--color-text);
+    background-color: var(--color-page);
+    color: var(--color-ink);
     line-height: 1.6;
   }
 }
