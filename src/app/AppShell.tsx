@@ -6,6 +6,7 @@ import { ExpensesPage } from './pages/ExpensesPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ImportPage } from './pages/ImportPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { WishlistPage } from './pages/WishlistPage';
 import { useMe, type Role } from './useMe';
 
 interface Section {
@@ -20,7 +21,7 @@ const sections: Section[] = [
   { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'], page: DashboardPage },
   { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'], page: ExpensesPage },
   { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
-  { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
+  { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'], page: WishlistPage },
   { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'], page: SettingsPage },
 ];
 

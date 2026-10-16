@@ -1,4 +1,4 @@
-# 09 — Fase 3 en detalle: wishlist compartida
+# 10 — Fase 3 en detalle: wishlist compartida
 
 Planificada el 2026-10-16. Objetivo y criterio de "listo" en [03-roadmap.md](03-roadmap.md#fase-3--wishlist-compartida).
 Se trabaja en la rama `fase-3`: un commit por paso, con build, lint y tests limpios.
@@ -78,6 +78,11 @@ metadatos. Sigue las redirecciones revisando cada destino (máximo 5).
 - **Agregar**: pegar el link → se completan nombre, imagen y precio si se puede → revisar → guardar.
 - Subir/bajar prioridad, editar, marcar como comprado, borrar; sección "Comprados" plegada, con opción
   de deshacer. Igual para los dos.
+
+Hecho 2026-10-16. Probado en Firefox: el pololo (celular) solo ve Wishlist en el menú, agrega un item
+pegando un link (se completan nombre e imagen) y otro a mano, y reordena; la dueña lo ve con "Agregado por",
+lo marca como comprado y aparece en "Comprados". Usa los colores semánticos del modo oscuro
+(`bg-card`, `text-ink`, `bg-accent`…), probado en claro y oscuro.
 
 ## Paso 4 — Ajustes: nombres (commit 4)
 

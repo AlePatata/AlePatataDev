@@ -40,7 +40,7 @@ comparto con mi pololo.
 | [06-fase-0.md](06-fase-0.md) | Fase 0 paso a paso: configuración en Cloudflare, commits, verificación |
 | [07-fase-1.md](07-fase-1.md) | Fase 1 paso a paso: formatos de cartola, parser, importación y gastos |
 | [08-fase-2.md](08-fase-2.md) | Fase 2 paso a paso: categorías, reglas, ajustes y dashboard |
-| [09-fase-3.md](09-fase-3.md) | Fase 3 paso a paso: wishlist compartida, leer links, nombres |
+| [10-fase-3.md](10-fase-3.md) | Fase 3 paso a paso: wishlist compartida, leer links, nombres |
 | [09-modo-oscuro.md](09-modo-oscuro.md) | Modo oscuro Catppuccin, colores semánticos y reglas para celular |
 
 ## Estado
