@@ -2,6 +2,7 @@ import { Menu, X } from 'lucide-react';
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { useState } from 'react';
 import { about } from '../data/data';
+import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
   { href: '#sobre-mi', label: 'Sobre mí' },
@@ -40,11 +41,21 @@ export function Navbar() {
           <a href="/app" className="text-sm text-ink-faint hover:text-accent transition-colors">
             Entrar
           </a>
+          <ThemeToggle />
         </div>
 
-        <button className="md:hidden text-ink" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="p-2 text-ink"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {isOpen && (

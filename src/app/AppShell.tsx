@@ -1,5 +1,6 @@
 import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } from 'lucide-react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { ComingSoon } from './ComingSoon';
 import { useMe, type Me, type Role } from './useMe';
 
@@ -44,10 +45,20 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen md:flex">
-      <nav className="fixed bottom-0 inset-x-0 z-50 bg-bar/90 backdrop-blur-md border-t border-line md:static md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
-        <a href="/" className="hidden md:block px-6 py-5 text-xl font-bold text-accent">
+      <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-line bg-bar">
+        <a href="/" className="text-xl font-bold text-accent">
           &lt;div&gt;
         </a>
+        <ThemeToggle />
+      </header>
+
+      <nav className="fixed bottom-0 inset-x-0 z-50 bg-bar/90 backdrop-blur-md border-t border-line md:static md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
+        <div className="hidden md:flex items-center justify-between pl-6 pr-3 py-4">
+          <a href="/" className="text-xl font-bold text-accent">
+            &lt;div&gt;
+          </a>
+          <ThemeToggle />
+        </div>
         <ul className="flex justify-around md:flex-col md:gap-1 md:px-3">
           {allowed.map(({ path, label, icon: Icon }) => (
             <li key={path}>
