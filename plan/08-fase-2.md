@@ -137,6 +137,12 @@ con la paleta rosa.
 - Aviso si hay movimientos o abonos sin categoría, con link para categorizarlos.
 - Tendencia de los últimos 6 meses (barras por mes: gastado neto; línea o marca: ingresos).
 
+Hecho 2026-10-16. Colores validados con el script de la skill `dataviz`: mes destacado `#9d174d` y resto
+`#ec4899` (contraste ≥ 3:1, distinguibles con daltonismo); el rosa claro `#f9a8d4` no pasaba. Las barras por
+categoría van en un solo tono (con 10+ categorías, un color por barra sería ilegible); el color de la
+categoría queda solo en el punto junto al nombre. Ingresos en el tooltip y en la tabla, no como segundo eje.
+Pasarse del presupuesto se muestra en ámbar con ícono y texto.
+
 ## Paso 7 — Documentación y despliegue
 
 - `CLAUDE.md` y roadmap.

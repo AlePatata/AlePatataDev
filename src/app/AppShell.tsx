@@ -2,9 +2,10 @@ import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } fr
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ComingSoon } from './ComingSoon';
 import { ExpensesPage } from './pages/ExpensesPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { ImportPage } from './pages/ImportPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { useMe, type Me, type Role } from './useMe';
+import { useMe, type Role } from './useMe';
 
 interface Section {
   path: string;
@@ -15,7 +16,7 @@ interface Section {
 }
 
 const sections: Section[] = [
-  { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'] },
+  { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'], page: DashboardPage },
   { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'], page: ExpensesPage },
   { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
   { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
@@ -79,22 +80,12 @@ export default function AppShell() {
               key={path}
               index={path === ''}
               path={path || undefined}
-              element={path === '' ? <Dashboard me={me} /> : Page ? <Page /> : <ComingSoon title={label} />}
+              element={Page ? <Page /> : <ComingSoon title={label} />}
             />
           ))}
           <Route path="*" element={<Navigate to={home} replace />} />
         </Routes>
       </main>
     </div>
-  );
-}
-
-function Dashboard({ me }: { me: Me }) {
-  return (
-    <ComingSoon title="Dashboard">
-      <p className="text-rose-700 text-sm">
-        Sesión: {me.email} ({me.role === 'owner' ? 'dueña' : 'pololo'})
-      </p>
-    </ComingSoon>
   );
 }
