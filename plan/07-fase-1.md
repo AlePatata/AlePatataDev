@@ -97,10 +97,14 @@ Ojo con este formato:
 ## Paso 1 — Migración `0002` (commit 1)
 
 - `statements.account_type` acepta `'cuenta_vista'` (la `CHECK` actual solo tiene `cuenta_corriente` y
-  `tarjeta_credito`). Como SQLite no permite cambiar una `CHECK`, se recrea la tabla; está vacía.
+  `tarjeta_credito`). Como SQLite no permite cambiar una `CHECK`, se recrea la tabla.
 - `statements` agrega `closing_balance INTEGER`: saldo al final del período en la cuenta vista
   (útil para el ahorro actual, decisión 8); en la tarjeta, el cupo utilizado en negativo (la deuda).
 - `transactions` agrega `internal INTEGER NOT NULL DEFAULT 0` (ver "Movimientos internos").
+- `transactions.source` pasa de `'pdf'` a `'import'` (la cartola ya no viene en PDF). También se
+  recrea; ambas tablas estaban vacías.
+
+Hecho 2026-10-16.
 - Aplicar en local; en remoto, en el despliegue.
 
 ## Paso 2 — Parser y tests (commit 2)
