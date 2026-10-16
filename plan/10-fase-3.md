@@ -88,6 +88,8 @@ lo marca como comprado y aparece en "Comprados". Usa los colores semánticos del
 
 - Campos "Tu nombre" y "Nombre de tu pololo".
 
+Hecho 2026-10-16.
+
 ## Paso 5 — Documentación, despliegue y prueba con el pololo
 
 - `CLAUDE.md` y roadmap. No hay migración nueva.
