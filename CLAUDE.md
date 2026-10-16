@@ -79,6 +79,17 @@ router `<Link>`.
 **Security config**: `workers_dev` and `preview_urls` are `false` in `wrangler.jsonc` because those
 URLs would bypass Access. Don't re-enable them.
 
-**Styling**: Tailwind v4 via `@tailwindcss/vite` (no `tailwind.config.js`). Rose/pink palette
-(`rose-50`, `pink-500`, `rose-900`), cards with `rounded-2xl border-pink-100`. Custom base styles in
+**Styling**: Tailwind v4 via `@tailwindcss/vite` (no `tailwind.config.js`). Custom base styles in
 `src/index.css` go inside `@layer base`, otherwise they override Tailwind utilities.
+
+**Theme colors**: use the semantic colors, never `rose-*`/`pink-*`/`white` directly, so dark mode works:
+`bg-page`, `bg-bar`, `bg-card`, `bg-soft`, `border-line`/`border-line-soft`, `text-ink`/`ink-soft`/
+`ink-muted`/`ink-faint`, `text-accent`/`bg-accent` + `text-on-accent`, `bg-mark`. Light is the rose/pink
+palette, dark is Catppuccin Mocha with mauve as accent. Both are defined as CSS variables in
+`src/index.css`; add a new role there (for both themes) instead of using `dark:` per class. Table of
+roles in `plan/08-modo-oscuro.md`. Cards: `rounded-2xl bg-card border border-line-soft`. The theme
+lives in `src/theme.ts`; `index.html` repeats its logic to set the class before paint.
+
+**Mobile**: design for 360px first, then add `md:`. Touch targets at least 40px tall, inputs
+`text-base` (iOS zooms on smaller text), wide tables inside `overflow-x-auto`. The app's bottom nav is
+fixed, so app pages already get bottom padding for it and the iPhone safe area.
