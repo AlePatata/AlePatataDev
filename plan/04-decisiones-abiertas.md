@@ -44,7 +44,9 @@ Cuando se decida algo, anotar la respuesta y la fecha, y moverlo a la tabla de d
 
 7. **¿De dónde sale el ingreso mensual?** De los abonos de la cartola (sueldo, transferencias),
    ingresado a mano en Ajustes, o ambos.
-   - Decisión: _pendiente_
+   - Decisión (2026-10-16): **ambos**. Un ingreso mensual fijo en Ajustes (para el presupuesto) y los
+     abonos reales del mes en la categoría "Ingreso", para comparar. Las transferencias de amigos que
+     devuelven plata van a la categoría "Reembolso" y **restan del gasto** del mes.
 8. **¿Hay un ahorro inicial?** Saldo ya ahorrado con el que parte la proyección de la wishlist.
    - Decisión: _pendiente_
 9. **¿Mi pololo ve la fecha estimada de cada item?** Esa fecha revela indirectamente mi capacidad de ahorro.
