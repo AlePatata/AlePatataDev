@@ -54,6 +54,9 @@ devuelve los nombres junto con los items, porque el pololo no tiene acceso a Aju
   (meta en distinto orden, JSON-LD con `offers` como objeto o lista, precio con puntos, moneda USD ignorada).
 - `isSafePublicUrl(url)`: rechaza otros protocolos, IPs y `localhost`.
 
+Hecho 2026-10-16. El nombre del producto en JSON-LD tiene prioridad sobre `<title>` (que suele traer
+el nombre de la tienda).
+
 ## Paso 2 — API (commit 2)
 
 - `GET /api/wishlist` → `{ items, names }` (pendientes por prioridad; comprados por fecha de compra).

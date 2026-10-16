@@ -34,6 +34,10 @@ describe('canAccess', () => {
     expect(canAccess('partner', '/api/me')).toBe(true);
     expect(canAccess('partner', '/api/wishlist')).toBe(true);
     expect(canAccess('partner', '/api/wishlist/3')).toBe(true);
+    expect(canAccess('partner', '/api/wishlist/preview')).toBe(true);
+    expect(canAccess('partner', '/api/wishlist/reorder')).toBe(true);
+    expect(canAccess('partner', '/api/summary')).toBe(false);
+    expect(canAccess('partner', '/api/categories')).toBe(false);
     expect(canAccess('partner', '/api/transactions')).toBe(false);
     expect(canAccess('partner', '/api/settings')).toBe(false);
     expect(canAccess('partner', '/api/wishlistx')).toBe(false);
