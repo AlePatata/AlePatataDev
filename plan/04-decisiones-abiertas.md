@@ -1,0 +1,57 @@
+# 04 — Decisiones abiertas
+
+Cuando se decida algo, anotar la respuesta y la fecha, y moverlo a la tabla de decisiones de
+[README.md](README.md).
+
+## Bloquean la Fase 0
+
+1. **¿Qué pasa con el portafolio que hay hoy en el repo?**
+   - A: se reemplaza entero por la app de finanzas (recomendado: un solo propósito, y todo el sitio queda tras login).
+   - B: el portafolio queda público en `/` y la app privada en `/app`.
+   - Decisión (2026-10-16): **B**. Se mantiene un mini portafolio / presentación pública en `/` y la app
+     de finanzas es un módulo personal privado en `/app`. Ver "Sitio público + módulo privado" en
+     [02-arquitectura.md](02-arquitectura.md).
+2. **¿Cómo inicia sesión mi pololo?** Recomendado: Cloudflare Access con su email (código de un solo uso
+   que llega al correo). Alternativa: link secreto solo para la wishlist (más simple, menos seguro).
+   - Decisión (2026-10-16): **Cloudflare Access con su email y código de un solo uso (OTP por correo).**
+3. **¿Dominio?** ¿Hay dominio propio en la cuenta de Cloudflare o se usa `*.workers.dev`?
+   - Decisión (2026-10-16): **`alepatata.dev`**, dominio propio. Verificado: sus nameservers son de
+     Cloudflare (`matt` / `priscilla.ns.cloudflare.com`), así que Access puede proteger solo `/app*` y `/api*`.
+   - Despliegue actual (revisado 2026-10-16): **Cloudflare Workers Builds** conectado al repo de GitHub.
+     Cada push a `main` construye y despliega el Worker `alepatata` (check run "Workers Builds: alepatata"
+     en el commit `7457308`). **No hay GitHub Actions** (sin `.github/`, 0 workflows).
+     El comando de build/deploy está en el dashboard de Cloudflare (Worker `alepatata` → Settings → Build),
+     no en el repo; revisarlo, porque `wrangler.jsonc` apunta a `./public` y aun así se publica el build de Vite.
+   - **AWS:** descartado (2026-10-16). Sin webhooks; la única GitHub App es Cloudflare Workers and Pages.
+   - Consecuencia: **cada push a `main` sale a producción**. No pushear la app a `main` antes de que
+     Cloudflare Access proteja `/app*` y `/api*`.
+
+## Bloquean la Fase 1
+
+4. **¿Qué PDF(s) del Banco de Chile?** Cartola de cuenta corriente / cuenta vista, estado de cuenta de
+   tarjeta de crédito, o ambos. Cambia el parser y cómo se evita contar doble.
+   - Decisión: _pendiente_
+5. **¿El PDF trae contraseña?**
+   - Decisión: _pendiente_
+6. **¿Parser propio o Claude API?** Ver la comparación en [02-arquitectura.md](02-arquitectura.md).
+   Se decide al ver una cartola real. Recomendado: parser propio.
+   - Decisión: _pendiente_
+
+## Bloquean la Fase 2 / 4
+
+7. **¿De dónde sale el ingreso mensual?** De los abonos de la cartola (sueldo, transferencias),
+   ingresado a mano en Ajustes, o ambos.
+   - Decisión: _pendiente_
+8. **¿Hay un ahorro inicial?** Saldo ya ahorrado con el que parte la proyección de la wishlist.
+   - Decisión: _pendiente_
+9. **¿Mi pololo ve la fecha estimada de cada item?** Esa fecha revela indirectamente mi capacidad de ahorro.
+   - Decisión: _pendiente_
+10. **Gastos recurrentes** (suscripciones, arriendo): ¿se detectan solos en la cartola o se declaran
+    a mano para mejorar la proyección? No se eligieron al principio; quedan como opcionales.
+    - Decisión: _pendiente_
+
+## Forma de trabajo
+
+11. Se eligió un enfoque liviano en vez de BMAD. ¿Se agrega alguna skill o convención más
+    (por ejemplo, revisar con `/code-review` antes de cada merge)?
+    - Decisión: _pendiente_
