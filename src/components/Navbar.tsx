@@ -31,10 +31,10 @@ export function Navbar() {
             </a>
           ))}
           <div className="flex items-center gap-3 ml-4 border-l border-line pl-4">
-            <a href={about.github} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent">
+            <a href={about.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-ink hover:text-accent">
               <BsGithub size={20} />
             </a>
-            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent">
+            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-ink hover:text-accent">
               <BsLinkedin size={20} />
             </a>
           </div>
@@ -70,11 +70,11 @@ export function Navbar() {
               {link.label}
             </a>
           ))}
-          <div className="flex gap-4 pt-2 border-t border-line">
-            <a href={about.github} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent">
+          <div className="flex gap-2 pt-2 -ml-2 border-t border-line">
+            <a href={about.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-2 text-ink hover:text-accent">
               <BsGithub size={20} />
             </a>
-            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent">
+            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2 text-ink hover:text-accent">
               <BsLinkedin size={20} />
             </a>
           </div>

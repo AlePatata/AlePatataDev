@@ -4,7 +4,7 @@ import { BsGithub, BsLinkedin } from "react-icons/bs";
 
 export function Home() {
   return (
-    <section className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
+    <section className="min-h-[calc(100svh-64px)] flex items-center justify-center px-4">
       <div className="max-w-2xl text-center">
         <div className="mb-6 inline-block px-4 py-1.5 bg-soft text-accent-strong rounded-full text-sm font-medium">
           Hola, soy

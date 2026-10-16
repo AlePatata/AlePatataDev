@@ -45,41 +45,41 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen md:flex">
-      <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-line bg-bar">
+      <header className="md:hidden sticky top-0 z-40 flex items-center justify-between px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] border-b border-line bg-bar/90 backdrop-blur-md">
         <a href="/" className="text-xl font-bold text-accent">
           &lt;div&gt;
         </a>
         <ThemeToggle />
       </header>
 
-      <nav className="fixed bottom-0 inset-x-0 z-50 bg-bar/90 backdrop-blur-md border-t border-line md:static md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
+      <nav className="fixed bottom-0 inset-x-0 z-50 pb-[env(safe-area-inset-bottom)] bg-bar/90 backdrop-blur-md border-t border-line md:static md:pb-0 md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
         <div className="hidden md:flex items-center justify-between pl-6 pr-3 py-4">
           <a href="/" className="text-xl font-bold text-accent">
             &lt;div&gt;
           </a>
           <ThemeToggle />
         </div>
-        <ul className="flex justify-around md:flex-col md:gap-1 md:px-3">
+        <ul className="flex md:flex-col md:gap-1 md:px-3">
           {allowed.map(({ path, label, icon: Icon }) => (
-            <li key={path}>
+            <li key={path} className="flex-1 min-w-0 md:flex-none">
               <NavLink
                 to={path ? `/app/${path}` : '/app'}
                 end
                 className={({ isActive }) =>
-                  `flex flex-col items-center gap-1 px-3 py-2 text-xs md:flex-row md:gap-3 md:text-base md:rounded-lg transition-colors ${
+                  `flex flex-col items-center gap-1 px-0 py-2 text-[0.6875rem] min-[360px]:text-xs md:flex-row md:px-3 md:gap-3 md:text-base md:rounded-lg transition-colors ${
                     isActive ? 'text-accent md:bg-soft' : 'text-ink hover:text-accent'
                   }`
                 }
               >
                 <Icon size={20} />
-                {label}
+                <span className="max-w-full truncate">{label}</span>
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
 
-      <main className="flex-1 px-4 pt-8 pb-24 md:px-10 md:pb-8">
+      <main className="flex-1 min-w-0 px-4 pt-6 pb-[calc(6rem+env(safe-area-inset-bottom))] md:px-10 md:pt-8 md:pb-8">
         <Routes>
           {allowed.map(({ path, label }) => (
             <Route

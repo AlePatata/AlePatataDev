@@ -85,6 +85,10 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Los saltos a #sobre-mi, #proyectos... no quedan bajo el navbar fijo */
+    scroll-padding-top: 4rem;
+    /* Mismo fondo al estirar la página en el celular (rebote de iOS) */
+    background-color: var(--color-page);
   }
 
   body {

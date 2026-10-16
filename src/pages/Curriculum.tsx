@@ -34,7 +34,7 @@ export function Curriculum() {
         <h2 className="text-3xl md:text-4xl font-bold text-ink mb-2">Curriculum</h2>
         <div className="w-20 h-1 bg-mark mb-10 rounded-full" />
 
-        <div className="bg-card rounded-2xl border border-line-soft shadow-sm p-8 mb-8">
+        <div className="bg-card rounded-2xl border border-line-soft shadow-sm p-5 sm:p-8 mb-8">
           <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
             <div>
               <h3 className="text-2xl font-bold text-ink mb-1">{about.name}</h3>
