@@ -1,6 +1,7 @@
 import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } from 'lucide-react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ComingSoon } from './ComingSoon';
+import { ExpensesPage } from './pages/ExpensesPage';
 import { ImportPage } from './pages/ImportPage';
 import { useMe, type Me, type Role } from './useMe';
 
@@ -14,7 +15,7 @@ interface Section {
 
 const sections: Section[] = [
   { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'] },
-  { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'] },
+  { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'], page: ExpensesPage },
   { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
   { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
   { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'] },

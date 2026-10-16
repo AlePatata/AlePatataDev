@@ -165,6 +165,9 @@ Hecho 2026-10-16. Probado en Firefox con las 3 cartolas reales: 8 nuevas → 47 
   totales del mes sin los movimientos internos (cargos, abonos, neto),
   lista con fecha, descripción y monto (gastos en rosa oscuro, abonos en verde suave), agregar/editar/borrar.
 
+Hecho 2026-10-16. Probado en Firefox con los datos reales importados en local: navegar meses, buscar,
+filtrar por cuenta, y agregar, editar y borrar un movimiento manual (los totales se actualizan).
+
 ## Paso 6 — Documentación y despliegue
 
 - `CLAUDE.md`: flujo de importación y dónde vive el parser. Marcar avance aquí y en el roadmap.
