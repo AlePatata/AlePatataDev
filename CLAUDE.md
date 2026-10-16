@@ -2,40 +2,83 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Current Direction (read first)
+## Purpose
 
-The site is becoming a public mini-portfolio at `/` plus a private personal-finance app at `/app`
-(Cloudflare Worker + D1 + Access). The plan lives in `plan/` (Spanish): start with `plan/README.md`,
-then `plan/06-fase-0.md`, which is the next phase to implement. Step 1 of Fase 0 (Cloudflare
-dashboard setup) is done; implementation starts at step 2 on a `fase-0` branch. Every push to
-`main` deploys to production via Workers Builds. The repo is public: never commit emails, secrets,
-or bank statements. The rest of this file describes the portfolio template and gets rewritten in
-step 7 of Fase 0.
+`alepatata.dev` is two things in one Cloudflare Worker:
 
-## Project Overview
+- **`/`** — public mini-portfolio of Alejandra Campos Urbina.
+- **`/app`** — private personal-finance app (import Banco de Chile PDF statements, monthly dashboard,
+  savings projections, wishlist shared with her partner). Protected by Cloudflare Access.
 
-Personal portfolio site for Alejandra Campos Urbina. Built with React 19 + TypeScript + Vite, styled with Tailwind CSS v4, and deployed to Cloudflare Workers via Wrangler.
+The plan lives in `plan/` (Spanish): start with `plan/README.md` and `plan/03-roadmap.md`. Plan each
+feature before implementing it and keep commits atomic.
+
+## Rules
+
+- **The repo is public.** Never commit emails, secrets, `.dev.vars`, or bank statements (put sample
+  PDFs in `samples/`, which is gitignored).
+- **Every push to `main` deploys to production** (Workers Builds: `npm run build` + `npx wrangler deploy`).
+  Work on a branch and merge when done.
+- Keep `npm run build`, `npm run lint` and `npm test` clean on every commit.
 
 ## Commands
 
 ```bash
-npm run dev       # Start dev server with HMR
-npm run build     # Type-check + build to dist/
-npm run lint      # Run ESLint
-npm run preview   # Preview the production build locally
-npx wrangler deploy  # Deploy to Cloudflare
+npm run dev        # SPA + Worker together (Vite + @cloudflare/vite-plugin), uses .dev.vars
+npm run build      # Type-check (app, worker, node configs) + build to dist/
+npm run lint       # ESLint
+npm test           # Vitest (pure logic only; uses vitest.config.ts, not vite.config.ts)
+npm run preview    # Serve the production build locally
+
+npx wrangler types                                   # Regenerate worker-configuration.d.ts after editing wrangler.jsonc
+npx wrangler d1 migrations create datita <name>      # New migration in migrations/
+npx wrangler d1 migrations apply datita --local      # Apply to the local D1 (.wrangler/)
+npx wrangler d1 migrations apply datita --remote     # Apply to production — before merging code that needs it
+npx wrangler secret put OWNER_EMAIL                  # Same for PARTNER_EMAIL
 ```
+
+Local dev needs a `.dev.vars` (gitignored):
+
+```
+OWNER_EMAIL=...
+PARTNER_EMAIL=...
+DEV_AUTH_EMAIL=...   # skips Access locally; set to OWNER_EMAIL or PARTNER_EMAIL to test each role
+```
+
+`DEV_AUTH_EMAIL` must **never** be set in production. `npm run preview` reads a copy of `.dev.vars`
+made into `dist/alepatata/` at build time, so rebuild after changing it.
 
 ## Architecture
 
-**Single-page app with anchor navigation.** `App.tsx` renders the four page sections in sequence (`<Home>`, `<About>`, `<Projects>`, `<Curriculum>`). `react-router-dom` is installed but not yet wired up — navigation is done via `href="#section-id"` anchors.
+```
+src/
+  main.tsx, App.tsx     React entry + routes: / → Portfolio, /app/* → AppShell (React.lazy)
+  pages/, components/   Portfolio sections and shared UI (Navbar, Layout, Footer, ProjectCard)
+  data/data.ts          Portfolio content (projects, about, curriculum) — edit content here
+  types/                Portfolio types
+  app/                  Finance app (AppShell, useMe, pages)
+  worker/               Cloudflare Worker (Hono), serves /api/*
+migrations/             D1 schema (database `datita`, binding `DB`)
+```
 
-**Content lives in `src/data/data.ts`.** The `projects` array and `about` object are the single source of truth for all displayed content. Adding a project or changing personal info is done here, not in the page components.
+**Worker** (`src/worker/index.ts`): a Hono app with base path `/api`. `wrangler.jsonc` has
+`run_worker_first: ["/api/*"]`; everything else is static assets with SPA fallback.
 
-**Types in `src/types/index.ts`** — currently just the `Project` interface.
+**Auth** (`src/worker/auth.ts`, `roles.ts`): Cloudflare Access protects `/app*` and `/api*` (One-time
+PIN login). The Worker also validates the `Cf-Access-Jwt-Assertion` JWT itself (defense in depth):
+no/invalid JWT → 401; email not `OWNER_EMAIL`/`PARTNER_EMAIL` → 403. The `partner` role may only use
+`/api/me` and `/api/wishlist*`. `/api/health` is the only public route and is registered before the
+middleware. New routes go after `app.use('*', requireAuth)`; read the user with `c.get('email')` /
+`c.get('role')`. Secrets are typed in `Secrets` in `auth.ts` (they aren't in the generated `Env`).
 
-**Tailwind v4** is configured via the `@tailwindcss/vite` plugin in `vite.config.ts` — there is no `tailwind.config.js`. The color palette used throughout is rose/pink (`rose-50`, `pink-500`, `rose-900`).
+**Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
+Importar, Wishlist, Ajustes; partner: Wishlist only). The portfolio's "Entrar" link is a plain
+`<a href="/app">` so the browser does a full load and Access can ask for login — don't turn it into a
+router `<Link>`.
 
-## Deployment Note
+**Security config**: `workers_dev` and `preview_urls` are `false` in `wrangler.jsonc` because those
+URLs would bypass Access. Don't re-enable them.
 
-`wrangler.jsonc` sets `assets.directory` to `./public`, but the Vite build outputs to `dist/`. Before deploying, either update `wrangler.jsonc` to point at `./dist`, or ensure the build output is copied to `public/`.
+**Styling**: Tailwind v4 via `@tailwindcss/vite` (no `tailwind.config.js`). Rose/pink palette
+(`rose-50`, `pink-500`, `rose-900`), cards with `rounded-2xl border-pink-100`. Custom base styles in
+`src/index.css` go inside `@layer base`, otherwise they override Tailwind utilities.

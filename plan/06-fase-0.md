@@ -40,6 +40,8 @@ Datos que salen de este paso y que el Worker necesita (no van en el código):
 
 ## Paso 2 — Ordenar el portafolio (commit 1)
 
+Hecho 2026-10-16 en la rama `fase-0`.
+
 Sin cambiar el diseño, solo dejarlo correcto:
 
 - `src/pages/Portfolio.tsx`: un solo `<Layout>` con las secciones `Home`, `About`, `Projects`, `Curriculum`
@@ -55,6 +57,8 @@ Contenido (lo completo yo, no bloquea la fase): `projects` en `src/data/data.ts`
 proyectos de ejemplo con imágenes de picsum.
 
 ## Paso 3 — Worker + Vite plugin (commit 2)
+
+Hecho 2026-10-16 en la rama `fase-0`.
 
 - Dependencias: `hono`, `jose` · dev: `wrangler`, `@cloudflare/vite-plugin`.
 - `vite.config.ts`: agregar `cloudflare()`.
@@ -82,6 +86,8 @@ proyectos de ejemplo con imágenes de picsum.
 
 ## Paso 4 — Autenticación y roles (commit 3)
 
+Hecho 2026-10-16 en la rama `fase-0`.
+
 - `src/worker/auth.ts`, middleware para todo `/api/*` salvo `/api/health`:
   1. Lee el header `Cf-Access-Jwt-Assertion`. Si no está → `401`.
   2. Valida el JWT con `jose` (`createRemoteJWKSet` sobre `${ACCESS_TEAM_DOMAIN}/cdn-cgi/access/certs`,
@@ -96,6 +102,8 @@ proyectos de ejemplo con imágenes de picsum.
 
 ## Paso 5 — Rutas de la app (commit 4)
 
+Hecho 2026-10-16 en la rama `fase-0`.
+
 - `react-router-dom` en `main.tsx`:
   - `/` → `Portfolio` (con el layout actual).
   - `/app/*` → `AppShell`, cargado con `React.lazy` (el portafolio no descarga el código de la app).
@@ -109,6 +117,8 @@ proyectos de ejemplo con imágenes de picsum.
 
 ## Paso 6 — Base de datos (commit 5)
 
+Hecho 2026-10-16 en la rama `fase-0`.
+
 - `migrations/0001_init.sql` con las tablas de [02-arquitectura.md](02-arquitectura.md#modelo-de-datos-d1),
   más `CHECK`s simples (`status IN ('pending','bought')`, `source IN ('pdf','manual')`) e índice por `transactions.date`.
 - `npx wrangler d1 migrations apply datita --local` para desarrollo.
@@ -116,9 +126,18 @@ proyectos de ejemplo con imágenes de picsum.
 
 ## Paso 7 — Documentación (commit 6)
 
+Hecho 2026-10-16 en la rama `fase-0`.
+
 - Reescribir `CLAUDE.md`: propósito (portafolio + app), estructura `src/worker` / `src/app` /
   `src/portfolio`, comandos (dev, migraciones, secretos, deploy), regla de no commitear cartolas.
 - Reescribir `README.md` (hoy es el del template de Vite).
+
+Notas de la implementación (2026-10-16):
+
+- El portafolio quedó en `src/pages` + `src/components` (no se movió a `src/portfolio`); la app está en `src/app`.
+- Las rutas están en `src/App.tsx` (no en `main.tsx`) por la regla de Fast Refresh de ESLint.
+- Los tests usan `vitest.config.ts` aparte: con `@cloudflare/vite-plugin` en la config, Vitest no arranca.
+- Se corrigió el CSS del template: el reset `* { margin: 0; padding: 0 }` anulaba los espaciados de Tailwind.
 
 ## Paso 8 — Despliegue y verificación
 
