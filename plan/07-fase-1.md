@@ -120,11 +120,14 @@ Hecho 2026-10-16.
   - Validación de saldos → `warnings` (A y B).
   - Formato C: monto = último número de la fila, cuotas = celda `nn/nn` (`installment` solo si el total es > 1),
     quitar `COMPRAS` del final, marcar `internal` en los pagos.
-- `src/worker/dedupe.ts`: `normalizeDescription` y `dedupeKeys(transactions)`.
+- `src/worker/dedupe.ts`: `normalizeDescription` y `dedupeKeys(account, transactions)`.
 - Tests con **fixtures inventados** (nombres y montos falsos, nunca datos reales):
   formato A, formato B, formato C (con columnas desalineadas, `COMPRAS` pegado, cuotas y un pago),
   cambio de año, saldo que no cuadra, archivo irreconocible, y que la misma compra en A y en B dé la
   misma `dedupe_key`.
+
+Hecho 2026-10-16. Probado también contra las 3 cartolas reales (en local): sin avisos de saldo, y los
+8 movimientos de la histórica dan las mismas `dedupe_key` en la de movimientos.
 
 ## Paso 3 — API de importación (commit 3)
 
