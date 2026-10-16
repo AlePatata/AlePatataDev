@@ -56,10 +56,10 @@ Detalle en [08-fase-2.md](08-fase-2.md).
 
 Detalle en [10-fase-3.md](10-fase-3.md).
 
-- [ ] CRUD de items con prioridad, link e imagen.
-- [ ] Reordenar por prioridad.
-- [ ] Marcar como comprado (queda en el historial).
-- [ ] Vista móvil cómoda.
+- [x] CRUD de items con prioridad, link e imagen (la imagen y el nombre salen del link de la tienda).
+- [x] Reordenar por prioridad.
+- [x] Marcar como comprado (queda en el historial).
+- [x] Vista móvil cómoda.
 - [ ] Probar con la cuenta de mi pololo.
 
 **Listo cuando:** mi pololo agrega un item desde su celular y yo lo veo.

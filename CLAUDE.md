@@ -95,6 +95,13 @@ Chile time. Seeded rules in migrations must stay generic: rules with people's na
 app and live only in D1. Charts are hand-written SVG/CSS (no chart library); colors were validated with
 the `dataviz` skill's script - re-run it if you change them.
 
+**Wishlist** (see `plan/10-fase-3.md`): a list shared by owner and partner; the partner can do everything
+in it (and nothing outside it). Items store the creator's **role**, never an email; display names come
+from settings (`owner_name`, `partner_name`). `POST /api/wishlist/preview` fetches a store page from the
+worker to fill name/image/price: only public `http(s)` URLs (`isSafePublicUrl`, re-checked on every
+redirect), 5 s timeout, ~1 MB cap, and the HTML is parsed by the pure, tested `parseProductMeta`. Store
+images are shown with `referrerPolicy="no-referrer"` and a fallback icon.
+
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
 Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via
 the `page` field of `sections` in `AppShell.tsx`. The portfolio's "Entrar" link is a plain

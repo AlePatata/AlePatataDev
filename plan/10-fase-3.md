@@ -92,6 +92,8 @@ Hecho 2026-10-16.
 
 ## Paso 5 — Documentación, despliegue y prueba con el pololo
 
+Documentación hecha 2026-10-16. Falta el despliegue y la prueba con el pololo.
+
 - `CLAUDE.md` y roadmap. No hay migración nueva.
 - Merge de `fase-3` a `main`.
 - **Prueba de "listo"**: mi pololo entra desde su celular con su email, solo ve la Wishlist, agrega un
