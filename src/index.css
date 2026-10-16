@@ -9,19 +9,17 @@
   --color-text-light: #BE185D;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* En @layer base para que las utilidades de Tailwind (px-4, mx-auto, ...) puedan sobrescribirlos.
+   El reset de márgenes y box-sizing ya lo hace el preflight de Tailwind. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--color-background);
-  color: var(--color-text);
-  line-height: 1.6;
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+  }
 }
