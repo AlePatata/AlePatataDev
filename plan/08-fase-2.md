@@ -98,6 +98,10 @@ y mantiene el prefijo en las transferencias (`traspaso a:` y `traspaso de:` sign
 - `GET /api/transactions` devuelve la categoría y acepta `category=<id>|none`; `PATCH` acepta `categoryId`.
 - `POST /api/statements/commit` aplica las reglas a las filas que guarda.
 
+Hecho 2026-10-16. Los movimientos internos no se categorizan (ni al importar ni con "Aplicar reglas").
+"Hoy" se calcula en hora de Chile (`America/Santiago`), porque el Worker corre en UTC. Con los datos
+reales, las reglas genéricas categorizan pocos movimientos (5): el resto se hace a mano y con reglas propias.
+
 ## Paso 4 — Gastos con categorías (commit 4)
 
 - Cada fila muestra su categoría (punto de color + nombre); "Sin categoría" resaltado.

@@ -25,7 +25,7 @@ export function validateTransaction(body: unknown, partial: boolean): string | n
   const b = body as Partial<TransactionInput>;
   const has = (k: keyof TransactionInput) => b[k] !== undefined;
 
-  if (partial && !['date', 'description', 'amount', 'internal'].some((k) => has(k as keyof TransactionInput))) {
+  if (partial && !['date', 'description', 'amount', 'internal', 'categoryId'].some((k) => has(k as keyof TransactionInput))) {
     return 'No hay nada que cambiar';
   }
   if ((!partial || has('date')) && !isIsoDate(b.date)) return 'Fecha inválida';
@@ -36,6 +36,7 @@ export function validateTransaction(body: unknown, partial: boolean): string | n
     return 'El monto debe ser un número entero distinto de cero';
   }
   if (has('internal') && typeof b.internal !== 'boolean') return 'Campo "interno" inválido';
+  if (has('categoryId') && b.categoryId !== null && !Number.isSafeInteger(b.categoryId)) return 'Categoría inválida';
   return null;
 }
 

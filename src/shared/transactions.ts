@@ -13,6 +13,7 @@ export interface Transaction {
   internal: boolean;
   source: 'import' | 'manual';
   account: AccountType | null;
+  categoryId: number | null;
 }
 
 /** Totales del mes sin los movimientos internos. */
@@ -33,4 +34,5 @@ export interface TransactionInput {
   description: string;
   amount: number;
   internal?: boolean;
+  categoryId?: number | null;
 }

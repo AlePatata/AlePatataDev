@@ -2,7 +2,9 @@ import { Hono } from 'hono';
 import type { ImportRequest, ImportResponse } from '../shared/import';
 import type { AppEnv } from './auth';
 import { dedupeKeys } from './dedupe';
+import { loadRules } from './db';
 import { classifyRows, searchRange, validateImport, type ExistingRow } from './importLogic';
+import { matchCategory } from './rules';
 
 export const statements = new Hono<AppEnv>();
 
@@ -38,12 +40,13 @@ statements.post('/commit', async (c) => {
     return c.json<ImportResponse>({ statuses, inserted: 0, skipped });
   }
 
+  const rules = await loadRules(c.env.DB);
   // Id explícito para insertar la cartola y sus movimientos en un solo batch (todo o nada)
   const next = await c.env.DB.prepare('SELECT COALESCE(MAX(id), 0) + 1 AS id FROM statements').first<{ id: number }>();
   const statementId = next!.id;
   const insertTx = c.env.DB.prepare(
-    `INSERT INTO transactions (date, description, amount, source, statement_id, dedupe_key, installment, internal)
-     VALUES (?, ?, ?, 'import', ?, ?, ?, ?)
+    `INSERT INTO transactions (date, description, amount, source, statement_id, dedupe_key, installment, internal, category_id)
+     VALUES (?, ?, ?, 'import', ?, ?, ?, ?, ?)
      ON CONFLICT(dedupe_key) DO NOTHING`,
   );
   const results = await c.env.DB.batch([
@@ -52,7 +55,17 @@ statements.post('/commit', async (c) => {
        VALUES (?, ?, ?, ?, ?, ?)`,
     ).bind(statementId, s.filename, s.accountType, s.periodStart, s.periodEnd, s.closingBalance),
     ...toInsert.map((t) =>
-      insertTx.bind(t.date, t.description.trim(), t.amount, statementId, t.key, t.installment ?? null, t.internal ? 1 : 0),
+      insertTx.bind(
+        t.date,
+        t.description.trim(),
+        t.amount,
+        statementId,
+        t.key,
+        t.installment ?? null,
+        t.internal ? 1 : 0,
+        // Los internos no se categorizan: no cuentan en los totales
+        t.internal ? null : matchCategory(t.originalDescription, rules),
+      ),
     ),
   ]);
 
