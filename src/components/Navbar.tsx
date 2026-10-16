@@ -1,6 +1,7 @@
 import { Menu, X } from 'lucide-react';
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { useState } from 'react';
+import { about } from '../data/data';
 
 const navLinks = [
   { href: '#sobre-mi', label: 'Sobre mí' },
@@ -29,13 +30,16 @@ export function Navbar() {
             </a>
           ))}
           <div className="flex items-center gap-3 ml-4 border-l border-pink-200 pl-4">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
+            <a href={about.github} target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
               <BsGithub size={20} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
+            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
               <BsLinkedin size={20} />
             </a>
           </div>
+          <a href="/app" className="text-sm text-rose-400 hover:text-pink-500 transition-colors">
+            Entrar
+          </a>
         </div>
 
         <button className="md:hidden text-rose-900" onClick={() => setIsOpen(!isOpen)}>
@@ -56,13 +60,16 @@ export function Navbar() {
             </a>
           ))}
           <div className="flex gap-4 pt-2 border-t border-pink-200">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
+            <a href={about.github} target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
               <BsGithub size={20} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
+            <a href={about.linkedin} target="_blank" rel="noopener noreferrer" className="text-rose-900 hover:text-pink-500">
               <BsLinkedin size={20} />
             </a>
           </div>
+          <a href="/app" className="text-sm text-rose-400 hover:text-pink-500 transition-colors">
+            Entrar
+          </a>
         </div>
       )}
     </nav>

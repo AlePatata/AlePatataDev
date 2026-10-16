@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Cartolas de prueba (nunca commitear)
+samples/
+
+# Cloudflare
+.dev.vars*
+.wrangler/
