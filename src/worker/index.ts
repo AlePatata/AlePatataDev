@@ -4,6 +4,7 @@ import { categories, rules } from './categories';
 import { settings, summary, trends } from './dashboard';
 import { statements } from './statements';
 import { transactions } from './transactions';
+import { wishlist } from './wishlist';
 
 const app = new Hono<AppEnv>().basePath('/api');
 
@@ -24,6 +25,7 @@ app.route('/rules', rules);
 app.route('/settings', settings);
 app.route('/summary', summary);
 app.route('/trends', trends);
+app.route('/wishlist', wishlist);
 
 app.notFound((c) => c.json({ error: 'not_found' }, 404));
 

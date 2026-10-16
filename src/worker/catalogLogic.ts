@@ -34,5 +34,9 @@ export function validateSettings(body: unknown): string | null {
     const v = (body as Partial<Settings>)[key];
     if (v !== undefined && v !== null && (!Number.isSafeInteger(v) || v < 0)) return `${key} inválido`;
   }
+  for (const key of ['ownerName', 'partnerName'] as const) {
+    const v = (body as Partial<Settings>)[key];
+    if (v !== undefined && v !== null && (typeof v !== 'string' || v.length > 40)) return 'Nombre inválido';
+  }
   return null;
 }

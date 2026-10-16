@@ -65,6 +65,11 @@ el nombre de la tienda).
 - Marcar como comprado = `PATCH` con `status: 'bought'` (guarda `bought_at`); se puede deshacer.
 - `PUT /api/settings` acepta `ownerName` y `partnerName`.
 
+Hecho 2026-10-16. Probado en local como dueña y como pololo: el pololo agrega, reordena, marca como
+comprado y borra; `/api/transactions` y `/api/settings` le responden `403`. La lectura de links trae nombre
+e imagen de páginas reales (GitHub, IKEA, Mercado Libre); el precio solo si la página lo publica en sus
+metadatos. Sigue las redirecciones revisando cada destino (máximo 5).
+
 ## Paso 3 — Página Wishlist (commit 3)
 
 - Pensada primero para el celular.

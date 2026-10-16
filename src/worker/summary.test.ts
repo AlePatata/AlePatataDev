@@ -31,7 +31,7 @@ const rows: SummaryRow[] = [
 ];
 
 describe('monthSummary', () => {
-  const s = monthSummary(rows, categories, { monthlyIncome: 250000, monthlyBudget: 150000 }, '2026-10', '2026-10-16');
+  const s = monthSummary(rows, categories, { monthlyIncome: 250000, monthlyBudget: 150000, ownerName: null, partnerName: null }, '2026-10', '2026-10-16');
 
   it('resta los reembolsos y las devoluciones, y deja fuera los internos', () => {
     // gastos 20000 + 5000 + 30000 − 4000 + 8000 = 59000; menos reembolso 10000
@@ -63,21 +63,21 @@ describe('monthSummary', () => {
   });
 
   it('sin presupuesto usa el ingreso fijo', () => {
-    const t = monthSummary(rows, categories, { monthlyIncome: 250000, monthlyBudget: null }, '2026-10', '2026-10-31');
+    const t = monthSummary(rows, categories, { monthlyIncome: 250000, monthlyBudget: null, ownerName: null, partnerName: null }, '2026-10', '2026-10-31');
     expect(t.budget).toBe(250000);
     expect(t.daysLeft).toBe(1);
     expect(t.dailyPace).toBe(201000);
   });
 
   it('en un mes pasado o sin ajustes no hay ritmo diario', () => {
-    const t = monthSummary(rows, categories, { monthlyIncome: null, monthlyBudget: null }, '2026-10', '2026-11-02');
+    const t = monthSummary(rows, categories, { monthlyIncome: null, monthlyBudget: null, ownerName: null, partnerName: null }, '2026-10', '2026-11-02');
     expect(t.remaining).toBeNull();
     expect(t.daysLeft).toBeNull();
     expect(t.dailyPace).toBeNull();
   });
 
   it('una categoría desconocida cuenta como sin categoría', () => {
-    const t = monthSummary([row(-1000, 99)], categories, { monthlyIncome: null, monthlyBudget: null }, '2026-10', '2026-10-01');
+    const t = monthSummary([row(-1000, 99)], categories, { monthlyIncome: null, monthlyBudget: null, ownerName: null, partnerName: null }, '2026-10', '2026-10-01');
     expect(t.byCategory).toEqual([{ categoryId: null, amount: 1000, count: 1 }]);
   });
 });

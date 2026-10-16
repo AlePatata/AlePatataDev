@@ -13,15 +13,26 @@ export async function loadRules(db: D1Database): Promise<Rule[]> {
   return results;
 }
 
-const SETTING_KEYS = { monthlyIncome: 'monthly_income', monthlyBudget: 'monthly_budget' } as const;
+const SETTING_KEYS = {
+  monthlyIncome: 'monthly_income',
+  monthlyBudget: 'monthly_budget',
+  ownerName: 'owner_name',
+  partnerName: 'partner_name',
+} as const;
 
 export async function loadSettings(db: D1Database): Promise<Settings> {
   const { results } = await db.prepare('SELECT key, value FROM settings').all<{ key: string; value: string | null }>();
   const get = (key: string) => {
     const v = results.find((r) => r.key === key)?.value;
-    return v == null || v === '' ? null : Number(v);
+    return v == null || v === '' ? null : v;
   };
-  return { monthlyIncome: get(SETTING_KEYS.monthlyIncome), monthlyBudget: get(SETTING_KEYS.monthlyBudget) };
+  const money = (key: string) => (get(key) == null ? null : Number(get(key)));
+  return {
+    monthlyIncome: money(SETTING_KEYS.monthlyIncome),
+    monthlyBudget: money(SETTING_KEYS.monthlyBudget),
+    ownerName: get(SETTING_KEYS.ownerName),
+    partnerName: get(SETTING_KEYS.partnerName),
+  };
 }
 
 export async function saveSettings(db: D1Database, settings: Partial<Settings>): Promise<void> {
@@ -30,7 +41,10 @@ export async function saveSettings(db: D1Database, settings: Partial<Settings>):
   );
   const changes = (Object.keys(SETTING_KEYS) as (keyof Settings)[])
     .filter((k) => settings[k] !== undefined)
-    .map((k) => upsert.bind(SETTING_KEYS[k], settings[k] == null ? null : String(settings[k])));
+    .map((k) => {
+      const v = settings[k];
+      return upsert.bind(SETTING_KEYS[k], v == null || (typeof v === 'string' && !v.trim()) ? null : String(v).trim());
+    });
   if (changes.length) await db.batch(changes);
 }
 
