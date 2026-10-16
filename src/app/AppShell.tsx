@@ -2,21 +2,26 @@ import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } fr
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ComingSoon } from './ComingSoon';
-import { useMe, type Me, type Role } from './useMe';
+import { ExpensesPage } from './pages/ExpensesPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { ImportPage } from './pages/ImportPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { useMe, type Role } from './useMe';
 
 interface Section {
   path: string;
   label: string;
   icon: LucideIcon;
   roles: Role[];
+  page?: () => React.ReactNode;
 }
 
 const sections: Section[] = [
-  { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'] },
-  { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'] },
-  { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'] },
+  { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'], page: DashboardPage },
+  { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'], page: ExpensesPage },
+  { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
   { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
-  { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'] },
+  { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'], page: SettingsPage },
 ];
 
 export default function AppShell() {
@@ -81,27 +86,17 @@ export default function AppShell() {
 
       <main className="flex-1 min-w-0 px-4 pt-6 pb-[calc(6rem+env(safe-area-inset-bottom))] md:px-10 md:pt-8 md:pb-8">
         <Routes>
-          {allowed.map(({ path, label }) => (
+          {allowed.map(({ path, label, page: Page }) => (
             <Route
               key={path}
               index={path === ''}
               path={path || undefined}
-              element={path === '' ? <Dashboard me={me} /> : <ComingSoon title={label} />}
+              element={Page ? <Page /> : <ComingSoon title={label} />}
             />
           ))}
           <Route path="*" element={<Navigate to={home} replace />} />
         </Routes>
       </main>
     </div>
-  );
-}
-
-function Dashboard({ me }: { me: Me }) {
-  return (
-    <ComingSoon title="Dashboard">
-      <p className="text-ink-muted text-sm">
-        Sesión: {me.email} ({me.role === 'owner' ? 'dueña' : 'pololo'})
-      </p>
-    </ComingSoon>
   );
 }

@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Colores semánticos: los componentes usan estos nombres (bg-page, text-ink, text-accent, ...) y cada
-   tema define su valor abajo. Ver plan/08-modo-oscuro.md. */
+   tema define su valor abajo. Ver plan/09-modo-oscuro.md. */
 @theme inline {
   --color-page: var(--theme-page);
   --color-bar: var(--theme-bar);
@@ -26,6 +26,14 @@
   --color-glow-from: var(--theme-glow-from);
   --color-glow-to: var(--theme-glow-to);
   --color-shade: var(--theme-shade);
+  --color-chart: var(--theme-chart);
+  --color-chart-strong: var(--theme-chart-strong);
+  --color-positive: var(--theme-positive);
+  --color-danger: var(--theme-danger);
+  --color-danger-soft: var(--theme-danger-soft);
+  --color-warn: var(--theme-warn);
+  --color-warn-soft: var(--theme-warn-soft);
+  --color-warn-line: var(--theme-warn-line);
 }
 
 /* Claro: rosado (el de siempre) */
@@ -51,6 +59,14 @@
   --theme-glow-from: var(--color-pink-200);
   --theme-glow-to: var(--color-rose-100);
   --theme-shade: var(--color-rose-900);
+  --theme-chart: var(--color-pink-500);
+  --theme-chart-strong: var(--color-pink-800);
+  --theme-positive: var(--color-emerald-600);
+  --theme-danger: var(--color-rose-700);
+  --theme-danger-soft: var(--color-rose-100);
+  --theme-warn: var(--color-amber-700);
+  --theme-warn-soft: var(--color-amber-50);
+  --theme-warn-line: var(--color-amber-200);
 }
 
 /* Oscuro: Catppuccin Mocha, con mauve como color principal */
@@ -78,6 +94,14 @@
   --theme-glow-from: color-mix(in oklab, var(--ctp-mauve) 35%, var(--ctp-surface0));
   --theme-glow-to: color-mix(in oklab, #f5c2e7 12%, var(--ctp-surface0)); /* Pink */
   --theme-shade: #11111b; /* Crust */
+  --theme-chart: color-mix(in oklab, var(--ctp-mauve) 55%, var(--ctp-surface0));
+  --theme-chart-strong: var(--ctp-mauve);
+  --theme-positive: #a6e3a1; /* Green */
+  --theme-danger: #f38ba8; /* Red */
+  --theme-danger-soft: color-mix(in oklab, #f38ba8 15%, var(--ctp-surface0));
+  --theme-warn: #fab387; /* Peach */
+  --theme-warn-soft: color-mix(in oklab, #fab387 12%, var(--ctp-surface0));
+  --theme-warn-line: color-mix(in oklab, #fab387 35%, transparent);
 }
 
 /* En @layer base para que las utilidades de Tailwind (px-4, mx-auto, ...) puedan sobrescribirlos.

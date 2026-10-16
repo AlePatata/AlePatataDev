@@ -1,4 +1,4 @@
-# 08 — Modo oscuro (Catppuccin Mocha)
+# 09 — Modo oscuro (Catppuccin Mocha)
 
 Planificado el 2026-10-16. Trabajo paralelo a las fases: no depende de la Fase 1 y se hace en la rama
 `modo-oscuro`, que sale de `main`. Conviene mergearlo antes que la Fase 1 para que sus pantallas nuevas
@@ -46,8 +46,16 @@ en el celular, y se dejan reglas para que las pantallas nuevas también lo sean.
 | `glow-from` / `glow-to` — degradados | `pink-200` / `rose-100` | Mauve sobre Surface0 / Pink sobre Surface0 |
 | `shade` — sombra sobre imágenes | `rose-900` | Crust `#11111b` |
 
-Reservados para la app de finanzas (se agregan cuando se usen): Green `#a6e3a1` (ahorro), Red
-`#f38ba8` (gasto o error), Peach `#fab387` (advertencia), Yellow `#f9e2af` (cuotas), Sapphire `#74c7ec` (gráficos).
+Roles de la app de finanzas (agregados al mergear con las Fases 1 y 2):
+
+| Rol (clase) | Claro | Oscuro (Catppuccin) |
+|---|---|---|
+| `positive` — abonos, mensajes de éxito | `emerald-600` | Green `#a6e3a1` |
+| `danger` / `danger-soft` — errores, línea del presupuesto | `rose-700` / `rose-100` | Red `#f38ba8` / Red al 15 % sobre Surface0 |
+| `warn` / `warn-soft` / `warn-line` — advertencias, sin categoría, presupuesto excedido | `amber-700` / `amber-50` / `amber-200` | Peach `#fab387` / al 12 % / al 35 % |
+| `chart` / `chart-strong` — barras del dashboard, barra seleccionada | `pink-500` / `pink-800` | Mauve al 55 % / Mauve |
+
+Los colores de las categorías los elige la usuaria y no cambian con el tema.
 
 ## Celular y otras pantallas
 
@@ -92,3 +100,6 @@ Resultado (2026-10-16): implementado en la rama `modo-oscuro`. Verificado con ca
 claro y oscuro: el botón cambia el tema en `/` y `/app`, la elección se mantiene al recargar, el tema
 ya está puesto antes de que cargue React y ningún ancho entre 320 y 1440 px tiene scroll horizontal.
 **Pendiente:** probarlo en un celular real antes de mergear.
+
+Mergeado a `main` el 2026-10-16, sin la prueba en el celular real (queda pendiente). Al mergear se
+pasaron a los colores semánticos las pantallas de las Fases 1 y 2 (Importar, Gastos, Dashboard, Ajustes).

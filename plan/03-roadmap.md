@@ -28,25 +28,27 @@ mi pololo solo veo Wishlist, y llamar `/api/transactions` con su sesión respond
 
 ## Fase 1 — Importar cartola y listar gastos
 
-Requiere una cartola real (ver decisiones abiertas 1 y 2).
+Requiere una cartola real (decisiones 4, 5 y 6, ya tomadas). Detalle en [07-fase-1.md](07-fase-1.md).
 
-- [ ] Explorar una cartola real: extraer el texto y documentar el formato (en local, sin commitear el PDF).
-- [ ] Parser de cartola → `{ date, description, amount, installment? }[]`, con tests sobre fixtures anonimizados.
-- [ ] `POST /api/statements/parse` y pantalla de vista previa editable.
-- [ ] `POST /api/statements/commit` con deduplicación por `dedupe_key`.
-- [ ] Listado de gastos por mes con búsqueda.
-- [ ] Gasto manual, editar y borrar.
+- [x] Explorar una cartola real y documentar el formato ([07-fase-1.md](07-fase-1.md)). Se usa el Excel, no el PDF.
+- [x] Parser de cartola (cuenta vista y tarjeta) → `{ date, description, amount, installment?, internal }[]`, con tests sobre fixtures inventados.
+- [x] Lectura del Excel en el navegador y pantalla de vista previa editable (reemplaza a `POST /api/statements/parse`).
+- [x] `POST /api/statements/commit` con deduplicación por `dedupe_key` y aviso de posibles duplicados.
+- [x] Listado de gastos por mes con búsqueda y filtro por cuenta.
+- [x] Gasto manual, editar y borrar.
 
 **Listo cuando:** subo 2 cartolas consecutivas que se traslapan y no aparece ningún duplicado.
 
 ## Fase 2 — Categorías y dashboard del mes
 
-- [ ] CRUD de categorías y reglas.
-- [ ] Aplicar las reglas al importar; "crear regla" al recategorizar a mano.
-- [ ] Ajustes: presupuesto mensual e ingreso mensual.
-- [ ] Dashboard: queda del mes, ritmo diario y gasto por categoría.
-- [ ] Gráfico de tendencia de los últimos 6–12 meses.
-- [ ] Excluir de los totales los pagos de la tarjeta y las transferencias propias.
+Detalle en [08-fase-2.md](08-fase-2.md).
+
+- [x] CRUD de categorías (gasto / reembolso / ingreso) y reglas.
+- [x] Aplicar las reglas al importar; "crear regla" al recategorizar a mano; categorización rápida.
+- [x] Ajustes: presupuesto mensual e ingreso mensual.
+- [x] Dashboard: queda del mes, ritmo diario y gasto por categoría.
+- [x] Gráfico de tendencia de los últimos 6 meses.
+- [x] Excluir de los totales los pagos de la tarjeta y las transferencias propias (hecho en la Fase 1, campo `internal`).
 
 **Listo cuando:** el dashboard del mes cuadra con la cartola, revisado a mano.
 

@@ -78,7 +78,7 @@ transactions (
   description TEXT,
   amount INTEGER,                            -- CLP; negativo = gasto, positivo = ingreso/abono
   category_id INTEGER REFERENCES categories,
-  source TEXT,                               -- 'pdf' | 'manual'
+  source TEXT,                               -- 'import' | 'manual'
   statement_id INTEGER REFERENCES statements,
   dedupe_key TEXT UNIQUE,                    -- hash(fecha, monto, descripción normalizada, n° ocurrencia)
   installment TEXT                           -- ej. '3/12' si es compra en cuotas

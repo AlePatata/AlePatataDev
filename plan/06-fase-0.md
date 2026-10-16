@@ -156,6 +156,11 @@ Notas de la implementación (2026-10-16):
 | `/api/transactions` con la sesión de mi pololo | `403` |
 | `alepatata.<cuenta>.workers.dev` | No existe (desactivado) |
 
+Resultado (2026-10-16): desplegado. Verificado con curl: `/` público, `/app` y `/api/*` redirigen al
+login de Access, `workers.dev` responde 404, migración `0001_init.sql` aplicada en remoto. La dueña
+entra y ve la app. **Pendiente:** probar con la cuenta del pololo (solo Wishlist; `/api/transactions` → `403`).
+Nota: `/api/health` también queda tras Access, porque la aplicación cubre todo `/api`.
+
 ## Riesgos
 
 - **Que el comando de deploy actual de Workers Builds choque con la nueva config** → revisarlo en el

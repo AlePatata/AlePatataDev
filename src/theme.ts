@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 
-// Tema claro (rosado) u oscuro (Catppuccin Mocha). Ver plan/08-modo-oscuro.md.
+// Tema claro (rosado) u oscuro (Catppuccin Mocha). Ver plan/09-modo-oscuro.md.
 // El script de index.html repite resolveTheme para poner la clase antes de que cargue React:
 // si cambias la clave o la lógica, cámbiala allá también.
 

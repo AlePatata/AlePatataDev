@@ -56,7 +56,8 @@ src/
   pages/, components/   Portfolio sections and shared UI (Navbar, Layout, Footer, ProjectCard)
   data/data.ts          Portfolio content (projects, about, curriculum) — edit content here
   types/                Portfolio types
-  app/                  Finance app (AppShell, useMe, pages)
+  app/                  Finance app (AppShell, useMe, pages/, import/ parser, api.ts, format.ts, MonthPicker)
+  shared/               API types and text helpers (normalizeDescription, suggestPattern) used by app and worker
   worker/               Cloudflare Worker (Hono), serves /api/*
 migrations/             D1 schema (database `datita`, binding `DB`)
 ```
@@ -71,8 +72,32 @@ no/invalid JWT → 401; email not `OWNER_EMAIL`/`PARTNER_EMAIL` → 403. The `pa
 middleware. New routes go after `app.use('*', requireAuth)`; read the user with `c.get('email')` /
 `c.get('role')`. Secrets are typed in `Secrets` in `auth.ts` (they aren't in the generated `Env`).
 
+**Statement import** (see `plan/07-fase-1.md` for the bank formats): the user picks the bank's Excel
+(`.xls`) on the Importar page. It is read **in the browser** with SheetJS (lazy-loaded, installed from
+the official CDN tarball, not npm) and parsed by `src/app/import/parseCartola.ts`, a pure function over
+sheet rows that supports three Banco de Chile formats (cuenta vista historical / movements, credit card
+unbilled movements). The file never leaves the device. `POST /api/statements/commit` receives all parsed
+rows: with `dryRun` it returns each row's status (new / duplicate / possible duplicate); otherwise it
+saves the included new rows in one D1 batch. `dedupe_key` (`src/worker/dedupe.ts`) is computed by the
+worker from the bank's original description, so edits never break dedupe. Never commit real statements:
+test fixtures in `*.test.ts` are invented and mirror the real layouts.
+
+**Amounts and totals**: CLP integers, negative = expense. `transactions.internal` marks card payments and
+transfers between own accounts; totals leave them out to avoid double counting and they are never
+categorized.
+
+**Categories, rules and the dashboard** (see `plan/08-fase-2.md`): categories have a `kind` (`expense`,
+`refund` = subtracts from spending, `income` = actual income). Rules are "description contains pattern →
+category"; the longest matching pattern wins (`src/worker/rules.ts`), and they apply on import and via
+`POST /api/rules/apply`. All monthly math lives in the pure `monthSummary` / `trend`
+(`src/worker/summary.ts`, tested) and is served by `/api/summary` and `/api/trends`; "today" is computed in
+Chile time. Seeded rules in migrations must stay generic: rules with people's names are created from the
+app and live only in D1. Charts are hand-written SVG/CSS (no chart library); colors were validated with
+the `dataviz` skill's script - re-run it if you change them.
+
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
-Importar, Wishlist, Ajustes; partner: Wishlist only). The portfolio's "Entrar" link is a plain
+Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via
+the `page` field of `sections` in `AppShell.tsx`. The portfolio's "Entrar" link is a plain
 `<a href="/app">` so the browser does a full load and Access can ask for login — don't turn it into a
 router `<Link>`.
 
@@ -84,10 +109,12 @@ URLs would bypass Access. Don't re-enable them.
 
 **Theme colors**: use the semantic colors, never `rose-*`/`pink-*`/`white` directly, so dark mode works:
 `bg-page`, `bg-bar`, `bg-card`, `bg-soft`, `border-line`/`border-line-soft`, `text-ink`/`ink-soft`/
-`ink-muted`/`ink-faint`, `text-accent`/`bg-accent` + `text-on-accent`, `bg-mark`. Light is the rose/pink
+`ink-muted`/`ink-faint`, `text-accent`/`bg-accent` + `text-on-accent`, `bg-mark`; in the finance app also
+`text-positive`, `text-danger`/`bg-danger-soft`, `text-warn`/`bg-warn-soft`/`border-warn-line`, and
+`var(--color-chart)`/`var(--color-chart-strong)` for inline styles and SVG. Light is the rose/pink
 palette, dark is Catppuccin Mocha with mauve as accent. Both are defined as CSS variables in
 `src/index.css`; add a new role there (for both themes) instead of using `dark:` per class. Table of
-roles in `plan/08-modo-oscuro.md`. Cards: `rounded-2xl bg-card border border-line-soft`. The theme
+roles in `plan/09-modo-oscuro.md`. Cards: `rounded-2xl bg-card border border-line-soft`. The theme
 lives in `src/theme.ts`; `index.html` repeats its logic to set the class before paint.
 
 **Mobile**: design for 360px first, then add `md:`. Touch targets at least 40px tall, inputs
