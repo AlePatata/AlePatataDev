@@ -7,21 +7,18 @@ Se trabaja en la rama `fase-3`: un commit por paso, con build, lint y tests limp
 
 - **Es una lista de los dos**: cosas que queremos comprar juntos. Cómo entra en la proyección de mi
   ahorro (qué parte pago yo) se decide en la Fase 4 (decisión 12).
-- **Mi pololo solo ve y agrega.** Editar, reordenar, marcar como comprado y borrar quedan para mí.
+- **Mi pololo puede hacer todo en la wishlist** (ver, agregar, editar, reordenar, marcar como comprado y
+  borrar). Cambiado el 2026-10-16: al principio iba a solo ver y agregar. Sus permisos fuera de la
+  wishlist no cambian: no ve gastos, ingresos ni ajustes.
 - **La imagen sale sola desde el link** de la tienda; si la página no la entrega, se puede pegar el link
   de una imagen o dejarla sin imagen.
 
 ## Diseño
 
-### Permisos por método
+### Permisos
 
-Hoy el Worker deja al pololo usar cualquier método en `/api/wishlist*`. Pasa a ser:
-
-| Pololo | Dueña |
-|---|---|
-| `GET /api/me`, `GET /api/wishlist`, `POST /api/wishlist` (agregar), `POST /api/wishlist/preview` (leer un link) | todo |
-
-`canAccess(role, method, path)` sigue siendo una función pura, con tests. Cualquier otra cosa → `403`.
+No cambian: el pololo ya puede usar `/api/me` y todo `/api/wishlist*` (incluido `/api/wishlist/preview`),
+y nada más. Se agrega un test para `preview`.
 
 ### Items
 
@@ -50,42 +47,35 @@ Se usa la tabla `wishlist_items` que ya existe (sin migración):
 En Ajustes: "Tu nombre" y "Nombre de tu pololo" (`settings`: `owner_name`, `partner_name`). `GET /api/wishlist`
 devuelve los nombres junto con los items, porque el pololo no tiene acceso a Ajustes.
 
-## Paso 1 — Permisos por método (commit 1)
-
-- `canAccess(role, method, path)` en `src/worker/roles.ts` y el middleware usa el método.
-- Tests: el pololo puede `GET`/`POST` en `/api/wishlist`, `POST` en `/api/wishlist/preview`; no puede
-  `PATCH`/`DELETE` ni `POST /api/wishlist/reorder`, ni nada fuera de la wishlist.
-
-## Paso 2 — Lógica pura y tests (commit 2)
+## Paso 1 — Lógica pura y tests (commit 1)
 
 - `validateItem(body, partial)`: nombre, precio entero ≥ 0, links `http(s)` válidos, nota corta.
 - `parseProductMeta(html, url)`: título, imagen absoluta, precio CLP; tests con HTML de ejemplo
   (meta en distinto orden, JSON-LD con `offers` como objeto o lista, precio con puntos, moneda USD ignorada).
 - `isSafePublicUrl(url)`: rechaza otros protocolos, IPs y `localhost`.
 
-## Paso 3 — API (commit 3)
+## Paso 2 — API (commit 2)
 
 - `GET /api/wishlist` → `{ items, names }` (pendientes por prioridad; comprados por fecha de compra).
-- `POST /api/wishlist` (ambos), `PATCH /api/wishlist/:id` y `DELETE` (dueña),
-  `POST /api/wishlist/reorder` con `{ ids }` (dueña), `POST /api/wishlist/preview` (ambos).
+- `POST /api/wishlist`, `PATCH /api/wishlist/:id`, `DELETE /api/wishlist/:id`,
+  `POST /api/wishlist/reorder` con `{ ids }` y `POST /api/wishlist/preview` (ambos).
 - Marcar como comprado = `PATCH` con `status: 'bought'` (guarda `bought_at`); se puede deshacer.
 - `PUT /api/settings` acepta `ownerName` y `partnerName`.
 
-## Paso 4 — Página Wishlist (commit 4)
+## Paso 3 — Página Wishlist (commit 3)
 
 - Pensada primero para el celular.
 - Tarjetas con imagen, nombre, precio, nota, link a la tienda y "Agregado por …".
 - Total de los pendientes.
-- **Agregar** (ambos): pegar el link → se completan nombre, imagen y precio si se puede → revisar → guardar.
-- **Dueña**: subir/bajar prioridad, editar, marcar como comprado, borrar; sección "Comprados" plegada,
-  con opción de deshacer.
-- **Pololo**: la misma lista sin esos controles, y el botón de agregar.
+- **Agregar**: pegar el link → se completan nombre, imagen y precio si se puede → revisar → guardar.
+- Subir/bajar prioridad, editar, marcar como comprado, borrar; sección "Comprados" plegada, con opción
+  de deshacer. Igual para los dos.
 
-## Paso 5 — Ajustes: nombres (commit 5)
+## Paso 4 — Ajustes: nombres (commit 4)
 
 - Campos "Tu nombre" y "Nombre de tu pololo".
 
-## Paso 6 — Documentación, despliegue y prueba con el pololo
+## Paso 5 — Documentación, despliegue y prueba con el pololo
 
 - `CLAUDE.md` y roadmap. No hay migración nueva.
 - Merge de `fase-3` a `main`.
