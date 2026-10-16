@@ -55,6 +55,11 @@ Cuando se decida algo, anotar la respuesta y la fecha, y moverlo a la tabla de d
     a mano para mejorar la proyección? No se eligieron al principio; quedan como opcionales.
     - Decisión: _pendiente_
 
+12. **¿Qué parte de cada item de la wishlist pago yo?** La wishlist es de los dos (decidido 2026-10-16).
+    Para proyectar cuándo se puede comprar cada item con mi ahorro: ¿el 100%, la mitad, o un porcentaje
+    por item?
+    - Decisión: _pendiente_ (bloquea la Fase 4)
+
 ## Forma de trabajo
 
 11. Se eligió un enfoque liviano en vez de BMAD. ¿Se agrega alguna skill o convención más

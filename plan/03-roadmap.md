@@ -54,6 +54,8 @@ Detalle en [08-fase-2.md](08-fase-2.md).
 
 ## Fase 3 — Wishlist compartida
 
+Detalle en [09-fase-3.md](09-fase-3.md).
+
 - [ ] CRUD de items con prioridad, link e imagen.
 - [ ] Reordenar por prioridad.
 - [ ] Marcar como comprado (queda en el historial).

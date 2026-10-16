@@ -22,6 +22,7 @@ comparto con mi pololo.
 | Estructura del sitio | Portafolio / presentación **público** en `/` + app de finanzas **privada** en `/app` (2026-10-16) |
 | Cartolas | Cuenta vista **y** tarjeta de crédito, importadas desde el **Excel** del banco con parser propio (2026-10-16) |
 | Ingreso y reembolsos | Ingreso mensual fijo en Ajustes **y** abonos reales del mes para comparar; los reembolsos de amigos restan del gasto (2026-10-16) |
+| Wishlist | Lista **de los dos**; el pololo solo ve y agrega; la imagen sale sola desde el link (2026-10-16) |
 | Login | Cloudflare Access con email + código de un solo uso, para mí y para mi pololo (2026-10-16) |
 | Dominio | `alepatata.dev` (ya está en Cloudflare) (2026-10-16) |
 | Stack | React + TypeScript + Vite, Cloudflare Workers, Cloudflare D1 (ya está la base del repo) |
@@ -39,13 +40,14 @@ comparto con mi pololo.
 | [06-fase-0.md](06-fase-0.md) | Fase 0 paso a paso: configuración en Cloudflare, commits, verificación |
 | [07-fase-1.md](07-fase-1.md) | Fase 1 paso a paso: formatos de cartola, parser, importación y gastos |
 | [08-fase-2.md](08-fase-2.md) | Fase 2 paso a paso: categorías, reglas, ajustes y dashboard |
+| [09-fase-3.md](09-fase-3.md) | Fase 3 paso a paso: wishlist compartida, permisos del pololo, leer links |
 | [09-modo-oscuro.md](09-modo-oscuro.md) | Modo oscuro Catppuccin, colores semánticos y reglas para celular |
 
 ## Estado
 
 - [x] Fase 0 — Base técnica y acceso privado (desplegada 2026-10-16; falta probar el acceso del pololo en el navegador)
 - [x] Fase 1 — Importar cartola y listar gastos (desplegada 2026-10-16)
-- [ ] Fase 2 — Categorías y dashboard del mes
+- [x] Fase 2 — Categorías y dashboard del mes (desplegada 2026-10-16)
 - [ ] Fase 3 — Wishlist compartida
 - [ ] Fase 4 — Proyecciones
 - [ ] Fase 5 — Pulido
