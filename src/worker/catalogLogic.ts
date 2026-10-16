@@ -1,5 +1,5 @@
 import type { Category, CategoryKind, RuleInfo, Settings } from '../shared/summary';
-import { normalizeDescription } from './dedupe';
+import { normalizeDescription } from '../shared/text';
 
 const KINDS: CategoryKind[] = ['expense', 'refund', 'income'];
 

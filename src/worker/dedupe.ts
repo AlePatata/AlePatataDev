@@ -1,22 +1,12 @@
+import { normalizeDescription } from '../shared/text';
+
+export { normalizeDescription };
+
 /** Lo mínimo de una transacción para calcular su `dedupe_key`. */
 export interface DedupeInput {
   date: string;
   amount: number;
   description: string;
-}
-
-/**
- * Los dos formatos de la cuenta vista escriben la misma descripción con distintas mayúsculas y espacios
- * (`PAGO:EL COMERCIO` / `Pago:el Comercio`), así que se comparan en minúsculas, sin tildes y con los
- * espacios colapsados.
- */
-export function normalizeDescription(description: string): string {
-  return description
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .toLowerCase()
-    .replace(/\s+/g, ' ')
-    .trim();
 }
 
 /**

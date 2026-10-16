@@ -31,7 +31,8 @@ transactions.get('/', async (c) => {
     where.push("t.description LIKE ? ESCAPE '\\'");
     params.push(`%${q.replace(/[\\%_]/g, '\\$&')}%`);
   }
-  if (category === 'none') where.push('t.category_id IS NULL');
+  // Los internos no se categorizan: no cuentan como "sin categoría"
+  if (category === 'none') where.push('t.category_id IS NULL AND t.internal = 0');
   else if (category) {
     where.push('t.category_id = ?');
     params.push(Number(category));

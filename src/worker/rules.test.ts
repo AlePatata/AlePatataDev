@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { matchCategory, suggestPattern, type Rule } from './rules';
+import { suggestPattern } from '../shared/text';
+import { matchCategory, type Rule } from './rules';
 
 const rules: Rule[] = [
   { id: 1, pattern: 'uber', categoryId: 3 },

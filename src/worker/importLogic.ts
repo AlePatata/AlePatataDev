@@ -1,5 +1,5 @@
 import type { ImportRequest, RowStatus } from '../shared/import';
-import { normalizeDescription } from './dedupe';
+import { normalizeDescription } from '../shared/text';
 
 const ACCOUNT_TYPES = ['cuenta_vista', 'cuenta_corriente', 'tarjeta_credito'];
 const MAX_ROWS = 1000;

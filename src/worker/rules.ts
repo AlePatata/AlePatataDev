@@ -1,4 +1,4 @@
-import { normalizeDescription } from './dedupe';
+import { normalizeDescription } from '../shared/text';
 
 export interface Rule {
   id: number;
@@ -21,20 +21,4 @@ export function matchCategory(description: string, rules: Rule[]): number | null
     }
   }
   return best?.rule.categoryId ?? null;
-}
-
-// Intermediarios de pago que el banco antepone al comercio: `MERPAGO*COMERCIO`, `payu *uber Eats`
-const PAYMENT_PROCESSOR = /^(merpago|mercadopago|tuu|payu|flow|fudo|haulmer|sumup|getnet)\s*\*\s*/;
-
-/**
- * Patrón sugerido al recategorizar a mano. En los pagos se queda solo el comercio
- * (`Pago:merpago*cafe Prueba` → `cafe prueba`). En las transferencias se mantiene el prefijo, porque
- * `traspaso a:` (le pagué) y `traspaso de:` (me pagó) significan cosas distintas.
- */
-export function suggestPattern(description: string): string {
-  let text = normalizeDescription(description);
-  if (!text.startsWith('traspaso')) {
-    text = text.replace(/^pago\s*:\s*/, '').replace(PAYMENT_PROCESSOR, '');
-  }
-  return text.replace(/[\s*]+$/, '').trim();
 }

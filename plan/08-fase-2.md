@@ -111,6 +111,11 @@ reales, las reglas genéricas categorizan pocos movimientos (5): el resto se hac
 - **Categorización rápida**: con el filtro "Sin categoría", cada fila tiene el selector a la vista, sin
   abrir el formulario.
 
+Hecho 2026-10-16. Probado en Firefox con los datos reales: el patrón sugerido para
+`PAGO:MERPAGO*TIENDA` es `tienda`; "Crear y aplicar" categoriza los parecidos. El filtro "Sin categoría"
+no incluye los internos. `suggestPattern` y `normalizeDescription` pasaron a `src/shared/text.ts` (los usa
+la app). Gastos acepta `?month=` y `?category=` en la URL (para los links del dashboard).
+
 ## Paso 5 — Ajustes (commit 5)
 
 - Ingreso mensual y presupuesto mensual.
