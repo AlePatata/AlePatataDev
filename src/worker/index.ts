@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { requireAuth, type AppEnv } from './auth';
+import { statements } from './statements';
 
 const app = new Hono<AppEnv>().basePath('/api');
 
@@ -13,6 +14,7 @@ app.get('/health', async (c) => {
 app.use('*', requireAuth);
 
 app.get('/me', (c) => c.json({ email: c.get('email'), role: c.get('role') }));
+app.route('/statements', statements);
 
 app.notFound((c) => c.json({ error: 'not_found' }, 404));
 

@@ -137,6 +137,12 @@ Hecho 2026-10-16. Probado también contra las 3 cartolas reales (en local): sin 
   - `dryRun: true` → devuelve el estado de cada fila (`nueva` / `ya importada` / `posible duplicado`) sin guardar.
   - `dryRun: false` → inserta el `statement` y las transacciones nuevas en un `batch` de D1
     (`INSERT ... ON CONFLICT(dedupe_key) DO NOTHING`) y devuelve cuántas se guardaron y cuántas se omitieron.
+- La `dedupe_key` se calcula con la descripción **original** (`originalDescription`), aunque se edite en
+  la vista previa. El navegador manda **todas** las filas con `include`, para que el n° de ocurrencia no
+  cambie al excluir una.
+
+Hecho 2026-10-16. Probado en local con las 3 cartolas reales: histórica 8 nuevas; movimientos 47 nuevas y
+8 duplicadas; tarjeta 35 nuevas; reimportar cualquiera → todo duplicado.
 
 ## Paso 4 — Página Importar (commit 4)
 
