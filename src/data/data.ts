@@ -1,31 +1,58 @@
-import type { Project } from '../types/index';
+import type { Curriculum, Project } from '../types/index';
 
 export const projects: Project[] = [
   {
-    id: '1',
-    title: 'E-commerce Dashboard',
-    description: 'Panel de administración para tienda online con estadísticas de ventas y gestión de productos.',
-    image: 'https://picsum.photos/seed/proj1/600/400',
-    link: '#',
-    tags: ['React', 'TypeScript', 'Node.js']
+    id: 'battlebot-montanna',
+    title: 'BattleBot Montaña',
+    description: 'Robot de combate "Ouros" construido en un equipo interdisciplinario FCFM + FAU: controlado por WiFi desde un servidor web en una ESP8266.',
+    image: 'https://raw.githubusercontent.com/AlePatata/BattleBotMontanna/master/multimedia/bot.jpeg',
+    emoji: '🤖',
+    link: 'https://github.com/AlePatata/BattleBotMontanna',
+    tags: ['Arduino', 'ESP8266', 'C++', 'Trabajo en equipo'],
+    year: '2023'
   },
   {
-    id: '2',
-    title: 'Task Manager App',
-    description: 'Aplicación de gestión de tareas con colaboración en tiempo real y tableros kanban.',
-    image: 'https://picsum.photos/seed/proj2/600/400',
-    link: '#',
-    tags: ['React', 'Firebase', 'Tailwind']
+    id: 'puzlitas',
+    title: 'Puzlitas',
+    description: 'Videojuego de puzzles en Godot donde se recogen palabras y se usan para transformar el escenario, con diálogos, inventario y shaders.',
+    emoji: '🧩',
+    link: 'https://github.com/AlePatata/Puzlitas',
+    tags: ['Godot', 'GDScript', 'Shaders'],
+    year: '2024'
   },
   {
-    id: '3',
-    title: 'Weather API Client',
-    description: 'Cliente web para consulta del clima con geolocalización y pronosticos extendidos.',
-    image: 'https://picsum.photos/seed/proj3/600/400',
-    link: '#',
-    tags: ['JavaScript', 'API REST', 'CSS']
+    id: 'citric-liquid',
+    title: '99.7% Citric Liquid',
+    description: 'Clon simplificado del juego de tablero 100% Orange Juice, modelado con patrones de diseño (State, Observer) y tests.',
+    emoji: '🍊',
+    link: 'https://github.com/AlePatata/citric-liquid-AlePatata',
+    tags: ['Scala', 'POO', 'Patrones de diseño'],
+    year: '2023'
+  },
+  {
+    id: 'proyecto-mineros',
+    title: 'Proyecto Mineros',
+    description: 'Análisis exploratorio de un dataset de millones de transacciones con tarjeta de crédito, usuarios y tarjetas, para minería de datos.',
+    emoji: '📊',
+    link: 'https://github.com/AlePatata/Proyecto-Mineros',
+    tags: ['Python', 'Jupyter', 'pandas', 'matplotlib'],
+    year: '2024'
   }
 ];
+
+export const curriculum: Curriculum = {
+  // Poner el PDF en public/ (p. ej. public/cv.pdf) y apuntar aquí: '/cv.pdf'
+  cvUrl: undefined,
+  experience: [],
+  education: [
+    {
+      title: 'Ingeniería Civil en Computación',
+      place: 'Facultad de Ciencias Físicas y Matemáticas, Universidad de Chile',
+      period: 'En curso · 5to año'
+    }
+  ],
+  skills: ['C++', 'Python', 'TypeScript', 'React', 'C', 'Scala', 'Godot', 'Git', 'Linux', 'Programación competitiva']
+};
 
 export const about = {
   name: 'Alejandra Campos Urbina',
