@@ -81,6 +81,11 @@ Hecho 2026-10-16. Nota: D1 no acepta muchos `SELECT ... UNION ALL` encadenados; 
 - `src/worker/summary.ts`: `monthSummary(rows, categories, settings, month, today)` y `trend(...)`.
 - Tests: reglas (empate, tildes, más largo gana), reembolsos que restan, internos fuera, ingresos,
   presupuesto vacío → ingreso, ritmo diario en el último día del mes, mes pasado sin ritmo.
+- Un abono en una categoría de gasto (devolución de una compra) resta de esa categoría. Un abono sin
+  categoría no cuenta hasta clasificarlo.
+
+Hecho 2026-10-16. `suggestPattern` también quita el intermediario de pago (`merpago*`, `tuu*`, `payu *`…)
+y mantiene el prefijo en las transferencias (`traspaso a:` y `traspaso de:` significan cosas distintas).
 
 ## Paso 3 — API (commit 3)
 
