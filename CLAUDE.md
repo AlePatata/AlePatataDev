@@ -56,7 +56,8 @@ src/
   pages/, components/   Portfolio sections and shared UI (Navbar, Layout, Footer, ProjectCard)
   data/data.ts          Portfolio content (projects, about, curriculum) — edit content here
   types/                Portfolio types
-  app/                  Finance app (AppShell, useMe, pages)
+  app/                  Finance app (AppShell, useMe, pages/, import/ parser, api.ts, format.ts)
+  shared/               API request/response types used by both app and worker
   worker/               Cloudflare Worker (Hono), serves /api/*
 migrations/             D1 schema (database `datita`, binding `DB`)
 ```
@@ -71,8 +72,22 @@ no/invalid JWT → 401; email not `OWNER_EMAIL`/`PARTNER_EMAIL` → 403. The `pa
 middleware. New routes go after `app.use('*', requireAuth)`; read the user with `c.get('email')` /
 `c.get('role')`. Secrets are typed in `Secrets` in `auth.ts` (they aren't in the generated `Env`).
 
+**Statement import** (see `plan/07-fase-1.md` for the bank formats): the user picks the bank's Excel
+(`.xls`) on the Importar page. It is read **in the browser** with SheetJS (lazy-loaded, installed from
+the official CDN tarball, not npm) and parsed by `src/app/import/parseCartola.ts`, a pure function over
+sheet rows that supports three Banco de Chile formats (cuenta vista historical / movements, credit card
+unbilled movements). The file never leaves the device. `POST /api/statements/commit` receives all parsed
+rows: with `dryRun` it returns each row's status (new / duplicate / possible duplicate); otherwise it
+saves the included new rows in one D1 batch. `dedupe_key` (`src/worker/dedupe.ts`) is computed by the
+worker from the bank's original description, so edits never break dedupe. Never commit real statements:
+test fixtures in `*.test.ts` are invented and mirror the real layouts.
+
+**Amounts and totals**: CLP integers, negative = expense. `transactions.internal` marks card payments and
+transfers between own accounts; totals (`monthTotals`) leave them out to avoid double counting.
+
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
-Importar, Wishlist, Ajustes; partner: Wishlist only). The portfolio's "Entrar" link is a plain
+Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via
+the `page` field of `sections` in `AppShell.tsx`. The portfolio's "Entrar" link is a plain
 `<a href="/app">` so the browser does a full load and Access can ask for login — don't turn it into a
 router `<Link>`.
 

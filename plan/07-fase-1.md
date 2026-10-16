@@ -170,6 +170,8 @@ filtrar por cuenta, y agregar, editar y borrar un movimiento manual (los totales
 
 ## Paso 6 — Documentación y despliegue
 
+Documentación hecha 2026-10-16 (`CLAUDE.md`, roadmap). Falta el despliegue.
+
 - `CLAUDE.md`: flujo de importación y dónde vive el parser. Marcar avance aquí y en el roadmap.
 - `npx wrangler d1 migrations apply datita --remote`, merge de `fase-1` a `main`.
 - **Prueba de "listo"** con las dos cartolas reales: importar la histórica (22–30 sep) y después la de
