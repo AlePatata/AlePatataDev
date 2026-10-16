@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, Check, ExternalLink, Gift, Link2, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, ExternalLink, Gift, Link2, Pencil, Plus, RotateCcw, ShoppingBag, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { ItemInput, ProductMeta, WishlistItem, WishlistResponse } from '../../shared/wishlist';
 import { api } from '../api';
@@ -16,6 +16,8 @@ export function WishlistPage() {
   const [error, setError] = useState<string>();
   const [version, setVersion] = useState(0);
   const [editing, setEditing] = useState<number | 'new' | null>(null);
+  // Lo último marcado como comprado y el orden que tenía la lista, para avisar y poder deshacer
+  const [justBought, setJustBought] = useState<{ item: WishlistItem; order: number[] }>();
 
   useEffect(() => {
     api<WishlistResponse>('/api/wishlist')
@@ -31,6 +33,7 @@ export function WishlistPage() {
 
   async function run(action: () => Promise<unknown>) {
     setError(undefined);
+    setJustBought(undefined);
     try {
       await action();
     } catch (e) {
@@ -43,6 +46,27 @@ export function WishlistPage() {
   const bought = data?.items.filter((i) => i.status === 'bought') ?? [];
   const total = pending.reduce((sum, i) => sum + i.price, 0);
   const author = (i: WishlistItem) => data?.names[i.createdBy] ?? (i.createdBy === 'owner' ? 'Ale' : 'tu pololo');
+
+  const setStatus = (item: WishlistItem, status: WishlistItem['status']) =>
+    run(() => api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status } }));
+
+  const markBought = (item: WishlistItem) => {
+    const order = pending.map((i) => i.id);
+    return run(async () => {
+      await api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status: 'bought' } });
+      setJustBought({ item, order });
+    });
+  };
+
+  // Vuelve a pendiente en el lugar que tenía (al pasar a pendiente queda al final)
+  const undoBought = ({ item, order }: { item: WishlistItem; order: number[] }) =>
+    run(async () => {
+      await api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status: 'pending' } });
+      const { items } = await api<WishlistResponse>('/api/wishlist');
+      const now = items.filter((i) => i.status === 'pending').map((i) => i.id);
+      const ids = [...order.filter((id) => now.includes(id)), ...now.filter((id) => !order.includes(id))];
+      await api('/api/wishlist/reorder', { method: 'POST', body: { ids } });
+    });
 
   function move(index: number, delta: number) {
     const ids = pending.map((i) => i.id);
@@ -71,6 +95,18 @@ export function WishlistPage() {
       </div>
 
       {error && <p className="text-sm text-danger bg-danger-soft rounded-lg px-4 py-3 mb-4">{error}</p>}
+
+      {justBought && (
+        <p role="status" className={`${card} flex items-center gap-2 px-4 py-2 mb-4 text-sm text-ink`}>
+          <Check size={16} className="text-positive shrink-0" />
+          <span className="flex-1 min-w-0">
+            <span className="font-medium">{justBought.item.name}</span> pasó a Comprados.
+          </span>
+          <button onClick={() => undoBought(justBought)} className="px-3 py-1.5 rounded-full text-accent font-medium hover:bg-card-hover">
+            Deshacer
+          </button>
+        </p>
+      )}
 
       {editing === 'new' && (
         <div className={`${card} p-4 mb-4`}>
@@ -102,7 +138,7 @@ export function WishlistPage() {
                 </div>
                 {item.note && <p className="text-sm text-ink-muted mt-0.5 break-words">{item.note}</p>}
                 <p className="text-xs text-ink-muted mt-1">Agregado por {author(item)}</p>
-                <div className="flex items-center gap-0.5 mt-1 -ml-2">
+                <div className="flex flex-wrap items-center gap-0.5 mt-1 -ml-2">
                   <button aria-label="Subir" disabled={index === 0} onClick={() => move(index, -1)} className={iconButton}>
                     <ArrowUp size={18} />
                   </button>
@@ -120,10 +156,10 @@ export function WishlistPage() {
                     <Trash2 size={18} />
                   </button>
                   <button
-                    onClick={() => run(() => api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status: 'bought' } }))}
-                    className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-full border border-line text-sm text-ink hover:bg-card-hover"
+                    onClick={() => markBought(item)}
+                    className="ml-auto flex items-center gap-1.5 px-3 py-2 rounded-full border border-line text-sm text-ink-soft whitespace-nowrap hover:text-ink hover:bg-card-hover"
                   >
-                    <Check size={16} className="text-positive" /> Comprado
+                    <ShoppingBag size={16} className="shrink-0" /> Marcar comprado
                   </button>
                 </div>
               </div>
@@ -151,7 +187,7 @@ export function WishlistPage() {
                 <button
                   aria-label="Volver a pendiente"
                   title="Volver a pendiente"
-                  onClick={() => run(() => api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status: 'pending' } }))}
+                  onClick={() => setStatus(item, 'pending')}
                   className={iconButton}
                 >
                   <RotateCcw size={16} />
