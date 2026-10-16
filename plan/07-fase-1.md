@@ -152,6 +152,9 @@ Hecho 2026-10-16. Probado en local con las 3 cartolas reales: histórica 8 nueva
 - Botón "Importar N movimientos" → resultado ("Se guardaron 12, se omitieron 8 duplicados").
 - Celular: la tabla pasa a lista de tarjetas.
 
+Hecho 2026-10-16. Probado en Firefox con las 3 cartolas reales: 8 nuevas → 47 nuevas + 8 ya importadas
+→ 35 de la tarjeta; subir el PDF muestra "no parece una cartola".
+
 ## Paso 5 — Gastos: listar, agregar, editar, borrar (commit 5)
 
 - `GET /api/transactions?month=aaaa-mm&q=` (búsqueda por descripción, sin distinguir mayúsculas).

@@ -1,6 +1,7 @@
 import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } from 'lucide-react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ComingSoon } from './ComingSoon';
+import { ImportPage } from './pages/ImportPage';
 import { useMe, type Me, type Role } from './useMe';
 
 interface Section {
@@ -8,12 +9,13 @@ interface Section {
   label: string;
   icon: LucideIcon;
   roles: Role[];
+  page?: () => React.ReactNode;
 }
 
 const sections: Section[] = [
   { path: '', label: 'Dashboard', icon: LayoutDashboard, roles: ['owner'] },
   { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'] },
-  { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'] },
+  { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
   { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
   { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'] },
 ];
@@ -70,12 +72,12 @@ export default function AppShell() {
 
       <main className="flex-1 px-4 pt-8 pb-24 md:px-10 md:pb-8">
         <Routes>
-          {allowed.map(({ path, label }) => (
+          {allowed.map(({ path, label, page: Page }) => (
             <Route
               key={path}
               index={path === ''}
               path={path || undefined}
-              element={path === '' ? <Dashboard me={me} /> : <ComingSoon title={label} />}
+              element={path === '' ? <Dashboard me={me} /> : Page ? <Page /> : <ComingSoon title={label} />}
             />
           ))}
           <Route path="*" element={<Navigate to={home} replace />} />
