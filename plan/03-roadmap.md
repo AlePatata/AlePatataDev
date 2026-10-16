@@ -41,12 +41,14 @@ Requiere una cartola real (decisiones 4, 5 y 6, ya tomadas). Detalle en [07-fase
 
 ## Fase 2 — Categorías y dashboard del mes
 
-- [ ] CRUD de categorías y reglas.
-- [ ] Aplicar las reglas al importar; "crear regla" al recategorizar a mano.
-- [ ] Ajustes: presupuesto mensual e ingreso mensual.
-- [ ] Dashboard: queda del mes, ritmo diario y gasto por categoría.
-- [ ] Gráfico de tendencia de los últimos 6–12 meses.
-- [ ] Excluir de los totales los pagos de la tarjeta y las transferencias propias.
+Detalle en [08-fase-2.md](08-fase-2.md).
+
+- [x] CRUD de categorías (gasto / reembolso / ingreso) y reglas.
+- [x] Aplicar las reglas al importar; "crear regla" al recategorizar a mano; categorización rápida.
+- [x] Ajustes: presupuesto mensual e ingreso mensual.
+- [x] Dashboard: queda del mes, ritmo diario y gasto por categoría.
+- [x] Gráfico de tendencia de los últimos 6 meses.
+- [x] Excluir de los totales los pagos de la tarjeta y las transferencias propias (hecho en la Fase 1, campo `internal`).
 
 **Listo cuando:** el dashboard del mes cuadra con la cartola, revisado a mano.
 

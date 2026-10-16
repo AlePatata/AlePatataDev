@@ -145,6 +145,8 @@ Pasarse del presupuesto se muestra en ámbar con ícono y texto.
 
 ## Paso 7 — Documentación y despliegue
 
+Documentación hecha 2026-10-16 (`CLAUDE.md`, roadmap). Falta el despliegue.
+
 - `CLAUDE.md` y roadmap.
 - `npx wrangler d1 migrations apply datita --remote`, merge de `fase-2` a `main`.
 - **Prueba de "listo"**: categorizar septiembre y octubre, y comparar a mano el gastado neto de un mes

@@ -56,8 +56,8 @@ src/
   pages/, components/   Portfolio sections and shared UI (Navbar, Layout, Footer, ProjectCard)
   data/data.ts          Portfolio content (projects, about, curriculum) — edit content here
   types/                Portfolio types
-  app/                  Finance app (AppShell, useMe, pages/, import/ parser, api.ts, format.ts)
-  shared/               API request/response types used by both app and worker
+  app/                  Finance app (AppShell, useMe, pages/, import/ parser, api.ts, format.ts, MonthPicker)
+  shared/               API types and text helpers (normalizeDescription, suggestPattern) used by app and worker
   worker/               Cloudflare Worker (Hono), serves /api/*
 migrations/             D1 schema (database `datita`, binding `DB`)
 ```
@@ -83,7 +83,17 @@ worker from the bank's original description, so edits never break dedupe. Never 
 test fixtures in `*.test.ts` are invented and mirror the real layouts.
 
 **Amounts and totals**: CLP integers, negative = expense. `transactions.internal` marks card payments and
-transfers between own accounts; totals (`monthTotals`) leave them out to avoid double counting.
+transfers between own accounts; totals leave them out to avoid double counting and they are never
+categorized.
+
+**Categories, rules and the dashboard** (see `plan/08-fase-2.md`): categories have a `kind` (`expense`,
+`refund` = subtracts from spending, `income` = actual income). Rules are "description contains pattern →
+category"; the longest matching pattern wins (`src/worker/rules.ts`), and they apply on import and via
+`POST /api/rules/apply`. All monthly math lives in the pure `monthSummary` / `trend`
+(`src/worker/summary.ts`, tested) and is served by `/api/summary` and `/api/trends`; "today" is computed in
+Chile time. Seeded rules in migrations must stay generic: rules with people's names are created from the
+app and live only in D1. Charts are hand-written SVG/CSS (no chart library); colors were validated with
+the `dataviz` skill's script - re-run it if you change them.
 
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
 Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via
