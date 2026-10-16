@@ -72,6 +72,9 @@ Sin contar los movimientos internos:
 - Insertar las categorías iniciales (con color) y las reglas genéricas.
 - Índice por `transactions.category_id`.
 
+Hecho 2026-10-16. Nota: D1 no acepta muchos `SELECT ... UNION ALL` encadenados; las reglas van con un
+`INSERT` cada una.
+
 ## Paso 2 — Lógica pura y tests (commit 2)
 
 - `src/worker/rules.ts`: `matchCategory(description, rules)` (patrón más largo) y `suggestPattern(description)`.
