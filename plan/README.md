@@ -38,7 +38,7 @@ comparto con mi pololo.
 
 ## Estado
 
-- [ ] Fase 0 — Base técnica y acceso privado
+- [x] Fase 0 — Base técnica y acceso privado (desplegada 2026-10-16; falta probar el acceso del pololo en el navegador)
 - [ ] Fase 1 — Importar cartola y listar gastos
 - [ ] Fase 2 — Categorías y dashboard del mes
 - [ ] Fase 3 — Wishlist compartida
