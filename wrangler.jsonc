@@ -1,43 +1,37 @@
 /**
- * For more details on how to configure Wrangler, refer to:
+ * Configuración del Worker: sirve la SPA (portafolio + app) y la API en /api/*.
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "alepatata",
+	"main": "src/worker/index.ts",
 	"compatibility_date": "2026-05-24",
+	"compatibility_flags": ["nodejs_compat"],
+	// Sin alepatata.<cuenta>.workers.dev ni URLs de preview: esquivarían Cloudflare Access
+	"workers_dev": false,
+	"preview_urls": false,
+	"routes": [{ "pattern": "alepatata.dev", "custom_domain": true }],
+	// El directorio de assets lo pone @cloudflare/vite-plugin en el build
 	"assets": {
-		// The path to the directory containing the `index.html` file to be served at `/`
-		"directory": "./public"
+		"not_found_handling": "single-page-application",
+		"run_worker_first": ["/api/*"]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "datita",
+			"database_id": "cab09f27-b45f-4bcc-92cd-beb05b1056e5",
+			"migrations_dir": "migrations"
+		}
+	],
+	// No son secretos. OWNER_EMAIL y PARTNER_EMAIL son secretos (wrangler secret put / .dev.vars)
+	"vars": {
+		"ACCESS_TEAM_DOMAIN": "https://young-snow-c5f8.cloudflareaccess.com",
+		"ACCESS_AUD": "b20ecd3de27275df033e71ff408605d44f6cb89298847f59a3761e5c674eeafe"
 	},
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true,
-	"compatibility_flags": [
-		"nodejs_compat"
-	]
-	/**
-	 * Smart Placement
-	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-	 */
-	// "placement": {  "mode": "smart" }
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
-	/**
-	 * Environment Variables
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-	 * Note: Use secrets to store sensitive data.
-	 * https://developers.cloudflare.com/workers/configuration/secrets/
-	 */
-	// "vars": {  "MY_VARIABLE": "production_value" }
-	/**
-	 * Service Bindings (communicate between multiple Workers)
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
-	 */
-	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
+	"upload_source_maps": true
 }
