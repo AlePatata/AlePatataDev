@@ -20,6 +20,7 @@ comparto con mi pololo.
 | Cuentas | Solo mis gastos. Mi pololo **solo** ve y edita la wishlist |
 | Datos | En la nube (Cloudflare), accesibles desde cualquier dispositivo |
 | Estructura del sitio | Portafolio / presentación **público** en `/` + app de finanzas **privada** en `/app` (2026-10-16) |
+| Cartolas | Cuenta corriente **y** tarjeta de crédito, PDFs sin contraseña (2026-10-16) |
 | Login | Cloudflare Access con email + código de un solo uso, para mí y para mi pololo (2026-10-16) |
 | Dominio | `alepatata.dev` (ya está en Cloudflare) (2026-10-16) |
 | Stack | React + TypeScript + Vite, Cloudflare Workers, Cloudflare D1 (ya está la base del repo) |
