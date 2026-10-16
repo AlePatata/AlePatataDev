@@ -30,13 +30,15 @@ Cuando se decida algo, anotar la respuesta y la fecha, y moverlo a la tabla de d
 
 4. **¿Qué PDF(s) del Banco de Chile?** Cartola de cuenta corriente / cuenta vista, estado de cuenta de
    tarjeta de crédito, o ambos. Cambia el parser y cómo se evita contar doble.
-   - Decisión (2026-10-16): **ambos**. Son dos parsers, y el pago de la tarjeta desde la cuenta
+   - Decisión (2026-10-16): **ambos** (la cuenta es una cuenta vista). Son dos parsers, y el pago de la tarjeta desde la cuenta
      corriente se excluye de los totales para no contar doble.
 5. **¿El PDF trae contraseña?**
    - Decisión (2026-10-16): **no**. Se lee directo; no hace falta pedir contraseña en el navegador.
 6. **¿Parser propio o Claude API?** Ver la comparación en [02-arquitectura.md](02-arquitectura.md).
    Se decide al ver una cartola real. Recomendado: parser propio.
-   - Decisión: _pendiente_
+   - Decisión (2026-10-16): **parser propio sobre el Excel** que entrega el banco (no el PDF), leído en
+     el navegador. Ver [07-fase-1.md](07-fase-1.md). Formatos: cartola histórica y movimientos de la
+     cuenta vista, y movimientos no facturados de la tarjeta.
 
 ## Bloquean la Fase 2 / 4
 

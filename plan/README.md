@@ -20,7 +20,7 @@ comparto con mi pololo.
 | Cuentas | Solo mis gastos. Mi pololo **solo** ve y edita la wishlist |
 | Datos | En la nube (Cloudflare), accesibles desde cualquier dispositivo |
 | Estructura del sitio | Portafolio / presentación **público** en `/` + app de finanzas **privada** en `/app` (2026-10-16) |
-| Cartolas | Cuenta corriente **y** tarjeta de crédito, PDFs sin contraseña (2026-10-16) |
+| Cartolas | Cuenta vista **y** tarjeta de crédito, importadas desde el **Excel** del banco con parser propio (2026-10-16) |
 | Login | Cloudflare Access con email + código de un solo uso, para mí y para mi pololo (2026-10-16) |
 | Dominio | `alepatata.dev` (ya está en Cloudflare) (2026-10-16) |
 | Stack | React + TypeScript + Vite, Cloudflare Workers, Cloudflare D1 (ya está la base del repo) |
@@ -36,6 +36,7 @@ comparto con mi pololo.
 | [04-decisiones-abiertas.md](04-decisiones-abiertas.md) | Preguntas por responder, ordenadas por qué fase bloquean |
 | [05-estado-del-repo.md](05-estado-del-repo.md) | Qué hay hoy en el repo (template de portafolio), qué se arregla y qué se agrega |
 | [06-fase-0.md](06-fase-0.md) | Fase 0 paso a paso: configuración en Cloudflare, commits, verificación |
+| [07-fase-1.md](07-fase-1.md) | Fase 1 paso a paso: formatos de cartola, parser, importación y gastos |
 
 ## Estado
 
