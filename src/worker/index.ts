@@ -4,7 +4,11 @@ import { requireAuth, type AppEnv } from './auth';
 const app = new Hono<AppEnv>().basePath('/api');
 
 // Pública: se registra antes del middleware de autenticación
-app.get('/health', (c) => c.json({ ok: true }));
+app.get('/health', async (c) => {
+  // Confirma que el binding de D1 responde
+  await c.env.DB.prepare('SELECT 1').first();
+  return c.json({ ok: true });
+});
 
 app.use('*', requireAuth);
 
