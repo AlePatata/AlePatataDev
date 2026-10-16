@@ -3,6 +3,7 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ComingSoon } from './ComingSoon';
 import { ExpensesPage } from './pages/ExpensesPage';
 import { ImportPage } from './pages/ImportPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { useMe, type Me, type Role } from './useMe';
 
 interface Section {
@@ -18,7 +19,7 @@ const sections: Section[] = [
   { path: 'gastos', label: 'Gastos', icon: Receipt, roles: ['owner'], page: ExpensesPage },
   { path: 'importar', label: 'Importar', icon: Upload, roles: ['owner'], page: ImportPage },
   { path: 'wishlist', label: 'Wishlist', icon: Heart, roles: ['owner', 'partner'] },
-  { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'] },
+  { path: 'ajustes', label: 'Ajustes', icon: Settings, roles: ['owner'], page: SettingsPage },
 ];
 
 export default function AppShell() {

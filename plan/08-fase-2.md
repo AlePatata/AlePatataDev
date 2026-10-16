@@ -122,6 +122,9 @@ la app). Gastos acepta `?month=` y `?category=` en la URL (para los links del da
 - Categorías: crear, renombrar, cambiar color y tipo, borrar.
 - Reglas: lista (patrón → categoría), crear, borrar; botón "Aplicar reglas a los movimientos sin categoría".
 
+Hecho 2026-10-16. Probado en Firefox: guardar ingreso, crear/cambiar tipo/borrar categoría (con sus
+reglas), nombre duplicado → aviso, crear regla y aplicarla.
+
 ## Paso 6 — Dashboard (commit 6)
 
 Antes de escribir los gráficos se carga la skill `dataviz`. Sin librería de gráficos: SVG/CSS propio,
