@@ -2,6 +2,7 @@ import { AlertTriangle, ChevronRight, Tags } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Category, MonthSummary, TrendPoint } from '../../shared/summary';
+import { feel } from '../../cats/catBus';
 import { api } from '../api';
 import { formatCLP } from '../format';
 import { MonthPicker } from '../MonthPicker';
@@ -73,6 +74,13 @@ export function DashboardPage() {
 function Hero({ s }: { s: MonthSummary }) {
   const current = s.daysLeft != null;
   const over = s.remaining != null && s.remaining < 0;
+
+  // El gatito reacciona al mes en curso; a lo más una vez cada 10 minutos para no aparecer en cada visita
+  const tracked = current && s.remaining != null;
+  useEffect(() => {
+    if (tracked) feel(over ? 'panico' : 'orgulloso', { cooldownMs: 600_000 });
+  }, [tracked, over]);
+
   const used = s.budget ? Math.min(s.spentNet / s.budget, 1) : 0;
 
   if (s.budget == null) {

@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle2, FileSpreadsheet, Upload } from 'lucide-react';
 import { useState } from 'react';
 import type { ImportRequest, ImportResponse, RowStatus } from '../../shared/import';
+import { feel } from '../../cats/catBus';
 import { api } from '../api';
 import { ACCOUNT_LABEL, formatCLP, formatDate } from '../format';
 import { CartolaError, parseCartola, type Cell, type ParsedCartola } from '../import/parseCartola';
@@ -99,6 +100,13 @@ export function ImportPage() {
         body: buildRequest(state.filename, state.cartola, state.rows, false),
       });
       setState({ step: 'done', inserted: res.inserted, skipped: res.skipped });
+      if (res.inserted > 0) {
+        // El gatito reacciona a lo que entró: más gastos que abonos = más deuda
+        const net = state.rows.filter((r) => r.include && !r.internal && r.status !== 'duplicate').reduce((sum, r) => sum + r.amount, 0);
+        const n = `${res.inserted} movimiento${res.inserted === 1 ? '' : 's'} nuevo${res.inserted === 1 ? '' : 's'}`;
+        if (net < 0) feel('endeudado', { message: `${n}… y ${formatCLP(-net)} menos. Mi billetera llora`, cooldownMs: 0 });
+        else feel('millonario', { message: `${n} y ${formatCLP(net)} a favor. ¡Atún caro!`, cooldownMs: 0 });
+      }
     } catch (e) {
       setState({ ...state, saving: false, error: e instanceof Error ? e.message : String(e) });
     }

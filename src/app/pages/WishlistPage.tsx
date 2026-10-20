@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowUp, Check, ExternalLink, Gift, Link2, Pencil, Plus, RotateCcw, ShoppingBag, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { ItemInput, ProductMeta, WishlistItem, WishlistResponse } from '../../shared/wishlist';
+import { feel } from '../../cats/catBus';
 import { api } from '../api';
 import { formatCLP } from '../format';
 import { PageTitle } from '../PageTitle';
@@ -55,6 +56,7 @@ export function WishlistPage() {
     return run(async () => {
       await api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status: 'bought' } });
       setJustBought({ item, order });
+      feel('endeudado', { message: `¡Compraste "${item.name}"! …y la billetera llora`, cooldownMs: 0 });
     });
   };
 
@@ -150,7 +152,11 @@ export function WishlistPage() {
                   </button>
                   <button
                     aria-label="Borrar"
-                    onClick={() => confirm(`¿Borrar "${item.name}"?`) && run(() => api(`/api/wishlist/${item.id}`, { method: 'DELETE' }))}
+                    onClick={() => confirm(`¿Borrar "${item.name}"?`) && run(async () => {
+                        await api(`/api/wishlist/${item.id}`, { method: 'DELETE' });
+                        feel('triste', { message: `Adiós, "${item.name}". Te quería…`, cooldownMs: 0 });
+                      })
+                    }
                     className={iconButton}
                   >
                     <Trash2 size={18} />
@@ -256,6 +262,7 @@ function ItemForm({ item, onDone, onCancel }: { item?: WishlistItem; onDone: () 
     setError(undefined);
     try {
       await (item ? api(`/api/wishlist/${item.id}`, { method: 'PATCH', body }) : api('/api/wishlist', { method: 'POST', body }));
+      if (!item) feel('enamorado', { cooldownMs: 0 });
       onDone();
     } catch (err) {
       setError(errorText(err));

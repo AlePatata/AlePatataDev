@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { Category } from '../../shared/summary';
 import { suggestPattern } from '../../shared/text';
 import type { AccountFilter, Transaction, TransactionInput, TransactionsResponse } from '../../shared/transactions';
+import { feel } from '../../cats/catBus';
 import { api } from '../api';
 import { CategoryChip, CategorySelect } from '../categories';
 import { formatCLP, formatDate } from '../format';
@@ -354,18 +355,20 @@ function TransactionForm({
       transaction?.source === 'import' && !internal && categoryId != null && categoryId !== transaction.categoryId
         ? { description: transaction.description, categoryId }
         : undefined;
-    return run(
-      () =>
-        transaction
-          ? api(`/api/transactions/${transaction.id}`, { method: 'PATCH', body })
-          : api('/api/transactions', { method: 'POST', body }),
-      recategorized,
-    );
+    return run(async () => {
+      if (transaction) return api(`/api/transactions/${transaction.id}`, { method: 'PATCH', body });
+      await api('/api/transactions', { method: 'POST', body });
+      // Los movimientos internos no son ni gasto ni ingreso
+      if (!internal) feel(kind === 'gasto' ? 'endeudado' : 'millonario', { cooldownMs: 0 });
+    }, recategorized);
   }
 
   function remove() {
     if (!transaction || !confirm(`¿Borrar "${transaction.description}"?`)) return;
-    return run(() => api(`/api/transactions/${transaction.id}`, { method: 'DELETE' }));
+    return run(async () => {
+      await api(`/api/transactions/${transaction.id}`, { method: 'DELETE' });
+      feel('triste', { message: `Chao, "${transaction.description}"…`, cooldownMs: 0 });
+    });
   }
 
   return (
