@@ -34,6 +34,38 @@
   --color-warn: var(--theme-warn);
   --color-warn-soft: var(--theme-warn-soft);
   --color-warn-line: var(--theme-warn-line);
+  --color-cat-fur: var(--theme-cat-fur);
+  --color-cat-stripe: var(--theme-cat-stripe);
+  --color-cat-line: var(--theme-cat-line);
+  --color-cat-shine: var(--theme-cat-shine);
+  --color-cat-tear: var(--theme-cat-tear);
+}
+
+/* Animaciones de los gatitos (src/cats/). Se usan con motion-safe: para respetar "reducir movimiento". */
+@theme {
+  --animate-cat-in: cat-in 350ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-cat-shake: cat-shake 140ms linear infinite;
+  --animate-cat-float: cat-float 2.4s ease-in-out infinite;
+
+  @keyframes cat-in {
+    from {
+      opacity: 0;
+      transform: translateY(60%) scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes cat-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px) rotate(-1deg); }
+    75% { transform: translateX(2px) rotate(1deg); }
+  }
+  @keyframes cat-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
 }
 
 /* Claro: rosado (el de siempre) */
@@ -67,6 +99,11 @@
   --theme-warn: var(--color-amber-700);
   --theme-warn-soft: var(--color-amber-50);
   --theme-warn-line: var(--color-amber-200);
+  --theme-cat-fur: var(--color-orange-300);
+  --theme-cat-stripe: var(--color-orange-500);
+  --theme-cat-line: var(--color-rose-950);
+  --theme-cat-shine: var(--color-white);
+  --theme-cat-tear: var(--color-sky-300);
 }
 
 /* Oscuro: Catppuccin Mocha, con mauve como color principal */
@@ -102,6 +139,11 @@
   --theme-warn: #fab387; /* Peach */
   --theme-warn-soft: color-mix(in oklab, #fab387 12%, var(--ctp-surface0));
   --theme-warn-line: color-mix(in oklab, #fab387 35%, transparent);
+  --theme-cat-fur: #fab387; /* Peach */
+  --theme-cat-stripe: color-mix(in oklab, #fab387 60%, #11111b);
+  --theme-cat-line: #11111b; /* Crust */
+  --theme-cat-shine: #f5e0dc; /* Rosewater */
+  --theme-cat-tear: #89dceb; /* Sky */
 }
 
 /* En @layer base para que las utilidades de Tailwind (px-4, mx-auto, ...) puedan sobrescribirlos.
