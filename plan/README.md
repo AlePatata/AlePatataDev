@@ -42,6 +42,7 @@ comparto con mi pololo.
 | [08-fase-2.md](08-fase-2.md) | Fase 2 paso a paso: categorías, reglas, ajustes y dashboard |
 | [09-modo-oscuro.md](09-modo-oscuro.md) | Modo oscuro Catppuccin, colores semánticos y reglas para celular |
 | [10-fase-3.md](10-fase-3.md) | Fase 3 paso a paso: wishlist compartida, leer links, nombres |
+| [12-gatitos.md](12-gatitos.md) | Gatitos con emociones: qué las dispara y cómo funciona |
 
 ## Estado
 
