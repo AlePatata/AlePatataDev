@@ -1,5 +1,6 @@
 import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } from 'lucide-react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import { CatAmountControl } from '../cats/CatAmountControl';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ComingSoon } from './ComingSoon';
 import { ExpensesPage } from './pages/ExpensesPage';
@@ -55,7 +56,10 @@ export default function AppShell() {
         <a href="/" className="text-xl font-bold text-accent">
           &lt;div&gt;
         </a>
-        <ThemeToggle />
+        <div className="flex items-center gap-1">
+          <CatAmountControl />
+          <ThemeToggle />
+        </div>
       </header>
 
       <nav className="fixed bottom-0 inset-x-0 z-50 pb-[env(safe-area-inset-bottom)] bg-bar/90 backdrop-blur-md border-t border-line md:static md:pb-0 md:w-56 md:min-h-screen md:border-t-0 md:border-r md:bg-bar">
@@ -63,7 +67,10 @@ export default function AppShell() {
           <a href="/" className="text-xl font-bold text-accent">
             &lt;div&gt;
           </a>
-          <ThemeToggle />
+          <div className="flex items-center">
+            <CatAmountControl align="left" />
+            <ThemeToggle />
+          </div>
         </div>
         <ul className="flex md:flex-col md:gap-1 md:px-3">
           {allowed.map(({ path, label, icon: Icon }) => (

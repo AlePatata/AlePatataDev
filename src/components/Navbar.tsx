@@ -2,6 +2,7 @@ import { Menu, X } from 'lucide-react';
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { useState } from 'react';
 import { about } from '../data/data';
+import { CatAmountControl } from '../cats/CatAmountControl';
 import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
@@ -41,10 +42,14 @@ export function Navbar() {
           <a href="/app" className="text-sm text-ink-faint hover:text-accent transition-colors">
             Entrar
           </a>
-          <ThemeToggle />
+          <div className="flex items-center gap-1">
+            <CatAmountControl />
+            <ThemeToggle />
+          </div>
         </div>
 
         <div className="md:hidden flex items-center gap-1">
+          <CatAmountControl />
           <ThemeToggle />
           <button
             type="button"

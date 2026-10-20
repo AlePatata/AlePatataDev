@@ -105,7 +105,9 @@ images are shown with `referrerPolicy="no-referrer"` and a fallback icon.
 **Gatitos** (see `plan/12-gatitos.md`): an SVG cat pops up in the corner with an emotion. Anything can
 call `feel(emotion, { message?, cooldownMs? })` from `src/cats/catBus.ts`; global triggers (fast mouse,
 rage clicks, idle, returning to the tab) live in `src/cats/Cats.tsx`, mounted once in `App.tsx`. Detectors
-are pure and tested (`detectors.ts`). Cat colors are the `cat-*` theme roles; animations use `motion-safe:`.
+are pure and tested (`detectors.ts`). How much cat (0–100 %, per device in `localStorage`) lives in
+`amount.ts`: it sets the chance each trigger shows a cat and how many fit at once (`CatAmountControl` next
+to the theme toggle). Cat colors are the `cat-*` theme roles; animations use `motion-safe:`.
 
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
 Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { dismiss, feel, useCatMood } from './catBus';
+import { dismiss, feel, useCatMoods } from './catBus';
 import { CatSvg } from './CatSvg';
 import { createBurstCounter, createSpeedMeter } from './detectors';
 import { EMOTIONS } from './emotions';
@@ -56,22 +56,21 @@ function useGlobalTriggers() {
   }, []);
 }
 
-/** El gatito del momento, que se asoma desde la esquina con lo que siente. Toca para cerrarlo. */
+/** Los gatitos del momento, que se asoman desde la esquina con lo que sienten. Toca uno para cerrarlo. */
 export function Cats() {
   useGlobalTriggers();
-  const mood = useCatMood();
-  // En la app el gatito queda sobre la barra de abajo del celular
+  const moods = useCatMoods();
+  // En la app los gatitos quedan sobre la barra de abajo del celular
   const inApp = useLocation().pathname.startsWith('/app');
   const bottom = inApp ? 'bottom-[calc(5rem+env(safe-area-inset-bottom))] md:bottom-6' : 'bottom-4 md:bottom-6';
-  const shaky = mood?.emotion === 'ansioso' || mood?.emotion === 'panico';
 
   return (
-    <div role="status" aria-live="polite" className={`fixed right-3 md:right-6 z-[60] ${bottom}`}>
-      {mood && (
+    <div role="status" aria-live="polite" className={`fixed right-3 md:right-6 z-[60] flex flex-col items-end gap-2 ${bottom}`}>
+      {moods.map((mood) => (
         <button
           key={mood.id}
           type="button"
-          onClick={dismiss}
+          onClick={() => dismiss(mood.id)}
           title="Cerrar"
           className="flex items-end gap-2 text-left motion-safe:animate-cat-in"
         >
@@ -81,10 +80,10 @@ export function Cats() {
           </span>
           <CatSvg
             emotion={mood.emotion}
-            className={`w-24 shrink-0 drop-shadow-md ${shaky ? 'motion-safe:animate-cat-shake' : ''} ${mood.emotion === 'curioso' ? '-rotate-12' : ''}`}
+            className={`w-24 shrink-0 drop-shadow-md ${mood.emotion === 'ansioso' || mood.emotion === 'panico' ? 'motion-safe:animate-cat-shake' : ''} ${mood.emotion === 'curioso' ? '-rotate-12' : ''}`}
           />
         </button>
-      )}
+      ))}
     </div>
   );
 }
