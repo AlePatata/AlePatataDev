@@ -21,12 +21,31 @@ de abajo con una emoción y una frase según lo que esté pasando. Sale en el po
 
 Los movimientos internos (pago de tarjeta, transferencias propias) no despiertan a ningún gatito.
 
+## Cuánto gatito
+
+El botón con un gatito, al lado del de modo oscuro (en el portafolio y en la app), abre un control de
+0 a 100 % (de a 10) para elegir cuánto gatito invade la página. Se guarda en el dispositivo
+(`localStorage`, clave `gatitos`), igual que el tema, así sirve también para quien visita el
+portafolio. Parte en 50 %.
+
+- **Probabilidad**: cada vez que algo dispara una emoción, el gatito sale con probabilidad = el %.
+  La espera de la emoción corre igual aunque no salga, para que un disparador continuo (el mouse
+  rápido) no insista hasta ganar el sorteo.
+- **Cuántos a la vez**: 1 hasta 40 %, 2 hasta 80 %, 3 sobre eso. Se apilan en la esquina; si no caben,
+  se va el más antiguo. La misma emoción no sale dos veces a la vez.
+- **0 %**: no sale ninguno. Al bajar el nivel se van los que sobran.
+- Cada nivel tiene nombre y su gatito de muestra en el control: "Sin gatitos" (triste), "Gatito
+  tímido", "Gatito de visita", "Gatitos por aquí y por allá", "Casa llena de gatitos", "Casi una
+  invasión" e "Invasión gatuna total" (millonario).
+
 ## Cómo funciona
 
 - `src/cats/emotions.ts`: la lista de emociones con su nombre y frases.
-- `src/cats/catBus.ts`: `feel(emoción, { message?, cooldownMs? })` desde cualquier parte. Hay un solo
-  gatito a la vez, se va solo a los 4,5 s o al tocarlo, y cada emoción espera 20 s antes de repetirse
-  (las acciones de la app usan `cooldownMs: 0` porque son a propósito).
+- `src/cats/catBus.ts`: `feel(emoción, { message?, cooldownMs? })` desde cualquier parte. Cada gatito
+  se va solo a los 4,5 s o al tocarlo, y cada emoción espera 20 s antes de repetirse (las acciones de
+  la app usan `cooldownMs: 0` porque son a propósito).
+- `src/cats/amount.ts`: cuánto gatito (lo guardado, la probabilidad, cuántos caben y el nombre de cada
+  nivel), con tests; `CatAmountControl.tsx` es el botón con el control.
 - `src/cats/detectors.ts`: detectores puros (velocidad del mouse, ráfaga de clics, espera), con tests.
 - `src/cats/CatSvg.tsx`: el dibujo; cada emoción cambia ojos, cejas, boca y detalles (sudor, lágrimas,
   billete con alas, corazones, lentes de sol…).
@@ -39,5 +58,4 @@ Los movimientos internos (pago de tarjeta, transferencias propias) no despiertan
 
 ## Ideas para después
 
-- Opción en Ajustes para silenciar a los gatitos.
 - Más emociones: cambiar a modo oscuro de noche, categorizar todo lo pendiente, etc.
