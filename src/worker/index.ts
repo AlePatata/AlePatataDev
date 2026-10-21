@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { requireAuth, type AppEnv, type Secrets } from './auth';
+import { cats, publicCats } from './cats';
 import { categories, rules } from './categories';
 import { settings, summary, trends } from './dashboard';
 import { hobbiesAdmin, publicHobbies } from './hobbies';
@@ -19,6 +20,8 @@ app.get('/health', async (c) => {
 
 // Lo de /hobbies, también público (Access tiene un Bypass solo para /api/public/*)
 app.route('/public/hobbies', publicHobbies);
+// Cómo se ve cada gatito, también público: salen en el portafolio (Access tiene un Bypass para /api/public/*)
+app.route('/public/cats', publicCats);
 
 app.use('*', requireAuth);
 
@@ -32,6 +35,7 @@ app.route('/summary', summary);
 app.route('/trends', trends);
 app.route('/wishlist', wishlist);
 app.route('/hobbies', hobbiesAdmin);
+app.route('/cats', cats);
 
 app.notFound((c) => c.json({ error: 'not_found' }, 404));
 
