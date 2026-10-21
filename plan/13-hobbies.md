@@ -234,7 +234,7 @@ de colores sin ninguna letra; importo dos veces el mismo respaldo de Twisty y no
 - [x] Jugar Wordle con la sesión iniciada en nytimes.com y copiar la cookie `NYT-S` (probada desde mi
       computador; falta `NYT_COOKIE` en producción).
 - [ ] Opcional: ocultar el email en el perfil de Codeforces.
-- [ ] Crear en Access la aplicación Bypass para `/api/public/*`.
+- [x] Crear en Access la aplicación Bypass "public hobbies" para `/api/public/*` (falta probarla después del merge).
 - [ ] Exportar el respaldo de Twisty Timer.
 
 ## Ideas para después
