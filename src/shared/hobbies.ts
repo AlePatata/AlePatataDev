@@ -16,6 +16,7 @@ export interface HobbiesResponse {
   from: string; // primer día incluido
   to: string; // hoy
   days: ActivityDay[];
+  connected: HobbySource[]; // las que ya traen datos; las demás muestran "Pronto"
 }
 
 /** Color de cada letra: G = en su lugar, Y = está en otro lugar, B = no está. */

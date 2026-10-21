@@ -22,7 +22,7 @@ publicHobbies.get('/', async (c) => {
     .bind(from, to)
     .all<ActivityDay>();
   c.header('Cache-Control', 'public, max-age=300');
-  return c.json<HobbiesResponse>({ from, to, days: results });
+  return c.json<HobbiesResponse>({ from, to, days: results, connected: syncableSources() });
 });
 
 /** Detalle de Wordle: el de hoy, los últimos y las estadísticas. Solo colores, nunca letras. */

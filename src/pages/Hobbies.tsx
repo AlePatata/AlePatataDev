@@ -77,7 +77,9 @@ export function Hobbies() {
                         : 'Cargando…'
                       : daysFor(hobby.source)
                         ? `${daysFor(hobby.source)} ${daysFor(hobby.source) === 1 ? 'día' : 'días'} con actividad este año`
-                        : 'Pronto'}
+                        : data.connected.includes(hobby.source)
+                          ? 'Sin actividad este año todavía'
+                          : 'Pronto'}
                   </p>
                   {Detail && (
                     <>
