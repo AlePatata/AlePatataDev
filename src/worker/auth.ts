@@ -8,6 +8,8 @@ export interface Secrets {
   PARTNER_EMAIL: string;
   /** Solo en `.dev.vars`: salta la validación del JWT. Nunca se define en producción. */
   DEV_AUTH_EMAIL?: string;
+  /** Cookie de nytimes.com (`NYT-S=...`) para leer mis partidas de Wordle. Ver plan/13-hobbies.md. */
+  NYT_COOKIE?: string;
 }
 
 export type AppEnv = {

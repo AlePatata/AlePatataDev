@@ -78,7 +78,7 @@ partida guardada de una cuenta. No hace falta suscripción; basta una cuenta gra
 - **Estadísticas**: el campo `player` de la misma respuesta (pidiendo `puzzle_ids=0`) trae rachas, %
   de victorias y distribución.
 - **Historial completo**: recorrer el archivo de 31 en 31 días desde que jugué con la cuenta y pedir
-  las partidas de 30 en 30. Se hace una vez a mano desde `/app/hobbies`; después el cron pide solo los
+  las partidas de 30 en 30. Se hace una vez a mano desde Ajustes; después el cron pide solo los
   últimos días.
 
 **Los intentos sin la palabra, como en Discord.** El Worker toma mis palabras y la solución, calcula
@@ -101,8 +101,8 @@ Partidas `IN_PROGRESS` no se guardan: el cron las vuelve a pedir en la siguiente
 - Son endpoints internos: la NYT puede cambiarlos sin aviso, y leerlos con una cookie va en una zona
   gris de sus términos (uso personal, solo lectura, unas pocas llamadas al día).
 - La cookie caduca sin aviso, o la NYT puede bloquear pedidos desde los servidores de Cloudflare. Un
-  `401`/`403` deja la fuente en error en `/app/hobbies` (y un gatito preocupado) para renovarla.
-- **Plan B**: pegar el texto de "Compartir" en `/app/hobbies`. `parseWordle` (pura, con tests) saca el
+  `401`/`403` deja la fuente en error en Ajustes (y un gatito preocupado) para renovarla.
+- **Plan B**: pegar el texto de "Compartir" en Ajustes. `parseWordle` (pura, con tests) saca el
   número, los intentos (`X` = perdido), el modo difícil (`*`) y la grilla, que ya viene sin letras.
   Acepta `1,949`, `1.949` y `1949`, y ⬜ además de ⬛. Las dos vías guardan lo mismo.
 - **Probar primero** (commit 7): un `wrangler dev` con la cookie que pida la partida de hoy. Si la NYT
@@ -190,9 +190,14 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
 
 - **`/hobbies`** (pública, en el portafolio): heatmap del año con filtro por hobby y tooltip con el
   `summary` del día; debajo, las tarjetas. Un link "Hobbies" en el Navbar del portafolio.
-- **`/app/hobbies`** (privada, solo dueña): estado de cada fuente (última sincronización, error),
-  "Sincronizar ahora", traer el historial de Wordle, pegar un wordle (plan B) e importar el respaldo de
-  Twisty.
+- **Tarjetas con "Ver más"**: cada hobby con datos abre su detalle debajo (la tarjeta pasa a ocupar
+  las dos columnas). Wordle: el de hoy en grande (solo colores) o "Todavía no juego el de hoy", el
+  botón "Jugar el Wordle de hoy" (link al juego, nunca a la respuesta), jugados / % victorias / racha /
+  máxima, la distribución de intentos y los 7 días anteriores en chico.
+- **Ajustes → Hobbies** (privado, solo dueña; en vez de una página `/app/hobbies`, para no sumar una
+  sexta pestaña a la barra del celular): estado de cada fuente (última sincronización, error) y
+  "Sincronizar ahora". Ahí irán también traer el historial de Wordle, pegar un wordle (plan B) e
+  importar el respaldo de Twisty.
 - Gráficos en SVG a mano, como el dashboard. El heatmap usa una escala secuencial nueva
   (`--color-heat-0…4` en `src/index.css`, para los dos temas) y la grilla de Wordle los roles
   `--color-wordle-hit/near/miss`, validados con el script de `dataviz`.
@@ -213,7 +218,7 @@ de Trakt pasado a PNG, logo de Wordle de la NYT, e ícono de Twisty Timer (GPL-3
 | Millonario | Wordle en 1/6 o 2/6 |
 | Triste | Wordle perdido (X/6) |
 | Enamorado | Película o serie con nota 10 en Trakt |
-| Ansioso | Una fuente quedó en error (cookie de la NYT vencida, etc.) al abrir `/app/hobbies` |
+| Ansioso | Una fuente quedó en error (cookie de la NYT vencida, etc.) al abrir Ajustes |
 | Curioso | Pasar el mouse por el heatmap en la página pública (máx. cada 2 min) |
 
 ## Commits
@@ -225,11 +230,16 @@ de Trakt pasado a PNG, logo de Wordle de la NYT, e ícono de Twisty Timer (GPL-3
    deja pálido al resto, y un hobby con una sola cantidad (un wordle al día) va al nivel 2; con filtro "Todo", el nivel del día es el más alto entre sus hobbies. Colores
    validados con `validate_palette.js --ordinal`: claro `pink-400/500/700/800` sobre la card blanca
    (el `pink-300` no llegaba a 2:1; el `pink-950` se veía negro), oscuro mauve al 45/65/82/100 % sobre Surface0 (al 35 % no llegaba).
-4. Cron `scheduled` + estado por fuente + `/app/hobbies` con "Sincronizar ahora".
+4. Cron `scheduled` + estado por fuente + "Sincronizar ahora" en Ajustes. Hecho junto con el 7.
 5. Codeforces: adaptador, tarjeta y tests del cálculo (rachas, AC por dificultad).
 6. Monkeytype: adaptador con ApeKey, tarjeta.
 7. Wordle: probar la cookie desde el Worker; `scoreGuess` y `parseWordle` con tests; sincronización,
    historial, plan B y tarjeta con las grillas.
+   Hecho: `scoreGuess`, `toWordleDay` y `wordleStats` con tests; sincroniza hoy, ayer y anteayer (probado
+   contra la NYT desde `wrangler dev`, falta probarlo desde Cloudflare); "Ver más" con la grilla de hoy.
+   Falta: traer el historial completo y el plan B. Los colores de la NYT no pasan `dataviz` (verde y
+   amarillo muy parecidos): se usan `#5ba754`/`#cdaf33`/`#787c7e` en claro y `#3c8836`/`#ac942f`/Overlay1
+   en oscuro, y las casillas amarillas llevan un punto para no depender solo del color.
 8. Trakt: adaptador, pósters cacheados, tarjeta.
 9. Twisty Timer: `parseTwistyBackup` y las medias WCA con tests, importación, tarjeta.
 10. Gatitos y `CLAUDE.md`.
@@ -244,7 +254,7 @@ de colores sin ninguna letra; importo dos veces el mismo respaldo de Twisty y no
 - [x] Crear la cuenta de Trakt (perfil público) y una app de API tipo **Development** en
       `developer.trakt.tv/apps`, con Redirect URI `http://localhost` (falta subir `TRAKT_CLIENT_ID`).
 - [x] Jugar Wordle con la sesión iniciada en nytimes.com y copiar la cookie `NYT-S` (probada desde mi
-      computador; falta `NYT_COOKIE` en producción).
+      computador; falta `npx wrangler secret put NYT_COOKIE`, con el valor `NYT-S=...`).
 - [ ] Opcional: ocultar el email en el perfil de Codeforces.
 - [x] Crear en Access la aplicación Bypass "public hobbies" para `/api/public/*` (falta probarla después del merge).
 - [ ] Exportar el respaldo de Twisty Timer.

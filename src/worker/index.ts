@@ -1,9 +1,10 @@
 import { Hono } from 'hono';
-import { requireAuth, type AppEnv } from './auth';
+import { requireAuth, type AppEnv, type Secrets } from './auth';
 import { categories, rules } from './categories';
 import { settings, summary, trends } from './dashboard';
-import { publicHobbies } from './hobbies';
+import { hobbiesAdmin, publicHobbies } from './hobbies';
 import { statements } from './statements';
+import { runSync } from './sync';
 import { transactions } from './transactions';
 import { wishlist } from './wishlist';
 
@@ -30,7 +31,14 @@ app.route('/settings', settings);
 app.route('/summary', summary);
 app.route('/trends', trends);
 app.route('/wishlist', wishlist);
+app.route('/hobbies', hobbiesAdmin);
 
 app.notFound((c) => c.json({ error: 'not_found' }, 404));
 
-export default app;
+export default {
+  fetch: app.fetch,
+  // Cron de wrangler.jsonc: trae los datos de los hobbies (ver plan/13-hobbies.md)
+  scheduled(_controller, env, ctx) {
+    ctx.waitUntil(runSync(env));
+  },
+} satisfies ExportedHandler<Env & Secrets>;

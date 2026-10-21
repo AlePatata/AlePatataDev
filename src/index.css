@@ -33,6 +33,9 @@
   --color-heat-2: var(--theme-heat-2);
   --color-heat-3: var(--theme-heat-3);
   --color-heat-4: var(--theme-heat-4);
+  --color-wordle-hit: var(--theme-wordle-hit);
+  --color-wordle-near: var(--theme-wordle-near);
+  --color-wordle-miss: var(--theme-wordle-miss);
   --color-positive: var(--theme-positive);
   --color-danger: var(--theme-danger);
   --color-danger-soft: var(--theme-danger-soft);
@@ -104,6 +107,10 @@
   --theme-heat-2: var(--color-pink-500);
   --theme-heat-3: var(--color-pink-700);
   --theme-heat-4: var(--color-pink-800);
+  /* Casillas de Wordle: parecidas a las de la NYT pero validadas con dataviz (las originales no pasan) */
+  --theme-wordle-hit: #5ba754;
+  --theme-wordle-near: #cdaf33;
+  --theme-wordle-miss: #787c7e;
   --theme-positive: var(--color-emerald-600);
   --theme-danger: var(--color-rose-700);
   --theme-danger-soft: var(--color-rose-100);
@@ -150,6 +157,9 @@
   --theme-heat-2: color-mix(in oklab, var(--ctp-mauve) 65%, var(--ctp-surface0));
   --theme-heat-3: color-mix(in oklab, var(--ctp-mauve) 82%, var(--ctp-surface0));
   --theme-heat-4: var(--ctp-mauve);
+  --theme-wordle-hit: #3c8836;
+  --theme-wordle-near: #ac942f;
+  --theme-wordle-miss: #7f849c; /* Overlay1 */
   --theme-positive: #a6e3a1; /* Green */
   --theme-danger: #f38ba8; /* Red */
   --theme-danger-soft: color-mix(in oklab, #f38ba8 15%, var(--ctp-surface0));

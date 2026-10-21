@@ -30,6 +30,8 @@
 		"ACCESS_TEAM_DOMAIN": "https://young-snow-c5f8.cloudflareaccess.com",
 		"ACCESS_AUD": "b20ecd3de27275df033e71ff408605d44f6cb89298847f59a3761e5c674eeafe"
 	},
+	// Sincroniza los hobbies cada 2 horas (src/worker/sync.ts)
+	"triggers": { "crons": ["0 */2 * * *"] },
 	"observability": {
 		"enabled": true
 	},
