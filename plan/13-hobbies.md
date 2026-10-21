@@ -228,9 +228,11 @@ de colores sin ninguna letra; importo dos veces el mismo respaldo de Twisty y no
 
 ## Lo que tengo que hacer yo
 
-- [ ] Crear la ApeKey en Monkeytype → `npx wrangler secret put MONKEYTYPE_APE_KEY`.
-- [ ] Crear la cuenta de Trakt (perfil público) y una app de API → `TRAKT_CLIENT_ID`.
-- [ ] Jugar Wordle con la sesión iniciada en nytimes.com y copiar la cookie `NYT-S` → `NYT_COOKIE`.
+- [x] Crear la ApeKey en Monkeytype (activa; falta `npx wrangler secret put MONKEYTYPE_APE_KEY`).
+- [x] Crear la cuenta de Trakt (perfil público) y una app de API tipo **Development** en
+      `developer.trakt.tv/apps`, con Redirect URI `http://localhost` (falta subir `TRAKT_CLIENT_ID`).
+- [x] Jugar Wordle con la sesión iniciada en nytimes.com y copiar la cookie `NYT-S` (probada desde mi
+      computador; falta `NYT_COOKIE` en producción).
 - [ ] Opcional: ocultar el email en el perfil de Codeforces.
 - [ ] Crear en Access la aplicación Bypass para `/api/public/*`.
 - [ ] Exportar el respaldo de Twisty Timer.
