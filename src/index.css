@@ -98,8 +98,8 @@
   --theme-shade: var(--color-rose-900);
   --theme-chart: var(--color-pink-500);
   --theme-chart-strong: var(--color-pink-800);
-  /* Heatmap de /hobbies: 0 = sin actividad; 1–4 validados con dataviz (sobre la card blanca) */
-  --theme-heat-0: var(--color-pink-100);
+  /* Heatmap de /hobbies: 0 = sin actividad (transparente, con borde); 1–4 validados con dataviz (sobre la card blanca) */
+  --theme-heat-0: transparent;
   --theme-heat-1: var(--color-pink-400);
   --theme-heat-2: var(--color-pink-600);
   --theme-heat-3: var(--color-pink-800);
@@ -145,7 +145,7 @@
   --theme-chart: color-mix(in oklab, var(--ctp-mauve) 55%, var(--ctp-surface0));
   --theme-chart-strong: var(--ctp-mauve);
   /* Heatmap: más actividad = más mauve; validado con dataviz sobre Surface0 */
-  --theme-heat-0: #45475a; /* Surface1 */
+  --theme-heat-0: transparent;
   --theme-heat-1: color-mix(in oklab, var(--ctp-mauve) 45%, var(--ctp-surface0));
   --theme-heat-2: color-mix(in oklab, var(--ctp-mauve) 65%, var(--ctp-surface0));
   --theme-heat-3: color-mix(in oklab, var(--ctp-mauve) 82%, var(--ctp-surface0));

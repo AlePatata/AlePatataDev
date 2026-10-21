@@ -103,8 +103,9 @@ export function Heatmap({ data, names }: Props) {
                     height={CELL}
                     rx={2}
                     fill={LEVEL_FILL[cell.level]}
-                    stroke={hover?.cell.date === cell.date ? 'var(--color-ink)' : 'none'}
-                    strokeWidth={1.5}
+                    // Los días sin actividad son transparentes: solo el borde marca el calendario
+                    stroke={hover?.cell.date === cell.date ? 'var(--color-ink)' : cell.level === 0 ? 'var(--color-line)' : 'none'}
+                    strokeWidth={hover?.cell.date === cell.date ? 1.5 : 1}
                     onPointerEnter={() =>
                       setHover({
                         cell,
@@ -146,8 +147,12 @@ export function Heatmap({ data, names }: Props) {
 
       <div className="flex items-center justify-end gap-1 mt-2 text-xs text-ink-muted" aria-hidden="true">
         <span className="mr-1">Menos</span>
-        {LEVEL_FILL.map((fill) => (
-          <span key={fill} className="inline-block size-[11px] rounded-[2px]" style={{ background: fill }} />
+        {LEVEL_FILL.map((fill, level) => (
+          <span
+            key={fill}
+            className={`inline-block size-[11px] rounded-[2px] ${level === 0 ? 'border border-line' : ''}`}
+            style={{ background: fill }}
+          />
         ))}
         <span className="ml-1">Más</span>
       </div>
