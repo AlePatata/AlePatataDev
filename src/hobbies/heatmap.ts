@@ -27,7 +27,8 @@ const weekday = (date: string) => (new Date(`${date}T00:00:00Z`).getUTCDay() + 6
 /**
  * Nivel 1–4 de cada cantidad según su lugar entre las cantidades distintas del mismo hobby. Va por
  * orden y no por proporción del máximo, así un día con 80 resoluciones de cubo no deja pálido al resto;
- * si todas son iguales (un wordle al día), todas van al máximo.
+ * si todas son iguales (un wordle al día), van al nivel 2: solo dicen que hubo actividad, y así no tapan
+ * a los demás hobbies en "Todo".
  */
 export function levelsBySource(days: ActivityDay[]): Map<HobbySource, (count: number) => HeatLevel> {
   const counts = new Map<HobbySource, number[]>();
@@ -37,7 +38,7 @@ export function levelsBySource(days: ActivityDay[]): Map<HobbySource, (count: nu
     const distinct = [...new Set(list)].sort((a, b) => a - b);
     result.set(source, (count) => {
       if (count <= 0) return 0;
-      if (distinct.length === 1) return 4;
+      if (distinct.length === 1) return 2;
       const rank = distinct.filter((v) => v < count).length;
       return (1 + Math.round((3 * Math.min(rank, distinct.length - 1)) / (distinct.length - 1))) as HeatLevel;
     });

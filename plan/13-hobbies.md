@@ -214,9 +214,9 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
 2. Migración `activity` + rutas `/api/public/*` antes de `requireAuth` + página `/hobbies` vacía.
 3. Componente `Heatmap` (puro: días → semanas) con tests y colores validados.
    Hecho: niveles por orden dentro de cada hobby (`levelsBySource`), así un día con 80 resoluciones no
-   deja pálido al resto; con filtro "Todo", el nivel del día es el más alto entre sus hobbies. Colores
-   validados con `validate_palette.js --ordinal`: claro `pink-400/600/800/950` sobre la card blanca
-   (el `pink-300` no llegaba a 2:1), oscuro mauve al 45/65/82/100 % sobre Surface0 (al 35 % no llegaba).
+   deja pálido al resto, y un hobby con una sola cantidad (un wordle al día) va al nivel 2; con filtro "Todo", el nivel del día es el más alto entre sus hobbies. Colores
+   validados con `validate_palette.js --ordinal`: claro `pink-400/500/700/800` sobre la card blanca
+   (el `pink-300` no llegaba a 2:1; el `pink-950` se veía negro), oscuro mauve al 45/65/82/100 % sobre Surface0 (al 35 % no llegaba).
 4. Cron `scheduled` + estado por fuente + `/app/hobbies` con "Sincronizar ahora".
 5. Codeforces: adaptador, tarjeta y tests del cálculo (rachas, AC por dificultad).
 6. Monkeytype: adaptador con ApeKey, tarjeta.

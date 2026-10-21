@@ -13,7 +13,9 @@ const WEEKDAYS: [number, string][] = [
   [2, 'mié'],
   [4, 'vie'],
 ];
-const LEVEL_FILL = [0, 1, 2, 3, 4].map((l) => `var(--color-heat-${l})`);
+// Clases completas (no armadas con el nivel) para que Tailwind las vea y genere --color-heat-*
+const LEVEL_FILL = ['fill-heat-0', 'fill-heat-1', 'fill-heat-2', 'fill-heat-3', 'fill-heat-4'];
+const LEVEL_BG = ['bg-heat-0 border border-line', 'bg-heat-1', 'bg-heat-2', 'bg-heat-3', 'bg-heat-4'];
 
 const longDate = (date: string) =>
   new Date(`${date}T00:00:00Z`).toLocaleDateString('es-CL', {
@@ -102,7 +104,7 @@ export function Heatmap({ data, names }: Props) {
                     width={CELL}
                     height={CELL}
                     rx={2}
-                    fill={LEVEL_FILL[cell.level]}
+                    className={LEVEL_FILL[cell.level]}
                     // Los días sin actividad son transparentes: solo el borde marca el calendario
                     stroke={hover?.cell.date === cell.date ? 'var(--color-ink)' : cell.level === 0 ? 'var(--color-line)' : 'none'}
                     strokeWidth={hover?.cell.date === cell.date ? 1.5 : 1}
@@ -147,12 +149,8 @@ export function Heatmap({ data, names }: Props) {
 
       <div className="flex items-center justify-end gap-1 mt-2 text-xs text-ink-muted" aria-hidden="true">
         <span className="mr-1">Menos</span>
-        {LEVEL_FILL.map((fill, level) => (
-          <span
-            key={fill}
-            className={`inline-block size-[11px] rounded-[2px] ${level === 0 ? 'border border-line' : ''}`}
-            style={{ background: fill }}
-          />
+        {LEVEL_BG.map((bg) => (
+          <span key={bg} className={`inline-block size-[11px] rounded-[2px] ${bg}`} />
         ))}
         <span className="ml-1">Más</span>
       </div>

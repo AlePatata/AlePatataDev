@@ -29,3 +29,6 @@ samples/
 # Cloudflare
 .dev.vars*
 .wrangler/
+
+# Pantallazos y logs del MCP de Playwright
+.playwright-mcp/

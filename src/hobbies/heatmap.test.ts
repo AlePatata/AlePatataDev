@@ -10,15 +10,15 @@ describe('levelsBySource', () => {
     expect([0, 1, 2, 3, 4, 80].map(level)).toEqual([0, 1, 2, 3, 3, 4]);
   });
 
-  it('si todas las cantidades son iguales, todas van al máximo', () => {
+  it('si todas las cantidades son iguales, van al nivel 2', () => {
     const level = levelsBySource([day('2026-10-01', 'wordle', 1), day('2026-10-02', 'wordle', 1)]).get('wordle')!;
-    expect(level(1)).toBe(4);
+    expect(level(1)).toBe(2);
   });
 
   it('cada hobby tiene su propia escala', () => {
     const levels = levelsBySource([day('2026-10-01', 'cube', 10), day('2026-10-02', 'cube', 50), day('2026-10-01', 'codeforces', 2)]);
     expect(levels.get('cube')!(10)).toBe(1);
-    expect(levels.get('codeforces')!(2)).toBe(4);
+    expect(levels.get('codeforces')!(2)).toBe(2);
   });
 });
 
