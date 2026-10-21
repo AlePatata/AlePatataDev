@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { HobbiesResponse, HobbySource } from '../shared/hobbies';
+import type { Hobby } from '../types';
 import { buildHeatmap, type HeatCell } from './heatmap';
 
 const CELL = 11;
@@ -28,11 +29,12 @@ const longDate = (date: string) =>
 
 interface Props {
   data: HobbiesResponse;
-  names: Record<HobbySource, string>;
+  hobbies: Pick<Hobby, 'source' | 'short' | 'icon'>[];
 }
 
 /** Heatmap del último año estilo GitHub, con filtro por hobby. */
-export function Heatmap({ data, names }: Props) {
+export function Heatmap({ data, hobbies }: Props) {
+  const names = Object.fromEntries(hobbies.map((h) => [h.source, h.short])) as Record<HobbySource, string>;
   const [source, setSource] = useState<HobbySource | null>(null);
   // x, y: posición de la celda dentro del recuadro visible (ya descontado el scroll); boxWidth: su ancho
   const [hover, setHover] = useState<{ cell: HeatCell; x: number; y: number; boxWidth: number } | null>(null);
@@ -53,9 +55,8 @@ export function Heatmap({ data, names }: Props) {
     if (el) el.scrollLeft = el.scrollWidth;
   }, [weeks.length]);
 
-  const sources = Object.keys(names) as HobbySource[];
   const chip = (selected: boolean) =>
-    `min-h-10 px-3 rounded-full border text-sm transition-colors ${
+    `min-h-10 min-w-10 rounded-full border text-sm transition-colors ${
       selected ? 'bg-accent text-on-accent border-accent' : 'border-line text-ink-soft hover:text-accent hover:border-accent'
     }`;
 
@@ -70,12 +71,21 @@ export function Heatmap({ data, names }: Props) {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label="Filtrar por hobby">
-        <button type="button" className={chip(source == null)} aria-pressed={source == null} onClick={() => setSource(null)}>
+        <button type="button" className={`${chip(source == null)} px-3`} aria-pressed={source == null} onClick={() => setSource(null)}>
           Todo
         </button>
-        {sources.map((s) => (
-          <button key={s} type="button" className={chip(source === s)} aria-pressed={source === s} onClick={() => setSource(s)}>
-            {names[s]}
+        {/* Solo el ícono; el nombre queda para lectores de pantalla y al pasar el mouse */}
+        {hobbies.map((h) => (
+          <button
+            key={h.source}
+            type="button"
+            className={`${chip(source === h.source)} grid place-items-center p-1.5`}
+            aria-pressed={source === h.source}
+            aria-label={h.short}
+            title={h.short}
+            onClick={() => setSource(h.source)}
+          >
+            <img src={h.icon} alt="" width={26} height={26} className="size-[26px] rounded-md" />
           </button>
         ))}
       </div>

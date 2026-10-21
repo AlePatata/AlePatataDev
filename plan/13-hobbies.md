@@ -197,6 +197,14 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
   (`--color-heat-0…4` en `src/index.css`, para los dos temas) y la grilla de Wordle los roles
   `--color-wordle-hit/near/miss`, validados con el script de `dataviz`.
 
+## Íconos
+
+Cada hobby tiene un PNG de 96×96 en `public/hobby-icons/` (no en `public/hobbies/`, para no chocar con
+la ruta `/hobbies`). Salen en las tarjetas y son el único contenido de los filtros de "Mi año" (el
+nombre queda en `aria-label` y `title`). Son los íconos oficiales, usados solo para identificar cada
+servicio y enlazar al perfil: favicon de Codeforces, `apple-touch-icon` de Monkeytype, `favicon.svg`
+de Trakt pasado a PNG, logo de Wordle de la NYT, e ícono de Twisty Timer (GPL-3) para los cubos.
+
 ## Gatitos
 
 | Emoción | Disparador |

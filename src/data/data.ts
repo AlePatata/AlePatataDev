@@ -71,6 +71,7 @@ export const about = {
 export const hobbies: Hobby[] = [
   {
     source: 'codeforces',
+    icon: '/hobby-icons/codeforces.png',
     short: 'Codeforces',
     name: 'Programación competitiva',
     description: 'Problemas y concursos en Codeforces.',
@@ -78,6 +79,7 @@ export const hobbies: Hobby[] = [
   },
   {
     source: 'monkeytype',
+    icon: '/hobby-icons/monkeytype.png',
     short: 'Typing',
     name: 'Typing',
     description: 'Tests de velocidad en Monkeytype.',
@@ -85,6 +87,7 @@ export const hobbies: Hobby[] = [
   },
   {
     source: 'trakt',
+    icon: '/hobby-icons/trakt.png',
     short: 'Pelis y series',
     name: 'Películas y series',
     description: 'Lo que voy viendo, registrado en Trakt.',
@@ -92,12 +95,14 @@ export const hobbies: Hobby[] = [
   },
   {
     source: 'wordle',
+    icon: '/hobby-icons/wordle.png',
     short: 'Wordle',
     name: 'Wordle',
     description: 'El Wordle diario de la NYT, sin spoilers: solo los colores.',
   },
   {
     source: 'cube',
+    icon: '/hobby-icons/cube.png',
     short: 'Cubos',
     name: 'Cubos Rubik',
     description: 'Tiempos de Twisty Timer.',

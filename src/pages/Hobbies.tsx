@@ -4,9 +4,7 @@ import { Layout } from '../components/Layout';
 import { Footer } from '../components/Footer';
 import { hobbies } from '../data/data';
 import { Heatmap } from '../hobbies/Heatmap';
-import type { HobbiesResponse, HobbySource } from '../shared/hobbies';
-
-const names = Object.fromEntries(hobbies.map((h) => [h.source, h.short])) as Record<HobbySource, string>;
+import type { HobbiesResponse } from '../shared/hobbies';
 
 export function Hobbies() {
   const [data, setData] = useState<HobbiesResponse | null>(null);
@@ -34,15 +32,18 @@ export function Hobbies() {
           {error && <p className="text-ink-muted mb-8">No se pudo cargar la actividad. Intenta de nuevo en un rato.</p>}
           {data && (
             <div className="mb-6">
-              <Heatmap data={data} names={names} />
+              <Heatmap data={data} hobbies={hobbies} />
             </div>
           )}
 
           <div className="grid md:grid-cols-2 gap-6">
             {hobbies.map((hobby) => (
               <article key={hobby.source} className="rounded-2xl bg-card border border-line-soft p-6">
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <h2 className="text-xl font-semibold text-ink">{hobby.name}</h2>
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <div className="flex items-center gap-3">
+                    <img src={hobby.icon} alt="" width={40} height={40} className="size-10 rounded-xl shrink-0" />
+                    <h2 className="text-xl font-semibold text-ink">{hobby.name}</h2>
+                  </div>
                   {hobby.url && (
                     <a
                       href={hobby.url}
