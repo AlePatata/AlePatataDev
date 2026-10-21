@@ -108,6 +108,12 @@ rage clicks, idle, returning to the tab) live in `src/cats/Cats.tsx`, mounted on
 are pure and tested (`detectors.ts`). How much cat (0–100 %, per device in `localStorage`) lives in
 `amount.ts`: it sets the chance each trigger shows a cat and how many fit at once (`CatAmountControl` next
 to the theme toggle). Cat colors are the `cat-*` theme roles; animations use `motion-safe:`.
+Each emotion can also get its own images from Ajustes → Gatitos (see `plan/14-gatitos-imagenes.md`):
+1–8 frames that loop as an animation, a frame duration and custom phrases; without images the drawn
+`CatSvg` shows. Always render a cat with `CatFace`, never `CatSvg` directly. Emotion ids live in
+`src/shared/cats.ts` (shared with the worker). Images are stored in D1 (`cat_frames`), sniffed from their
+bytes (PNG/JPEG/GIF/WebP only, never SVG) and served **publicly** from `/api/public/cats/frames/:id`
+with an immutable cache, because the cats also show on the portfolio; editing is owner-only.
 
 **Frontend app**: `AppShell` calls `/api/me` and builds the nav from the role (owner: Dashboard, Gastos,
 Importar, Wishlist, Ajustes; partner: Wishlist only). Pages live in `src/app/pages/` and are attached via

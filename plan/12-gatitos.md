@@ -10,6 +10,7 @@ de abajo con una emoción y una frase según lo que esté pasando. Sale en el po
 | Ansioso | Todo el sitio | Mover el mouse muy rápido (> 3 px/ms por 200 ms; solo mouse, no dedo) |
 | Enojado | Todo el sitio | 6 clics en menos de 1,2 s |
 | Aburrido | Todo el sitio | 60 s sin mover el mouse, escribir ni hacer scroll |
+| Disociado | Todo el sitio | 3 min sin mover el mouse, escribir ni hacer scroll; se queda hasta que la persona vuelve |
 | Triste | Todo el sitio | Volver a la pestaña después de 30 s fuera |
 | Triste | Gastos, Wishlist | Borrar un movimiento o un item |
 | Curioso | Portafolio | Llegar al footer (máx. cada 2 min) |
@@ -40,13 +41,16 @@ portafolio. Parte en 50 %.
 
 ## Cómo funciona
 
-- `src/cats/emotions.ts`: la lista de emociones con su nombre y frases.
+- `src/cats/emotions.ts`: el nombre y las frases de siempre de cada emoción (la lista de ids está en
+  `src/shared/cats.ts`, compartida con el Worker).
 - `src/cats/catBus.ts`: `feel(emoción, { message?, cooldownMs? })` desde cualquier parte. Cada gatito
   se va solo a los 4,5 s o al tocarlo, y cada emoción espera 20 s antes de repetirse (las acciones de
   la app usan `cooldownMs: 0` porque son a propósito).
 - `src/cats/amount.ts`: cuánto gatito (lo guardado, la probabilidad, cuántos caben y el nombre de cada
   nivel), con tests; `CatAmountControl.tsx` es el botón con el control.
 - `src/cats/detectors.ts`: detectores puros (velocidad del mouse, ráfaga de clics, espera), con tests.
+- `src/cats/CatFace.tsx`: muestra las imágenes de Ajustes si la emoción tiene (ver
+  [14-gatitos-imagenes.md](14-gatitos-imagenes.md)); si no, el dibujo.
 - `src/cats/CatSvg.tsx`: el dibujo; cada emoción cambia ojos, cejas, boca y detalles (sudor, lágrimas,
   billete con alas, corazones, lentes de sol…).
 - `src/cats/Cats.tsx`: escucha los eventos globales y muestra el gatito. Va en `App.tsx`, así sirve en
