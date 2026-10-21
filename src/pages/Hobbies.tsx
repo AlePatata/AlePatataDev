@@ -3,7 +3,10 @@ import { ExternalLink } from 'lucide-react';
 import { Layout } from '../components/Layout';
 import { Footer } from '../components/Footer';
 import { hobbies } from '../data/data';
-import type { HobbiesResponse } from '../shared/hobbies';
+import { Heatmap } from '../hobbies/Heatmap';
+import type { HobbiesResponse, HobbySource } from '../shared/hobbies';
+
+const names = Object.fromEntries(hobbies.map((h) => [h.source, h.short])) as Record<HobbySource, string>;
 
 export function Hobbies() {
   const [data, setData] = useState<HobbiesResponse | null>(null);
@@ -29,6 +32,11 @@ export function Hobbies() {
           </p>
 
           {error && <p className="text-ink-muted mb-8">No se pudo cargar la actividad. Intenta de nuevo en un rato.</p>}
+          {data && (
+            <div className="mb-6">
+              <Heatmap data={data} names={names} />
+            </div>
+          )}
 
           <div className="grid md:grid-cols-2 gap-6">
             {hobbies.map((hobby) => (

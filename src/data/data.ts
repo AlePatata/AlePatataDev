@@ -71,29 +71,34 @@ export const about = {
 export const hobbies: Hobby[] = [
   {
     source: 'codeforces',
+    short: 'Codeforces',
     name: 'Programación competitiva',
     description: 'Problemas y concursos en Codeforces.',
     url: 'https://codeforces.com/profile/AlePatata92',
   },
   {
     source: 'monkeytype',
+    short: 'Typing',
     name: 'Typing',
     description: 'Tests de velocidad en Monkeytype.',
     url: 'https://monkeytype.com/profile/AlePatata92',
   },
   {
     source: 'trakt',
+    short: 'Pelis y series',
     name: 'Películas y series',
     description: 'Lo que voy viendo, registrado en Trakt.',
     url: 'https://trakt.tv/users/alepatata92',
   },
   {
     source: 'wordle',
+    short: 'Wordle',
     name: 'Wordle',
     description: 'El Wordle diario de la NYT, sin spoilers: solo los colores.',
   },
   {
     source: 'cube',
+    short: 'Cubos',
     name: 'Cubos Rubik',
     description: 'Tiempos de Twisty Timer.',
   },

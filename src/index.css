@@ -28,6 +28,11 @@
   --color-shade: var(--theme-shade);
   --color-chart: var(--theme-chart);
   --color-chart-strong: var(--theme-chart-strong);
+  --color-heat-0: var(--theme-heat-0);
+  --color-heat-1: var(--theme-heat-1);
+  --color-heat-2: var(--theme-heat-2);
+  --color-heat-3: var(--theme-heat-3);
+  --color-heat-4: var(--theme-heat-4);
   --color-positive: var(--theme-positive);
   --color-danger: var(--theme-danger);
   --color-danger-soft: var(--theme-danger-soft);
@@ -93,6 +98,12 @@
   --theme-shade: var(--color-rose-900);
   --theme-chart: var(--color-pink-500);
   --theme-chart-strong: var(--color-pink-800);
+  /* Heatmap de /hobbies: 0 = sin actividad; 1–4 validados con dataviz (sobre la card blanca) */
+  --theme-heat-0: var(--color-pink-100);
+  --theme-heat-1: var(--color-pink-400);
+  --theme-heat-2: var(--color-pink-600);
+  --theme-heat-3: var(--color-pink-800);
+  --theme-heat-4: var(--color-pink-950);
   --theme-positive: var(--color-emerald-600);
   --theme-danger: var(--color-rose-700);
   --theme-danger-soft: var(--color-rose-100);
@@ -133,6 +144,12 @@
   --theme-shade: #11111b; /* Crust */
   --theme-chart: color-mix(in oklab, var(--ctp-mauve) 55%, var(--ctp-surface0));
   --theme-chart-strong: var(--ctp-mauve);
+  /* Heatmap: más actividad = más mauve; validado con dataviz sobre Surface0 */
+  --theme-heat-0: #45475a; /* Surface1 */
+  --theme-heat-1: color-mix(in oklab, var(--ctp-mauve) 45%, var(--ctp-surface0));
+  --theme-heat-2: color-mix(in oklab, var(--ctp-mauve) 65%, var(--ctp-surface0));
+  --theme-heat-3: color-mix(in oklab, var(--ctp-mauve) 82%, var(--ctp-surface0));
+  --theme-heat-4: var(--ctp-mauve);
   --theme-positive: #a6e3a1; /* Green */
   --theme-danger: #f38ba8; /* Red */
   --theme-danger-soft: color-mix(in oklab, #f38ba8 15%, var(--ctp-surface0));

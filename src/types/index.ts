@@ -28,6 +28,7 @@ export interface Curriculum {
 export interface Hobby {
   source: HobbySource;
   name: string;
+  short: string; // para el filtro y el tooltip del heatmap
   description: string;
   url?: string; // perfil público
 }
