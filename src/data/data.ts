@@ -1,4 +1,4 @@
-import type { Curriculum, Project } from '../types/index';
+import type { Curriculum, Hobby, Project } from '../types/index';
 
 export const projects: Project[] = [
   {
@@ -67,3 +67,34 @@ export const about = {
   github: 'https://github.com/AlePatata',
   linkedin: 'https://linkedin.com/in/alejandra-campos-urbina'
 };
+// Los datos de cada hobby los trae el Worker (ver plan/13-hobbies.md)
+export const hobbies: Hobby[] = [
+  {
+    source: 'codeforces',
+    name: 'Programación competitiva',
+    description: 'Problemas y concursos en Codeforces.',
+    url: 'https://codeforces.com/profile/AlePatata92',
+  },
+  {
+    source: 'monkeytype',
+    name: 'Typing',
+    description: 'Tests de velocidad en Monkeytype.',
+    url: 'https://monkeytype.com/profile/AlePatata92',
+  },
+  {
+    source: 'trakt',
+    name: 'Películas y series',
+    description: 'Lo que voy viendo, registrado en Trakt.',
+    url: 'https://trakt.tv/users/alepatata92',
+  },
+  {
+    source: 'wordle',
+    name: 'Wordle',
+    description: 'El Wordle diario de la NYT, sin spoilers: solo los colores.',
+  },
+  {
+    source: 'cube',
+    name: 'Cubos Rubik',
+    description: 'Tiempos de Twisty Timer.',
+  },
+];

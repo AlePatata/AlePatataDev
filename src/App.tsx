@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Cats } from './cats/Cats'
+import { Hobbies } from './pages/Hobbies'
 import { Portfolio } from './pages/Portfolio'
 
 // La app se carga aparte: el portafolio no descarga su código
@@ -12,6 +13,7 @@ export function App() {
       <Cats />
       <Routes>
         <Route path="/" element={<Portfolio />} />
+        <Route path="/hobbies" element={<Hobbies />} />
         <Route
           path="/app/*"
           element={

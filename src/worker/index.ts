@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { requireAuth, type AppEnv } from './auth';
 import { categories, rules } from './categories';
 import { settings, summary, trends } from './dashboard';
+import { publicHobbies } from './hobbies';
 import { statements } from './statements';
 import { transactions } from './transactions';
 import { wishlist } from './wishlist';
@@ -14,6 +15,9 @@ app.get('/health', async (c) => {
   await c.env.DB.prepare('SELECT 1').first();
   return c.json({ ok: true });
 });
+
+// Lo de /hobbies, también público (Access tiene un Bypass solo para /api/public/*)
+app.route('/public/hobbies', publicHobbies);
 
 app.use('*', requireAuth);
 

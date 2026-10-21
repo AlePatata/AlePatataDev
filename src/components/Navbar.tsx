@@ -6,9 +6,11 @@ import { CatAmountControl } from '../cats/CatAmountControl';
 import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
-  { href: '#sobre-mi', label: 'Sobre mí' },
-  { href: '#proyectos', label: 'Proyectos' },
-  { href: '#curriculum', label: 'Curriculum' },
+  // Con "/" delante también sirven desde /hobbies
+  { href: '/#sobre-mi', label: 'Sobre mí' },
+  { href: '/#proyectos', label: 'Proyectos' },
+  { href: '/#curriculum', label: 'Curriculum' },
+  { href: '/hobbies', label: 'Hobbies' },
 ];
 
 export function Navbar() {
@@ -17,7 +19,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bar/80 backdrop-blur-md border-b border-line">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="#" className="text-xl font-bold text-accent">
+        <a href="/" className="text-xl font-bold text-accent">
           &lt;div&gt;
         </a>
 

@@ -1,3 +1,5 @@
+import type { HobbySource } from '../shared/hobbies';
+
 export interface Project {
   id: string;
   title: string;
@@ -21,4 +23,11 @@ export interface Curriculum {
   experience: CvEntry[];
   education: CvEntry[];
   skills: string[];
+}
+
+export interface Hobby {
+  source: HobbySource;
+  name: string;
+  description: string;
+  url?: string; // perfil público
 }
