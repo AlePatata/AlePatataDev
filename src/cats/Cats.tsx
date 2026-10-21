@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { dismiss, feel, useCatMoods } from './catBus';
-import { CatSvg } from './CatSvg';
+import { CatFace } from './CatFace';
 import { createBurstCounter, createSpeedMeter } from './detectors';
 import { EMOTIONS } from './emotions';
+import { loadCatLooks } from './looks';
 
 const IDLE_MS = 60_000;
 const AWAY_MS = 30_000;
@@ -59,6 +60,7 @@ function useGlobalTriggers() {
 /** Los gatitos del momento, que se asoman desde la esquina con lo que sienten. Toca uno para cerrarlo. */
 export function Cats() {
   useGlobalTriggers();
+  useEffect(loadCatLooks, []);
   const moods = useCatMoods();
   // En la app los gatitos quedan sobre la barra de abajo del celular
   const inApp = useLocation().pathname.startsWith('/app');
@@ -78,7 +80,7 @@ export function Cats() {
             <span className="block text-xs font-semibold text-accent">{EMOTIONS[mood.emotion].label}</span>
             {mood.message}
           </span>
-          <CatSvg
+          <CatFace
             emotion={mood.emotion}
             className={`w-24 shrink-0 drop-shadow-md ${mood.emotion === 'ansioso' || mood.emotion === 'panico' ? 'motion-safe:animate-cat-shake' : ''} ${mood.emotion === 'curioso' ? '-rotate-12' : ''}`}
           />

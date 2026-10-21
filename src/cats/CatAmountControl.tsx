@@ -1,7 +1,7 @@
 import { Cat } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { CAT_AMOUNT_STEP, catAmountLevel, setCatAmount, useCatAmount } from './amount';
-import { CatSvg } from './CatSvg';
+import { CatFace } from './CatFace';
 
 /**
  * Botón con un gatito al lado del de modo oscuro: abre un panel para elegir de 0 a 100 %
@@ -50,7 +50,7 @@ export function CatAmountControl({ align = 'right' }: { align?: 'left' | 'right'
           className={`absolute top-full mt-2 z-50 w-64 rounded-2xl bg-card border border-line-soft shadow-lg p-4 space-y-3 ${align === 'right' ? 'right-0' : 'left-0'}`}
         >
           <div className="flex items-center gap-3">
-            <CatSvg emotion={level.emotion} className={`w-14 shrink-0 ${amount === 0 ? 'opacity-50' : ''}`} />
+            <CatFace emotion={level.emotion} className={`w-14 shrink-0 ${amount === 0 ? 'opacity-50' : ''}`} />
             <div>
               <p className="text-sm font-semibold text-ink">Cuánto gatito</p>
               <p className="text-sm text-ink-soft">
