@@ -17,6 +17,10 @@ export const EMOTIONS: Record<Emotion, { label: string; messages: string[] }> = 
     label: 'Gatito aburrido',
     messages: ['Zzz… avísame cuando vuelvas', 'Me aburrí y me quedé dormido', '¿Hola? ¿Hay alguien?'],
   },
+  disociado: {
+    label: 'Gatito disociado',
+    messages: ['…', 'Estoy mirando a la nada', '¿Quién soy? ¿Dónde estoy?', 'Mi alma salió a dar una vuelta'],
+  },
   triste: {
     label: 'Gatito triste',
     messages: ['Chao para siempre…', 'Ni siquiera le dijiste adiós'],

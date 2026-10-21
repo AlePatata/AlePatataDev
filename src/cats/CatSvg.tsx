@@ -12,7 +12,7 @@ const HEART = 'var(--color-danger)';
 const MONEY = 'var(--color-positive)';
 const POP = 'var(--color-accent)';
 
-type Eyes = 'dot' | 'big' | 'wide' | 'closed' | 'tired' | 'heart' | 'dollar' | 'none';
+type Eyes = 'dot' | 'big' | 'wide' | 'closed' | 'tired' | 'heart' | 'dollar' | 'spiral' | 'none';
 type Brows = 'angry' | 'sad';
 type Mouth = 'w' | 'smile' | 'frown' | 'o' | 'scream' | 'wavy' | 'flat' | 'grr';
 type Extra = 'sweat' | 'tears' | 'zzz' | 'vein' | 'question' | 'hearts' | 'bill' | 'sparkles' | 'sunglasses' | 'paws' | 'shakeLines';
@@ -28,6 +28,7 @@ const FACES: Record<Emotion, Face> = {
   ansioso: { eyes: 'wide', brows: 'sad', mouth: 'wavy', extras: ['sweat', 'shakeLines'] },
   enojado: { eyes: 'dot', brows: 'angry', mouth: 'grr', extras: ['vein'] },
   aburrido: { eyes: 'closed', mouth: 'flat', extras: ['zzz'] },
+  disociado: { eyes: 'spiral', mouth: 'flat' },
   triste: { eyes: 'big', brows: 'sad', mouth: 'frown', extras: ['tears'] },
   curioso: { eyes: 'big', mouth: 'o', extras: ['question'] },
   endeudado: { eyes: 'tired', mouth: 'wavy', extras: ['sweat', 'bill'] },
@@ -94,6 +95,16 @@ function Eye({ x, kind }: { x: number; kind: Eyes }) {
             $
           </text>
         </>
+      );
+    case 'spiral':
+      // Espiral que gira despacito, la mirada perdida
+      return (
+        <path
+          d={`M${x - 1} ${y} a1.5 1.5 0 0 1 3 0 a3 3 0 0 1 -6 0 a4.5 4.5 0 0 1 9 0 a6 6 0 0 1 -12 0 a7.5 7.5 0 0 1 15 0`}
+          {...stroke}
+          strokeWidth={2}
+          className="motion-safe:animate-spin [animation-duration:3s] [transform-box:fill-box] origin-center"
+        />
       );
     case 'none':
       return null;

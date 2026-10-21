@@ -4,6 +4,7 @@ export const EMOTION_IDS = [
   'ansioso',
   'enojado',
   'aburrido',
+  'disociado',
   'triste',
   'curioso',
   'endeudado',

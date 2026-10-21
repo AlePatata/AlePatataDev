@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { dismiss, feel, useCatMoods } from './catBus';
+import { dismiss, dismissSticky, feel, useCatMoods } from './catBus';
 import { CatFace } from './CatFace';
 import { createBurstCounter, createSpeedMeter } from './detectors';
 import { EMOTIONS } from './emotions';
 import { loadCatLooks } from './looks';
 
 const IDLE_MS = 60_000;
+const DISSOCIATE_MS = 180_000;
 const AWAY_MS = 30_000;
 
 /** Emociones que salen de cómo se usa la página, en el portafolio y en la app. */
@@ -15,11 +16,19 @@ function useGlobalTriggers() {
     const fast = createSpeedMeter();
     const rage = createBurstCounter();
     let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    let dissociateTimer: ReturnType<typeof setTimeout> | undefined;
     let hiddenAt: number | undefined;
 
-    const restartIdle = () => {
+    const stopIdle = () => {
       clearTimeout(idleTimer);
+      clearTimeout(dissociateTimer);
+    };
+    const restartIdle = () => {
+      // Volvió: el gatito disociado, que la estaba esperando, se va
+      dismissSticky();
+      stopIdle();
       idleTimer = setTimeout(() => feel('aburrido'), IDLE_MS);
+      dissociateTimer = setTimeout(() => feel('disociado', { sticky: true }), DISSOCIATE_MS);
     };
     const onMove = (e: PointerEvent) => {
       restartIdle();
@@ -33,7 +42,7 @@ function useGlobalTriggers() {
     const onVisibility = () => {
       if (document.hidden) {
         hiddenAt = Date.now();
-        clearTimeout(idleTimer);
+        stopIdle();
       } else {
         if (hiddenAt !== undefined && Date.now() - hiddenAt > AWAY_MS) feel('triste', { message: '¿Dónde estabas? Te extrañé' });
         restartIdle();
@@ -47,7 +56,7 @@ function useGlobalTriggers() {
     window.addEventListener('scroll', restartIdle, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
     return () => {
-      clearTimeout(idleTimer);
+      stopIdle();
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerdown', onDown);
       window.removeEventListener('keydown', restartIdle);
