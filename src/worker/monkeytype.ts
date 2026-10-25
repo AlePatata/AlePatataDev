@@ -39,24 +39,25 @@ export async function syncMonkeytype(env: Env & Secrets): Promise<number> {
   const last = await env.DB.prepare('SELECT MAX(timestamp) AS ts FROM mt_results').first<{ ts: number | null }>();
   const query = last?.ts ? `?onOrAfterTimestamp=${last.ts + 1}` : '?limit=1000';
   const [results, timePbs, wordsPbs, stats, streak] = await Promise.all([
-    mtJson<ApiResult[]>(`/results${query}`, key),
-    mtJson<ApiPbs>('/users/personalBests?mode=time', key),
-    mtJson<ApiPbs>('/users/personalBests?mode=words', key),
-    mtJson<{ completedTests: number; startedTests: number; timeTyping: number }>('/users/stats', key),
-    mtJson<{ length: number; maxLength: number }>('/users/streak', key),
+    mtJson<ApiResult[] | null>(`/results${query}`, key),
+    mtJson<ApiPbs | null>('/users/personalBests?mode=time', key),
+    mtJson<ApiPbs | null>('/users/personalBests?mode=words', key),
+    mtJson<{ completedTests?: number; startedTests?: number; timeTyping?: number } | null>('/users/stats', key),
+    // Una cuenta nueva (sin racha todavía) recibe `data: null`
+    mtJson<{ length: number; maxLength: number } | null>('/users/streak', key),
   ]);
 
-  const tests = results.map(toTypingTest);
+  const tests = (results ?? []).map(toTypingTest);
   const insert = env.DB.prepare(
     `INSERT OR IGNORE INTO mt_results (id, timestamp, date, wpm, raw, acc, consistency, mode, mode2)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   );
   const snapshot: Snapshot = {
     pbs: [...bestPbs('time', timePbs), ...bestPbs('words', wordsPbs)],
-    completedTests: stats.completedTests,
-    startedTests: stats.startedTests,
-    secondsTyping: Math.round(stats.timeTyping),
-    streak: { current: streak.length, max: streak.maxLength },
+    completedTests: stats?.completedTests ?? 0,
+    startedTests: stats?.startedTests ?? 0,
+    secondsTyping: Math.round(stats?.timeTyping ?? 0),
+    streak: { current: streak?.length ?? 0, max: streak?.maxLength ?? 0 },
   };
   await env.DB.batch([
     ...tests.map((t) => insert.bind(t.id, t.timestamp, t.date, t.wpm, t.raw, t.acc, t.consistency, t.mode, t.mode2)),
