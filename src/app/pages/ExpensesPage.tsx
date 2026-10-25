@@ -1,4 +1,4 @@
-import { Plus, Search, Sparkles, Trash2 } from 'lucide-react';
+import { Bot, Plus, Search, Sparkles, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { Category } from '../../shared/summary';
@@ -78,6 +78,23 @@ export function ExpensesPage() {
   };
   // Con el filtro "Sin categoría", cada fila trae el selector a la vista para categorizar rápido
   const quickMode = category === 'none';
+  const [claude, setClaude] = useState<{ running?: boolean; message?: string; error?: string }>({});
+
+  /** Claude elige una categoría para los sin categoría (sin los traspasos). Ver plan/15-categorias-claude.md. */
+  async function categorizeWithClaude() {
+    setClaude({ running: true });
+    try {
+      const { categorized } = await api<{ categorized: number }>('/api/transactions/categorize', { method: 'POST' });
+      setClaude({
+        message: categorized
+          ? `Claude categorizó ${categorized} ${categorized === 1 ? 'movimiento' : 'movimientos'}. Puedes cambiar cualquiera a mano.`
+          : 'Claude no encontró nada que pudiera categorizar con confianza.',
+      });
+      if (categorized) refresh();
+    } catch (e) {
+      setClaude({ error: e instanceof Error ? e.message : String(e) });
+    }
+  }
 
   async function quickCategorize(t: Transaction, categoryId: number | null) {
     await api(`/api/transactions/${t.id}`, { method: 'PATCH', body: { categoryId } });
@@ -149,12 +166,24 @@ export function ExpensesPage() {
                 </button>
               )}
         </p>
-        <button
-          onClick={() => setEditing('new')}
-          className="flex items-center gap-2 px-4 py-2 bg-accent text-on-accent rounded-full text-sm font-medium hover:bg-accent-hover transition-colors"
-        >
-          <Plus size={16} /> Agregar movimiento
-        </button>
+        <div className="flex flex-wrap gap-2">
+          {quickMode && (
+            <button
+              onClick={categorizeWithClaude}
+              disabled={claude.running}
+              title="Los traspasos no se mandan: traen nombres de personas"
+              className="flex items-center gap-2 px-4 py-2 border border-line text-ink-soft rounded-full text-sm font-medium hover:text-accent hover:border-accent disabled:opacity-50 transition-colors"
+            >
+              <Bot size={16} /> {claude.running ? 'Categorizando…' : 'Categorizar con Claude'}
+            </button>
+          )}
+          <button
+            onClick={() => setEditing('new')}
+            className="flex items-center gap-2 px-4 py-2 bg-accent text-on-accent rounded-full text-sm font-medium hover:bg-accent-hover transition-colors"
+          >
+            <Plus size={16} /> Agregar movimiento
+          </button>
+        </div>
       </div>
 
       {editing === 'new' && (
@@ -163,6 +192,8 @@ export function ExpensesPage() {
         </div>
       )}
 
+      {claude.message && <p className="text-sm text-ink-soft bg-soft rounded-lg px-4 py-3 mb-3">{claude.message}</p>}
+      {claude.error && <p className="text-sm text-danger bg-danger-soft rounded-lg px-4 py-3 mb-3">{claude.error}</p>}
       {result?.error && <p className="text-sm text-danger bg-danger-soft rounded-lg px-4 py-3">{result.error}</p>}
 
       <ul className={`bg-card rounded-2xl border border-line-soft shadow-sm divide-y divide-line-soft ${loading ? 'opacity-60' : ''}`}>

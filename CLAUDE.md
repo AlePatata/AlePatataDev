@@ -89,7 +89,10 @@ categorized.
 **Categories, rules and the dashboard** (see `plan/08-fase-2.md`): categories have a `kind` (`expense`,
 `refund` = subtracts from spending, `income` = actual income). Rules are "description contains pattern →
 category"; the longest matching pattern wins (`src/worker/rules.ts`), and they apply on import and via
-`POST /api/rules/apply`. All monthly math lives in the pure `monthSummary` / `trend`
+`POST /api/rules/apply`. What the rules miss goes to Claude (`src/worker/categorize.ts`, see
+`plan/15-categorias-claude.md`): after each import and from Gastos → "Categorizar con Claude"; only
+descriptions and charge/credit are sent, never `traspaso` rows (they carry people's names), and the
+answer is re-checked by the pure, tested `categorizeLogic.ts`. Needs the `ANTHROPIC_API_KEY` secret. All monthly math lives in the pure `monthSummary` / `trend`
 (`src/worker/summary.ts`, tested) and is served by `/api/summary` and `/api/trends`; "today" is computed in
 Chile time. Seeded rules in migrations must stay generic: rules with people's names are created from the
 app and live only in D1. Charts are hand-written SVG/CSS (no chart library); colors were validated with

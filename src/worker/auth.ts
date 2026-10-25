@@ -14,6 +14,8 @@ export interface Secrets {
   MONKEYTYPE_APE_KEY?: string;
   /** ID con que csTimer exporta a su servidor. Es una contraseña: quien lo tenga lee y sobrescribe mis tiempos. */
   CSTIMER_ID?: string;
+  /** API de Claude, para categorizar lo que las reglas no reconocen. Ver plan/15-categorias-claude.md. */
+  ANTHROPIC_API_KEY?: string;
 }
 
 export type AppEnv = {
