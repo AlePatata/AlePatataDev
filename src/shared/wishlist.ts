@@ -16,9 +16,11 @@ export interface WishlistItem {
   boughtAt: string | null;
 }
 
+/** Quién agregó cada item, para "Agregado por …". */
+export const AUTHOR_NAMES: Record<WishlistItem['createdBy'], string> = { owner: 'Ale', partner: 'Felipe' };
+
 export interface WishlistResponse {
   items: WishlistItem[]; // pendientes por prioridad, después comprados (más reciente primero)
-  names: { owner: string | null; partner: string | null };
 }
 
 export interface ItemInput {

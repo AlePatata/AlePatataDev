@@ -31,7 +31,5 @@ describe('validateSettings', () => {
     expect(validateSettings({})).toBeNull();
     expect(validateSettings({ monthlyIncome: -1 })).not.toBeNull();
     expect(validateSettings({ monthlyBudget: 10.5 })).not.toBeNull();
-    expect(validateSettings({ ownerName: 'Ale', partnerName: 'Felipe' })).toBeNull();
-    expect(validateSettings({ partnerName: 'x'.repeat(41) })).toBe('Nombre inválido');
   });
 });

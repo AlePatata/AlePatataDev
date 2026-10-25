@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import type { ItemInput, ProductMeta, WishlistItem, WishlistResponse } from '../shared/wishlist';
 import type { AppEnv } from './auth';
-import { loadSettings } from './db';
 import { isSafePublicUrl, parseProductMeta, validateItem, validateReorder } from './wishlistLogic';
 
 export const wishlist = new Hono<AppEnv>();
@@ -13,14 +12,11 @@ const cleanText = (v: string | null | undefined) => (v == null || !v.trim() ? nu
 
 /** Pendientes por prioridad, después los comprados (el más reciente primero). */
 wishlist.get('/', async (c) => {
-  const [{ results }, settings] = await Promise.all([
-    c.env.DB.prepare(
-      `SELECT ${COLUMNS} FROM wishlist_items
-        ORDER BY status = 'bought', CASE WHEN status = 'pending' THEN priority END, bought_at DESC, id`,
-    ).all<WishlistItem>(),
-    loadSettings(c.env.DB),
-  ]);
-  return c.json<WishlistResponse>({ items: results, names: { owner: settings.ownerName, partner: settings.partnerName } });
+  const { results } = await c.env.DB.prepare(
+    `SELECT ${COLUMNS} FROM wishlist_items
+      ORDER BY status = 'bought', CASE WHEN status = 'pending' THEN priority END, bought_at DESC, id`,
+  ).all<WishlistItem>();
+  return c.json<WishlistResponse>({ items: results });
 });
 
 /** Un item nuevo queda al final de los pendientes. Se guarda el rol de quien lo agregó, no su email. */
