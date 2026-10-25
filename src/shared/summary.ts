@@ -18,8 +18,6 @@ export interface RuleInfo {
 export interface Settings {
   monthlyIncome: number | null;
   monthlyBudget: number | null;
-  ownerName: string | null; // para "Agregado por …" en la wishlist
-  partnerName: string | null;
 }
 
 export interface CategoryTotal {

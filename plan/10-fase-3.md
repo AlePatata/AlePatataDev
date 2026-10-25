@@ -44,8 +44,8 @@ Se usa la tabla `wishlist_items` que ya existe (sin migración):
 
 ### Nombres
 
-En Ajustes: "Tu nombre" y "Nombre de tu pololo" (`settings`: `owner_name`, `partner_name`). `GET /api/wishlist`
-devuelve los nombres junto con los items, porque el pololo no tiene acceso a Ajustes.
+Antes se configuraban en Ajustes (`owner_name`, `partner_name`); ahora son fijos en `AUTHOR_NAMES`
+(`src/shared/wishlist.ts`), porque no van a cambiar.
 
 ## Paso 1 — Lógica pura y tests (commit 1)
 
@@ -59,11 +59,10 @@ el nombre de la tienda).
 
 ## Paso 2 — API (commit 2)
 
-- `GET /api/wishlist` → `{ items, names }` (pendientes por prioridad; comprados por fecha de compra).
+- `GET /api/wishlist` → `{ items }` (pendientes por prioridad; comprados por fecha de compra).
 - `POST /api/wishlist`, `PATCH /api/wishlist/:id`, `DELETE /api/wishlist/:id`,
   `POST /api/wishlist/reorder` con `{ ids }` y `POST /api/wishlist/preview` (ambos).
 - Marcar como comprado = `PATCH` con `status: 'bought'` (guarda `bought_at`); se puede deshacer.
-- `PUT /api/settings` acepta `ownerName` y `partnerName`.
 
 Hecho 2026-10-16. Probado en local como dueña y como pololo: el pololo agrega, reordena, marca como
 comprado y borra; `/api/transactions` y `/api/settings` le responden `403`. La lectura de links trae nombre

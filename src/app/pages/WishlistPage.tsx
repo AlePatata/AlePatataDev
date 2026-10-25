@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUp, Check, ExternalLink, Gift, Link2, Pencil, Plus, RotateCcw, ShoppingBag, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { ItemInput, ProductMeta, WishlistItem, WishlistResponse } from '../../shared/wishlist';
+import { AUTHOR_NAMES, type ItemInput, type ProductMeta, type WishlistItem, type WishlistResponse } from '../../shared/wishlist';
 import { feel } from '../../cats/catBus';
 import { api } from '../api';
 import { formatCLP } from '../format';
@@ -46,7 +46,7 @@ export function WishlistPage() {
   const pending = data?.items.filter((i) => i.status === 'pending') ?? [];
   const bought = data?.items.filter((i) => i.status === 'bought') ?? [];
   const total = pending.reduce((sum, i) => sum + i.price, 0);
-  const author = (i: WishlistItem) => data?.names[i.createdBy] ?? (i.createdBy === 'owner' ? 'Ale' : 'tu pololo');
+  const author = (i: WishlistItem) => AUTHOR_NAMES[i.createdBy];
 
   const setStatus = (item: WishlistItem, status: WishlistItem['status']) =>
     run(() => api(`/api/wishlist/${item.id}`, { method: 'PATCH', body: { status } }));

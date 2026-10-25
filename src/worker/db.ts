@@ -16,8 +16,6 @@ export async function loadRules(db: D1Database): Promise<Rule[]> {
 const SETTING_KEYS = {
   monthlyIncome: 'monthly_income',
   monthlyBudget: 'monthly_budget',
-  ownerName: 'owner_name',
-  partnerName: 'partner_name',
 } as const;
 
 export async function loadSettings(db: D1Database): Promise<Settings> {
@@ -30,8 +28,6 @@ export async function loadSettings(db: D1Database): Promise<Settings> {
   return {
     monthlyIncome: money(SETTING_KEYS.monthlyIncome),
     monthlyBudget: money(SETTING_KEYS.monthlyBudget),
-    ownerName: get(SETTING_KEYS.ownerName),
-    partnerName: get(SETTING_KEYS.partnerName),
   };
 }
 
@@ -43,7 +39,7 @@ export async function saveSettings(db: D1Database, settings: Partial<Settings>):
     .filter((k) => settings[k] !== undefined)
     .map((k) => {
       const v = settings[k];
-      return upsert.bind(SETTING_KEYS[k], v == null || (typeof v === 'string' && !v.trim()) ? null : String(v).trim());
+      return upsert.bind(SETTING_KEYS[k], v == null ? null : String(v));
     });
   if (changes.length) await db.batch(changes);
 }
