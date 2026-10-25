@@ -45,6 +45,7 @@ comparto con mi pololo.
 | [12-gatitos.md](12-gatitos.md) | Gatitos con emociones: qué las dispara y cómo funciona |
 | [13-hobbies.md](13-hobbies.md) | Página pública de hobbies: Codeforces, Monkeytype, Trakt, Wordle y csTimer |
 | [14-gatitos-imagenes.md](14-gatitos-imagenes.md) | Gatitos con imágenes propias y animadas, configurables desde Ajustes |
+| [15-categorias-claude.md](15-categorias-claude.md) | Categorizar con Claude los gastos que las reglas no reconocen |
 
 ## Estado
 
