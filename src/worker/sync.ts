@@ -1,5 +1,6 @@
 import type { HobbySource, SyncStatus } from '../shared/hobbies';
 import type { Secrets } from './auth';
+import { syncCube } from './cstimer';
 import { todayInChile } from './db';
 import { syncMonkeytype } from './monkeytype';
 import { syncWordle } from './wordle';
@@ -10,6 +11,7 @@ type Adapter = (env: Env & Secrets, today: string) => Promise<unknown>;
 const adapters: Partial<Record<HobbySource, Adapter>> = {
   monkeytype: (env) => syncMonkeytype(env),
   wordle: (env, today) => syncWordle(env, today),
+  cube: (env) => syncCube(env),
 };
 
 export const syncableSources = () => Object.keys(adapters) as HobbySource[];

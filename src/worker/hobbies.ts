@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
-import { HOBBY_SOURCES, type ActivityDay, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type WordleDetail } from '../shared/hobbies';
+import { HOBBY_SOURCES, type ActivityDay, type CubeDetail, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type WordleDetail } from '../shared/hobbies';
 import type { AppEnv } from './auth';
+import { loadCube } from './cstimer';
 import { todayInChile } from './db';
 import { rangeStart } from './hobbiesLogic';
 import { loadMonkeytype } from './monkeytype';
@@ -43,6 +44,12 @@ publicHobbies.get('/wordle', async (c) => {
 publicHobbies.get('/monkeytype', async (c) => {
   c.header('Cache-Control', 'public, max-age=300');
   return c.json<MonkeytypeDetail>(await loadMonkeytype(c.env.DB));
+});
+
+/** Detalle de los cubos: PB y medias por puzzle, y los últimos 100 tiempos de cada uno. */
+publicHobbies.get('/cube', async (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json<CubeDetail>(await loadCube(c.env.DB));
 });
 
 /** Privado (solo dueña): estado de las sincronizaciones y "Sincronizar ahora". */

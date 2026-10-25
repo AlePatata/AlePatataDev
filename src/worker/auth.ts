@@ -12,6 +12,8 @@ export interface Secrets {
   NYT_COOKIE?: string;
   /** ApeKey de Monkeytype (monkeytype.com → Account → Ape Keys), solo lectura. */
   MONKEYTYPE_APE_KEY?: string;
+  /** ID con que csTimer exporta a su servidor. Es una contraseña: quien lo tenga lee y sobrescribe mis tiempos. */
+  CSTIMER_ID?: string;
 }
 
 export type AppEnv = {
