@@ -19,6 +19,7 @@ de abajo con una emoción y una frase según lo que esté pasando. Sale en el po
 | En pánico | Dashboard | El mes en curso se pasó del presupuesto (máx. cada 10 min) |
 | Orgulloso | Dashboard | El mes en curso va dentro del presupuesto (máx. cada 10 min) |
 | Enamorado | Wishlist | Agregar un item |
+| Enamorado | App, solo en la cuenta del pololo | Al entrar y después cada 30–60 s con la pestaña a la vista, sin sorteo (`usePartnerLove`); no sale si deja "cuánto gatito" en 0 % |
 
 Los movimientos internos (pago de tarjeta, transferencias propias) no despiertan a ningún gatito.
 
