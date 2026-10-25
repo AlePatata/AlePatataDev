@@ -1,6 +1,7 @@
 import { Heart, LayoutDashboard, Receipt, Settings, Upload, type LucideIcon } from 'lucide-react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { CatAmountControl } from '../cats/CatAmountControl';
+import { usePartnerLove } from '../cats/usePartnerLove';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ComingSoon } from './ComingSoon';
 import { ExpensesPage } from './pages/ExpensesPage';
@@ -28,6 +29,7 @@ const sections: Section[] = [
 
 export default function AppShell() {
   const { me, error } = useMe();
+  usePartnerLove(me?.role === 'partner');
 
   if (error) {
     return (
