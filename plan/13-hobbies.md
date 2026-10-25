@@ -16,7 +16,7 @@ Cada hobby es un **adaptador** que trae sus datos y los deja en el mismo formato
 | Monkeytype | API (cron) | `GET /results` con ApeKey; `/users/{name}/profile` es público | Secreto `MONKEYTYPE_APE_KEY` |
 | Películas y series | API (cron) | Trakt: historial y notas de un perfil público | Secreto `TRAKT_CLIENT_ID` |
 | Wordle | API no oficial (cron) | Partida guardada en la cuenta de la NYT | Secreto `NYT_COOKIE` |
-| Rubik | Importar archivo | Respaldo de Twisty Timer | — |
+| Rubik | API no oficial (cron) | Lo que csTimer exporta a su servidor | Secreto `CSTIMER_ID` |
 
 ### Codeforces
 
@@ -108,28 +108,30 @@ Partidas `IN_PROGRESS` no se guardan: el cron las vuelve a pedir en la siguiente
 - **Probar primero** (commit 7): un `wrangler dev` con la cookie que pida la partida de hoy. Si la NYT
   responde, se sigue; si no, Wordle queda solo con el plan B.
 
-### Rubik: respaldo de Twisty Timer
+### Rubik: csTimer, exportado a su servidor
 
-Twisty Timer es open source (`github.com/aricneto/TwistyTimer`); el formato sale de
-`MainActivity.java`. En la app: menú → Exportar/Importar → **Respaldo** (todos los puzzles), y el
-`.txt` se pasa al computador o se elige desde el celular.
+Antes era importar el respaldo de Twisty Timer, pero Twisty no tiene nube: los tiempos viven solo en el
+celular y habría que exportar a mano cada vez. Me cambié a **csTimer**, que sube los tiempos a
+cstimer.net bajo un ID y lo hace solo cada 50 resoluciones (Opciones → Auto Export → "a ID"). El
+formato sale de `src/js/export.js` (`github.com/cs0x7f/cstimer`, GPL-3).
 
-```
-Puzzle,Category,Time(millis),Date(millis),Scramble,Penalty,Comment
-"333";"Normal";"12340";"1760000000000";"R U R' ...";"0";""
-```
-
-- La cabecera va separada por **comas** pero las filas por **punto y coma**, todo entre comillas.
-- `Puzzle`: `222` … `777`, `mega`, `pyra`, `skewb`, `clock`, `sq1`. `Category` es el subtipo
-  (por defecto `Normal`).
-- `Time` en ms y **ya incluye** el +2. `Date` en ms desde 1970.
-- `Penalty`: `0` nada, `1` +2, `2` DNF. Las filas con `10` no son resoluciones (Twisty las usa para
-  crear subtipos): se ignoran.
-- La exportación "externa" (un solo puzzle, tiempos como texto) no se usa: pierde el +2.
-
-Se lee en el navegador como la cartola (`parseTwistyBackup`, puro y con tests sobre un fixture
-inventado), con vista previa y `dryRun`. La clave para no duplicar es `puzzle + category + date`.
-Un respaldo puede tener miles de filas: se guardan en tandas.
+- Es una API no oficial: `POST https://cstimer.net/userdata2.php` con el form `id=<ID>&offset=0`
+  devuelve `{retcode, data}`; `data` es un JSON comprimido con LZString
+  (`decompressFromEncodedURIComponent`). Trae `properties.sessionData` (nombre y `opt.scrType` de
+  cada sesión; sin `scrType` es 3x3) y `session1…N`: listas de hashes de tandas de 1000 tiempos.
+- Las tandas se piden con `id=<ID>&ids=slice<hash>,slice<hash>…` → `{retcode, datas: {slice…: …}}`,
+  cada una también con LZString.
+- Cada tiempo: `[[penalización, ms, …fases], scramble, comentario, fecha en segundos]`. Penalización
+  `0` nada, `2000` +2 (se suma), `-1` DNF.
+- `retcode` `400` = ID inválido (solo letras y números), `404` = no hay nada subido con ese ID.
+- **El ID es una contraseña**: quien lo tenga lee y sobrescribe mis tiempos. Va como secreto
+  `CSTIMER_ID`, nunca en el repo.
+- Cada 2 h, con el cron. Si el `data` no cambió (se compara su SHA-256, guardado en
+  `hobby_snapshots`), no se hace nada más; si cambió, se reemplazan todos los tiempos (así también se
+  borran los que borré en csTimer) y los días de `activity`. Los tiempos van en un solo `INSERT …
+  SELECT FROM json_each(?)` por tanda, para no gastar una consulta por fila.
+- No se guardan scrambles ni comentarios.
+- No es en tiempo real: llega cuando csTimer exporta (o cuando aprieto "Exportar al servidor").
 
 ## Qué muestra cada tarjeta
 
@@ -180,7 +182,7 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
   antes de mergear: `curl` sin sesión a `/api/public/hobbies` → 200 y a `/api/me` → 302/401.
 - Lo público solo devuelve lo que ya es público (Codeforces, Monkeytype, Trakt) o inofensivo (colores
   de wordle, tiempos). Nada de la app de finanzas pasa por ahí, y nunca el email ni las palabras.
-- **Escritura** (importar Twisty, pegar un wordle, recorrer el historial de Wordle, sincronizar a mano,
+- **Escritura** (pegar un wordle, recorrer el historial de Wordle, sincronizar a mano,
   ajustes): rutas normales detrás de Access, solo para la dueña.
 - **Cron**: `"triggers": { "crons": ["0 */2 * * *"] }` en `wrangler.jsonc` y un handler `scheduled`
   junto al `fetch` de Hono. Cada 2 h Monkeytype y Wordle; cada 3.ª pasada (6 h) Codeforces y Trakt.
@@ -196,8 +198,7 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
   máxima, la distribución de intentos y los 7 días anteriores en chico.
 - **Ajustes → Hobbies** (privado, solo dueña; en vez de una página `/app/hobbies`, para no sumar una
   sexta pestaña a la barra del celular): estado de cada fuente (última sincronización, error) y
-  "Sincronizar ahora". Ahí irán también traer el historial de Wordle, pegar un wordle (plan B) e
-  importar el respaldo de Twisty.
+  "Sincronizar ahora". Ahí irán también traer el historial de Wordle, pegar un wordle (plan B).
 - Gráficos en SVG a mano, como el dashboard. El heatmap usa una escala secuencial nueva
   (`--color-heat-0…4` en `src/index.css`, para los dos temas) y la grilla de Wordle los roles
   `--color-wordle-hit/near/miss`, validados con el script de `dataviz`.
@@ -208,7 +209,7 @@ Cada hobby tiene un PNG de 96×96 en `public/hobby-icons/` (no en `public/hobbie
 la ruta `/hobbies`). Salen en las tarjetas y son el único contenido de los filtros de "Mi año" (el
 nombre queda en `aria-label` y `title`). Son los íconos oficiales, usados solo para identificar cada
 servicio y enlazar al perfil: favicon de Codeforces, `apple-touch-icon` de Monkeytype, `favicon.svg`
-de Trakt pasado a PNG, logo de Wordle de la NYT, e ícono de Twisty Timer (GPL-3) para los cubos.
+de Trakt pasado a PNG, logo de Wordle de la NYT, y `cstimer512x512.png` de csTimer (GPL-3) para los cubos.
 
 ## Gatitos
 
@@ -241,12 +242,12 @@ de Trakt pasado a PNG, logo de Wordle de la NYT, e ícono de Twisty Timer (GPL-3
    amarillo muy parecidos): se usan `#5ba754`/`#cdaf33`/`#787c7e` en claro y `#3c8836`/`#ac942f`/Overlay1
    en oscuro, y las casillas amarillas llevan un punto para no depender solo del color.
 8. Trakt: adaptador, pósters cacheados, tarjeta.
-9. Twisty Timer: `parseTwistyBackup` y las medias WCA con tests, importación, tarjeta.
+9. csTimer: lectura del servidor y las medias WCA con tests, sincronización, tarjeta.
 10. Gatitos y `CLAUDE.md`.
 
 **Listo cuando:** sin sesión, `/hobbies` muestra el heatmap con los cinco hobbies; resuelvo un
 problema en Codeforces y aparece solo en menos de 6 h; juego el Wordle y en menos de 2 h sale mi grilla
-de colores sin ninguna letra; importo dos veces el mismo respaldo de Twisty y no se duplica nada.
+de colores sin ninguna letra; resuelvo en csTimer y, cuando exporta, mis tiempos aparecen sin duplicarse.
 
 ## Lo que tengo que hacer yo
 
@@ -257,7 +258,8 @@ de colores sin ninguna letra; importo dos veces el mismo respaldo de Twisty y no
       computador; falta `npx wrangler secret put NYT_COOKIE`, con el valor `NYT-S=...`).
 - [ ] Opcional: ocultar el email en el perfil de Codeforces.
 - [x] Crear en Access la aplicación Bypass "public hobbies" para `/api/public/*` (falta probarla después del merge).
-- [ ] Exportar el respaldo de Twisty Timer.
+- [x] Exportar csTimer al servidor con un ID y activar Auto Export (falta
+      `npx wrangler secret put CSTIMER_ID`).
 
 ## Ideas para después
 
