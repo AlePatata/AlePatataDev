@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import type { AccountFilter, Transaction, TransactionInput, TransactionsResponse } from '../shared/transactions';
 import type { AppEnv } from './auth';
+import { categorizeWithClaude } from './categorize';
 import { ACCOUNT_FILTERS, monthRange, monthTotals, validateTransaction } from './transactionsLogic';
 
 export const transactions = new Hono<AppEnv>();
@@ -74,6 +75,17 @@ transactions.post('/', async (c) => {
 });
 
 /** Editar fecha, descripción, monto, categoría o "interno". La `dedupe_key` no cambia: sigue reconociendo la cartola. */
+/** `POST /api/transactions/categorize`: Claude categoriza los que quedaron sin categoría. */
+transactions.post('/categorize', async (c) => {
+  try {
+    return c.json({ categorized: await categorizeWithClaude(c.env) });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error(`Categorizar con Claude falló: ${message}`);
+    return c.json({ error: message }, 502);
+  }
+});
+
 transactions.patch('/:id{[0-9]+}', async (c) => {
   const body = await c.req.json().catch(() => null);
   const error = validateTransaction(body, true);

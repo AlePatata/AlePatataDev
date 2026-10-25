@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import type { ImportRequest, ImportResponse } from '../shared/import';
 import type { AppEnv } from './auth';
+import { categorizeWithClaude } from './categorize';
 import { dedupeKeys } from './dedupe';
 import { loadRules } from './db';
 import { classifyRows, searchRange, validateImport, type ExistingRow } from './importLogic';
@@ -70,5 +71,9 @@ statements.post('/commit', async (c) => {
   ]);
 
   const inserted = results.slice(1).reduce((n, r) => n + (r.meta.changes ?? 0), 0);
+  // Lo que las reglas no reconocieron lo intenta Claude, sin hacer esperar la respuesta
+  if (inserted && c.env.ANTHROPIC_API_KEY) {
+    c.executionCtx.waitUntil(categorizeWithClaude(c.env).catch((e) => console.error(`Categorizar con Claude falló: ${e}`)));
+  }
   return c.json<ImportResponse>({ statuses, inserted, skipped: skipped + toInsert.length - inserted });
 });
