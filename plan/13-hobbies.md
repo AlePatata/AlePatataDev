@@ -17,6 +17,7 @@ Cada hobby es un **adaptador** que trae sus datos y los deja en el mismo formato
 | Películas y series | API (cron) | Trakt: historial y notas de un perfil público | Secreto `TRAKT_CLIENT_ID` |
 | Wordle | API no oficial (cron) | Partida guardada en la cuenta de la NYT | Secreto `NYT_COOKIE` |
 | Rubik | API no oficial (cron) | Lo que csTimer exporta a su servidor | Secreto `CSTIMER_ID` |
+| Vibe coding | API de GitHub (cron) | Los commits de este repo hechos con Claude Code | Opcional `GITHUB_TOKEN` |
 
 ### Codeforces
 
@@ -133,6 +134,24 @@ formato sale de `src/js/export.js` (`github.com/cs0x7f/cstimer`, GPL-3).
 - No se guardan scrambles ni comentarios.
 - No es en tiempo real: llega cuando csTimer exporta (o cuando aprieto "Exportar al servidor").
 
+### Vibe coding: este repo en GitHub
+
+Esta página la hago con Claude Code, y los commits que escribimos juntos llevan
+`Co-Authored-By: Claude`. El repo es público, así que basta con la API de GitHub:
+
+- `GET https://api.github.com/repos/AlePatata/AlePatataDev/commits?sha=main&per_page=100` (pidiendo
+  más páginas mientras vengan llenas). Cada commit trae `sha`, `parents` y `commit.message` / `commit.committer.date`.
+- **Una feature es un merge a `main`** (`Merge branch 'x'`): sus commits son los que trae el segundo
+  padre y no el primero. Se calcula en una función pura sobre la lista.
+- El heatmap cuenta por día (hora de Chile) los commits con Claude, sin los merges; el resumen dice
+  cuántos fueron y qué features se terminaron ese día.
+- Sin clave, GitHub da 60 pedidos por hora **por IP**, y las IPs de salida de Cloudflare son
+  compartidas. Se manda `If-None-Match` con el ETag de la última vez (un `304` no gasta cupo) y, si
+  existe, el secreto opcional `GITHUB_TOKEN` (fine-grained, solo lectura de repos públicos).
+- Se guarda todo ya calculado en `hobby_snapshots` (clave `'claude'`) y los días en `activity`, que
+  necesita una migración: su `CHECK` tiene la lista de fuentes fija.
+- Ícono: `apple-touch-icon.png` de claude.ai.
+
 ## Qué muestra cada tarjeta
 
 | Hobby | Destacado | Gráficos |
@@ -141,6 +160,7 @@ formato sale de `src/js/export.js` (`github.com/cs0x7f/cstimer`, GPL-3).
 | Monkeytype | PB de 15/30/60 s, wpm promedio de los últimos 10 | wpm en el tiempo con media móvil; tests por día |
 | Películas y series | Películas y episodios este año, horas vistas | Pósters de lo último; series en curso; vistas por mes; distribución de notas |
 | Wordle | Racha actual, % de victorias, promedio de intentos | Distribución de intentos; las grillas de colores de los últimos días; calendario |
+| Vibe coding | La última feature, commits con Claude, features y días programando | Línea de tiempo de features con sus commits |
 | Rubik | PB single, ao5, ao12, ao100 por puzzle | Tiempos con media móvil; histograma; selector de puzzle |
 
 Las medias siguen las reglas de la WCA, en funciones puras con tests: ao5 y ao12 sacan el mejor y el
