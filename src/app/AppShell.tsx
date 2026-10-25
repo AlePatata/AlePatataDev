@@ -77,7 +77,7 @@ export default function AppShell() {
             <li key={path} className="flex-1 min-w-0 md:flex-none">
               <NavLink
                 to={path ? `/app/${path}` : '/app'}
-                end
+                end={!path}
                 className={({ isActive }) =>
                   `flex flex-col items-center gap-1 px-0 py-2 text-[0.6875rem] min-[360px]:text-xs md:flex-row md:px-3 md:gap-3 md:text-base md:rounded-lg transition-colors ${
                     isActive ? 'text-accent md:bg-soft' : 'text-ink hover:text-accent'
@@ -98,7 +98,7 @@ export default function AppShell() {
             <Route
               key={path}
               index={path === ''}
-              path={path || undefined}
+              path={path ? `${path}/*` : undefined}
               element={Page ? <Page /> : <ComingSoon title={label} />}
             />
           ))}
