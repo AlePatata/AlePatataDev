@@ -327,7 +327,7 @@ const SOURCE_LABEL: Record<SyncStatus['source'], string> = {
   monkeytype: 'Monkeytype',
   trakt: 'Trakt',
   wordle: 'Wordle',
-  cube: 'Twisty Timer',
+  cube: 'csTimer',
 };
 
 const when = (iso: string) =>

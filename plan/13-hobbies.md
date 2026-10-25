@@ -150,7 +150,8 @@ sacan, la media es DNF.
 ## Modelo de datos
 
 Una tabla por hobby con el detalle (`cf_submissions`, `cf_contests`, `mt_results`, `watched`,
-`wordles`, `cube_solves`) y una tabla común para el heatmap:
+`wordles`) y una tabla común para el heatmap. Los cubos no tienen tabla: csTimer siempre entrega todo,
+así que basta con guardar las estadísticas ya calculadas en `hobby_snapshots` (clave `'cube'`).
 
 ```sql
 CREATE TABLE activity (
@@ -243,6 +244,8 @@ de Trakt pasado a PNG, logo de Wordle de la NYT, y `cstimer512x512.png` de csTim
    en oscuro, y las casillas amarillas llevan un punto para no depender solo del color.
 8. Trakt: adaptador, pósters cacheados, tarjeta.
 9. csTimer: lectura del servidor y las medias WCA con tests, sincronización, tarjeta.
+   Hecho: `cstimerLogic.ts` (sesiones, +2/DNF, ao5/ao12/ao100 actuales y mejores, días) con tests;
+   probado en local contra mi ID real. Falta un histograma.
 10. Gatitos y `CLAUDE.md`.
 
 **Listo cuando:** sin sesión, `/hobbies` muestra el heatmap con los cinco hobbies; resuelvo un

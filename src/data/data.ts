@@ -105,6 +105,6 @@ export const hobbies: Hobby[] = [
     icon: '/hobby-icons/cube.png',
     short: 'Cubos',
     name: 'Cubos Rubik',
-    description: 'Tiempos de Twisty Timer.',
+    description: 'Mis tiempos de csTimer, con las medias como en la WCA.',
   },
 ];

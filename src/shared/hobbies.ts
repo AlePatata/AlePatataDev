@@ -86,3 +86,40 @@ export interface MonkeytypeDetail {
   last10: { wpm: number; acc: number } | null; // promedio de los últimos 10 tests
   tests: TypingTest[]; // los últimos 100, del más antiguo al más reciente
 }
+
+/** Una media: ms, 'DNF', o null si todavía no hay suficientes resoluciones. */
+export type CubeAverage = number | 'DNF' | null;
+
+/** Una resolución de csTimer (sin scramble ni comentario). */
+export interface CubeSolve {
+  timestamp: number; // s
+  date: string; // yyyy-mm-dd, hora de Chile
+  ms: number; // ya incluye el +2
+  penalty: 0 | 1 | 2; // 0 nada, 1 +2, 2 DNF
+}
+
+/** Estadísticas de un puzzle (todas sus sesiones juntas). */
+export interface CubePuzzle {
+  puzzle: string; // scrType de csTimer: '333', '222so'…
+  label: string; // "3x3"
+  count: number;
+  dnfs: number;
+  best: number | null; // mejor single
+  current: { ao5: CubeAverage; ao12: CubeAverage; ao100: CubeAverage };
+  bests: { ao5: CubeAverage; ao12: CubeAverage; ao100: CubeAverage };
+  solves: CubeSolve[]; // los últimos 100, del más antiguo al más reciente
+}
+
+/** `GET /api/public/hobbies/cube` */
+export interface CubeDetail {
+  puzzles: CubePuzzle[]; // el más resuelto primero
+}
+
+/** Tiempo para leer: "55,31" o "1:02,34". */
+export function formatTime(ms: number): string {
+  const cs = Math.round(ms / 10);
+  const seconds = (cs % 6000) / 100;
+  const minutes = Math.floor(cs / 6000);
+  const s = seconds.toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return minutes ? `${minutes}:${seconds < 10 ? '0' : ''}${s}` : s;
+}

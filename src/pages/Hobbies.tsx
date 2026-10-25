@@ -3,6 +3,7 @@ import { ChevronDown, ExternalLink } from 'lucide-react';
 import { Layout } from '../components/Layout';
 import { Footer } from '../components/Footer';
 import { hobbies } from '../data/data';
+import { CubeDetail } from '../hobbies/CubeDetail';
 import { Heatmap } from '../hobbies/Heatmap';
 import { MonkeytypeDetail } from '../hobbies/MonkeytypeDetail';
 import { WordleDetail } from '../hobbies/WordleDetail';
@@ -12,6 +13,7 @@ import type { HobbiesResponse, HobbySource } from '../shared/hobbies';
 const DETAILS: Partial<Record<HobbySource, () => React.ReactNode>> = {
   monkeytype: MonkeytypeDetail,
   wordle: WordleDetail,
+  cube: CubeDetail,
 };
 
 export function Hobbies() {
