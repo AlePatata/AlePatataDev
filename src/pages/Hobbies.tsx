@@ -3,6 +3,7 @@ import { ChevronDown, ExternalLink } from 'lucide-react';
 import { Layout } from '../components/Layout';
 import { Footer } from '../components/Footer';
 import { hobbies } from '../data/data';
+import { CodeforcesDetail } from '../hobbies/CodeforcesDetail';
 import { CubeDetail } from '../hobbies/CubeDetail';
 import { Heatmap } from '../hobbies/Heatmap';
 import { MonkeytypeDetail } from '../hobbies/MonkeytypeDetail';
@@ -11,6 +12,7 @@ import type { HobbiesResponse, HobbySource } from '../shared/hobbies';
 
 /** El "Ver más" de cada hobby. Los demás se agregan a medida que tengan datos. */
 const DETAILS: Partial<Record<HobbySource, () => React.ReactNode>> = {
+  codeforces: CodeforcesDetail,
   monkeytype: MonkeytypeDetail,
   wordle: WordleDetail,
   cube: CubeDetail,
