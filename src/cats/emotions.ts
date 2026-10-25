@@ -1,16 +1,8 @@
 // Las emociones de los gatitos y qué dicen. Qué las dispara está en plan/12-gatitos.md.
 
-export type Emotion =
-  | 'ansioso'
-  | 'enojado'
-  | 'aburrido'
-  | 'triste'
-  | 'curioso'
-  | 'endeudado'
-  | 'millonario'
-  | 'panico'
-  | 'enamorado'
-  | 'orgulloso';
+import type { Emotion } from '../shared/cats';
+
+export type { Emotion };
 
 export const EMOTIONS: Record<Emotion, { label: string; messages: string[] }> = {
   ansioso: {
@@ -24,6 +16,10 @@ export const EMOTIONS: Record<Emotion, { label: string; messages: string[] }> = 
   aburrido: {
     label: 'Gatito aburrido',
     messages: ['Zzz… avísame cuando vuelvas', 'Me aburrí y me quedé dormido', '¿Hola? ¿Hay alguien?'],
+  },
+  disociado: {
+    label: 'Gatito disociado',
+    messages: ['…', 'Estoy mirando a la nada', '¿Quién soy? ¿Dónde estoy?', 'Mi alma salió a dar una vuelta'],
   },
   triste: {
     label: 'Gatito triste',
@@ -55,7 +51,8 @@ export const EMOTIONS: Record<Emotion, { label: string; messages: string[] }> = 
   },
 };
 
-export function randomMessage(emotion: Emotion, random = Math.random): string {
-  const { messages } = EMOTIONS[emotion];
+/** Una frase al azar: de las configuradas en Ajustes (`custom`) o, si no hay, de las de siempre. */
+export function randomMessage(emotion: Emotion, custom: string[] = [], random = Math.random): string {
+  const messages = custom.length ? custom : EMOTIONS[emotion].messages;
   return messages[Math.floor(random() * messages.length)];
 }

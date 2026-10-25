@@ -44,6 +44,7 @@ comparto con mi pololo.
 | [10-fase-3.md](10-fase-3.md) | Fase 3 paso a paso: wishlist compartida, leer links, nombres |
 | [12-gatitos.md](12-gatitos.md) | Gatitos con emociones: qué las dispara y cómo funciona |
 | [13-hobbies.md](13-hobbies.md) | Página pública de hobbies: Codeforces, Monkeytype, Trakt, Wordle y csTimer |
+| [14-gatitos-imagenes.md](14-gatitos-imagenes.md) | Gatitos con imágenes propias y animadas, configurables desde Ajustes |
 
 ## Estado
 

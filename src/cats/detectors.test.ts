@@ -58,7 +58,11 @@ describe('EMOTIONS', () => {
   });
 
   it('randomMessage elige una de sus frases', () => {
-    expect(randomMessage('ansioso', () => 0)).toBe(EMOTIONS.ansioso.messages[0]);
-    expect(randomMessage('ansioso', () => 0.999)).toBe(EMOTIONS.ansioso.messages.at(-1));
+    expect(randomMessage('ansioso', [], () => 0)).toBe(EMOTIONS.ansioso.messages[0]);
+    expect(randomMessage('ansioso', [], () => 0.999)).toBe(EMOTIONS.ansioso.messages.at(-1));
+  });
+
+  it('randomMessage prefiere las frases configuradas', () => {
+    expect(randomMessage('ansioso', ['Uy', 'Ay'], () => 0.999)).toBe('Ay');
   });
 });
