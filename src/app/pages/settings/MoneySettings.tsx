@@ -15,7 +15,6 @@ export function MoneySettings() {
   return (
     <>
       <IncomeSettings />
-      <NameSettings />
       <CategoriesEditor categories={categories} onChange={reload} />
       <RulesEditor categories={categories} byId={byId} />
     </>
@@ -75,54 +74,6 @@ function IncomeSettings() {
   );
 }
 
-/** Nombres que se muestran en la wishlist ("Agregado por …"). */
-function NameSettings() {
-  const [owner, setOwner] = useState('');
-  const [partner, setPartner] = useState('');
-  const [status, setStatus] = useState<string>();
-
-  useEffect(() => {
-    api<Settings>('/api/settings').then((s) => {
-      setOwner(s.ownerName ?? '');
-      setPartner(s.partnerName ?? '');
-    });
-  }, []);
-
-  async function save(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      await api<Settings>('/api/settings', { method: 'PUT', body: { ownerName: owner.trim() || null, partnerName: partner.trim() || null } });
-      setStatus('Guardado.');
-    } catch (e) {
-      setStatus(errorText(e));
-    }
-  }
-
-  return (
-    <form onSubmit={save} className={card}>
-      <div>
-        <h2 className="text-lg font-semibold text-ink">Nombres</h2>
-        <p className="text-sm text-ink-muted">Se muestran en la wishlist, en "Agregado por …".</p>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="space-y-1">
-          <span className="text-sm text-ink-soft">Tu nombre</span>
-          <input maxLength={40} placeholder="Ej. Ale" value={owner} onChange={(e) => setOwner(e.target.value)} className={`${input} w-full`} />
-        </label>
-        <label className="space-y-1">
-          <span className="text-sm text-ink-soft">Nombre de tu pololo</span>
-          <input maxLength={40} value={partner} onChange={(e) => setPartner(e.target.value)} className={`${input} w-full`} />
-        </label>
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <button type="submit" className={primary}>
-          Guardar
-        </button>
-        {status && <p className="text-sm text-ink-muted">{status}</p>}
-      </div>
-    </form>
-  );
-}
 
 function CategoriesEditor({ categories, onChange }: { categories: Category[]; onChange: () => void }) {
   const [error, setError] = useState<string>();
