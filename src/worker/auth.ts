@@ -16,6 +16,8 @@ export interface Secrets {
   CSTIMER_ID?: string;
   /** API de Claude, para categorizar lo que las reglas no reconocen. Ver plan/15-categorias-claude.md. */
   ANTHROPIC_API_KEY?: string;
+  /** Opcional: token de GitHub de solo lectura, para no depender del límite por IP. Ver plan/13-hobbies.md. */
+  GITHUB_TOKEN?: string;
 }
 
 export type AppEnv = {

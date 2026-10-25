@@ -10,6 +10,7 @@ const SOURCE_LABEL: Record<SyncStatus['source'], string> = {
   trakt: 'Trakt',
   wordle: 'Wordle',
   cube: 'csTimer',
+  claude: 'GitHub (vibe coding)',
 };
 
 const when = (iso: string) =>

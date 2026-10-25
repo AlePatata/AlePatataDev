@@ -107,4 +107,12 @@ export const hobbies: Hobby[] = [
     name: 'Cubos Rubik',
     description: 'Mis tiempos de csTimer, con las medias como en la WCA.',
   },
+  {
+    source: 'claude',
+    icon: '/hobby-icons/claude.png',
+    short: 'Vibe coding',
+    name: 'Vibe coding',
+    description: 'Esta misma página la voy haciendo con Claude Code: lo que hicimos y la última feature.',
+    url: 'https://github.com/AlePatata/AlePatataDev',
+  },
 ];

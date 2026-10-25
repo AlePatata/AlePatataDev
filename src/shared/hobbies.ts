@@ -1,6 +1,6 @@
 // Tipos de la API pública de hobbies, compartidos entre la página y el Worker.
 
-export const HOBBY_SOURCES = ['codeforces', 'monkeytype', 'trakt', 'wordle', 'cube'] as const;
+export const HOBBY_SOURCES = ['codeforces', 'monkeytype', 'trakt', 'wordle', 'cube', 'claude'] as const;
 
 export type HobbySource = (typeof HOBBY_SOURCES)[number];
 
@@ -113,6 +113,21 @@ export interface CubePuzzle {
 /** `GET /api/public/hobbies/cube` */
 export interface CubeDetail {
   puzzles: CubePuzzle[]; // el más resuelto primero
+}
+
+/** Una feature: un merge a main y los commits que trajo. */
+export interface VibeFeature {
+  branch: string; // "cstimer"
+  date: string; // yyyy-mm-dd, hora de Chile
+  sha: string; // del merge
+  commits: string[]; // primera línea de cada commit, del más antiguo al más reciente
+}
+
+/** `GET /api/public/hobbies/claude` */
+export interface VibeDetail {
+  totals: { commits: number; withClaude: number; features: number; days: number; since: string | null };
+  features: VibeFeature[]; // las últimas 12, la más reciente primero
+  recent: { sha: string; date: string; subject: string }[]; // los últimos 10 commits con Claude
 }
 
 /** Tiempo para leer: "55,31" o "1:02,34". */

@@ -1,11 +1,12 @@
 import { Hono } from 'hono';
-import { HOBBY_SOURCES, type ActivityDay, type CubeDetail, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type WordleDetail } from '../shared/hobbies';
+import { HOBBY_SOURCES, type ActivityDay, type CubeDetail, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type VibeDetail, type WordleDetail } from '../shared/hobbies';
 import type { AppEnv } from './auth';
 import { loadCube } from './cstimer';
 import { todayInChile } from './db';
 import { rangeStart } from './hobbiesLogic';
 import { loadMonkeytype } from './monkeytype';
 import { loadSyncStatus, runSync, syncableSources } from './sync';
+import { loadVibe } from './vibe';
 import { loadWordles } from './wordle';
 import { wordleNumber, wordleStats } from './wordleLogic';
 
@@ -50,6 +51,12 @@ publicHobbies.get('/monkeytype', async (c) => {
 publicHobbies.get('/cube', async (c) => {
   c.header('Cache-Control', 'public, max-age=300');
   return c.json<CubeDetail>(await loadCube(c.env.DB));
+});
+
+/** Detalle de vibe coding: lo que hicimos con Claude en este repo (de GitHub, que es público). */
+publicHobbies.get('/claude', async (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json<VibeDetail>(await loadVibe(c.env.DB));
 });
 
 /** Privado (solo dueña): estado de las sincronizaciones y "Sincronizar ahora". */
