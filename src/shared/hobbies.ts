@@ -138,3 +138,36 @@ export function formatTime(ms: number): string {
   const s = seconds.toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return minutes ? `${minutes}:${seconds < 10 ? '0' : ''}${s}` : s;
 }
+
+/** Un concurso con rating de Codeforces. */
+export interface CfContest {
+  contestId: number;
+  name: string;
+  date: string;
+  rank: number;
+  oldRating: number;
+  newRating: number;
+}
+
+/** Un problema resuelto (el primer AC). */
+export interface CfSolved {
+  contestId: number | null;
+  index: string;
+  name: string;
+  rating: number | null;
+  date: string;
+}
+
+/** `GET /api/public/hobbies/codeforces` */
+export interface CodeforcesDetail {
+  handle: string;
+  rating: number | null; // después del último concurso; null si nunca ha participado
+  maxRating: number | null;
+  contests: CfContest[]; // del más antiguo al más reciente
+  submissions: number;
+  solved: number; // problemas distintos con AC
+  streak: { current: number; max: number }; // días seguidos con al menos un AC
+  byRating: { rating: number | null; count: number }[]; // resueltos por dificultad, null = sin dificultad al final
+  tags: { tag: string; count: number }[]; // los más resueltos
+  recent: CfSolved[]; // los últimos resueltos, el más reciente primero
+}

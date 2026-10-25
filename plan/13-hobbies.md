@@ -206,7 +206,7 @@ esta tabla. Los usuarios van en `settings`; las claves y la cookie, como secreto
 - **Escritura** (pegar un wordle, recorrer el historial de Wordle, sincronizar a mano,
   ajustes): rutas normales detrás de Access, solo para la dueña.
 - **Cron**: `"triggers": { "crons": ["0 */2 * * *"] }` en `wrangler.jsonc` y un handler `scheduled`
-  junto al `fetch` de Hono. Cada 2 h Monkeytype y Wordle; cada 3.ª pasada (6 h) Codeforces y Trakt.
+  junto al `fetch` de Hono. Cada 2 h todas (Codeforces son solo 2 llamadas, así que no hace falta espaciarlo más).
   Si una fuente falla, las otras siguen, y se guarda `last_sync`/`last_error` por fuente.
 
 ## Páginas
@@ -254,6 +254,8 @@ de Trakt pasado a PNG, logo de Wordle de la NYT, y `cstimer512x512.png` de csTim
    (el `pink-300` no llegaba a 2:1; el `pink-950` se veía negro), oscuro mauve al 45/65/82/100 % sobre Surface0 (al 35 % no llegaba).
 4. Cron `scheduled` + estado por fuente + "Sincronizar ahora" en Ajustes. Hecho junto con el 7.
 5. Codeforces: adaptador, tarjeta y tests del cálculo (rachas, AC por dificultad).
+   Hecho: `codeforcesLogic.ts` (primer AC por problema, racha, dificultades, tags, días) con tests;
+   probado en local contra mi cuenta. Va cada 2 h como las demás (son 2 llamadas, separadas 2 s).
 6. Monkeytype: adaptador con ApeKey, tarjeta.
 7. Wordle: probar la cookie desde el Worker; `scoreGuess` y `parseWordle` con tests; sincronización,
    historial, plan B y tarjeta con las grillas.

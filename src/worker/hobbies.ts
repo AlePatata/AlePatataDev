@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
-import { HOBBY_SOURCES, type ActivityDay, type CubeDetail, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type VibeDetail, type WordleDetail } from '../shared/hobbies';
+import { HOBBY_SOURCES, type ActivityDay, type CodeforcesDetail, type CubeDetail, type HobbiesResponse, type HobbySource, type VibeDetail, type MonkeytypeDetail, type WordleDetail } from '../shared/hobbies';
 import type { AppEnv } from './auth';
+import { loadCodeforces } from './codeforces';
 import { loadCube } from './cstimer';
 import { todayInChile } from './db';
 import { rangeStart } from './hobbiesLogic';
@@ -45,6 +46,12 @@ publicHobbies.get('/wordle', async (c) => {
 publicHobbies.get('/monkeytype', async (c) => {
   c.header('Cache-Control', 'public, max-age=300');
   return c.json<MonkeytypeDetail>(await loadMonkeytype(c.env.DB));
+});
+
+/** Detalle de Codeforces: rating, resueltos por dificultad y tags, racha y lo último resuelto. */
+publicHobbies.get('/codeforces', async (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json<CodeforcesDetail>(await loadCodeforces(c.env.DB));
 });
 
 /** Detalle de los cubos: PB y medias por puzzle, y los últimos 100 tiempos de cada uno. */
