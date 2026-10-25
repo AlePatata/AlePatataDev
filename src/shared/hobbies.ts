@@ -54,3 +54,35 @@ export interface SyncStatus {
   lastError: string | null; // null si la última vez funcionó
   updatedAt: string | null;
 }
+
+/** Un test de Monkeytype (sin el uid de la cuenta). */
+export interface TypingTest {
+  id: string;
+  timestamp: number; // ms
+  date: string; // yyyy-mm-dd, hora de Chile
+  wpm: number;
+  raw: number;
+  acc: number; // %
+  consistency: number; // %
+  mode: string; // time, words, quote…
+  mode2: string; // 30, 50…
+}
+
+export interface TypingPb {
+  mode: 'time' | 'words';
+  mode2: string; // "30" (segundos) o "50" (palabras)
+  wpm: number;
+  acc: number;
+  date: string;
+}
+
+/** `GET /api/public/hobbies/monkeytype` */
+export interface MonkeytypeDetail {
+  pbs: TypingPb[];
+  completedTests: number;
+  startedTests: number;
+  secondsTyping: number;
+  streak: { current: number; max: number };
+  last10: { wpm: number; acc: number } | null; // promedio de los últimos 10 tests
+  tests: TypingTest[]; // los últimos 100, del más antiguo al más reciente
+}

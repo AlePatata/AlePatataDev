@@ -1,12 +1,14 @@
 import type { HobbySource, SyncStatus } from '../shared/hobbies';
 import type { Secrets } from './auth';
 import { todayInChile } from './db';
+import { syncMonkeytype } from './monkeytype';
 import { syncWordle } from './wordle';
 
 type Adapter = (env: Env & Secrets, today: string) => Promise<unknown>;
 
 /** Fuentes que se sincronizan solas. Las demás se agregan aquí a medida que existan. */
 const adapters: Partial<Record<HobbySource, Adapter>> = {
+  monkeytype: (env) => syncMonkeytype(env),
   wordle: (env, today) => syncWordle(env, today),
 };
 

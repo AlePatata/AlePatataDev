@@ -1,8 +1,9 @@
 import { Hono } from 'hono';
-import { HOBBY_SOURCES, type ActivityDay, type HobbiesResponse, type HobbySource, type WordleDetail } from '../shared/hobbies';
+import { HOBBY_SOURCES, type ActivityDay, type HobbiesResponse, type HobbySource, type MonkeytypeDetail, type WordleDetail } from '../shared/hobbies';
 import type { AppEnv } from './auth';
 import { todayInChile } from './db';
 import { rangeStart } from './hobbiesLogic';
+import { loadMonkeytype } from './monkeytype';
 import { loadSyncStatus, runSync, syncableSources } from './sync';
 import { loadWordles } from './wordle';
 import { wordleNumber, wordleStats } from './wordleLogic';
@@ -36,6 +37,12 @@ publicHobbies.get('/wordle', async (c) => {
     recent: days.filter((d) => d.number < todayNumber).slice(0, 7),
     stats: wordleStats(days, todayNumber),
   });
+});
+
+/** Detalle de Monkeytype: PB, totales, racha y los últimos 100 tests. */
+publicHobbies.get('/monkeytype', async (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json<MonkeytypeDetail>(await loadMonkeytype(c.env.DB));
 });
 
 /** Privado (solo dueña): estado de las sincronizaciones y "Sincronizar ahora". */

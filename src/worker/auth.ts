@@ -10,6 +10,8 @@ export interface Secrets {
   DEV_AUTH_EMAIL?: string;
   /** Cookie de nytimes.com (`NYT-S=...`) para leer mis partidas de Wordle. Ver plan/13-hobbies.md. */
   NYT_COOKIE?: string;
+  /** ApeKey de Monkeytype (monkeytype.com → Account → Ape Keys), solo lectura. */
+  MONKEYTYPE_APE_KEY?: string;
 }
 
 export type AppEnv = {
